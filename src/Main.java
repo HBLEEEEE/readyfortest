@@ -3,7 +3,9 @@
 
 import com.sun.xml.internal.ws.api.ha.StickyFeature;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 //문제 : 나머지 구하기
 //문제 설명 : 정수 num1, num2가 매개변수로 주어질 때, num1를 num2로 나눈 나머지를 return 하도록 solution 함수를 완성해주세요.
@@ -381,59 +383,96 @@ class Solution_0024 {
     }
 }
 
-
-class test_sec {
-    public static void main(String[] args) {
-        String str = "ayaa";
-        str = str.substring(4);
-        System.out.println(str);
+//문제 : 제곱수 판별하기
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120909
+class Solution_0025 {
+    public int solution(int n) {
+        if (Math.sqrt(n)%1==0){
+            return 1;
+        }
+        return 2;
     }
 }
 
-
-
-class  test_call {
-    public static void main(String[] args) {
-
-        String str = "yee";
-
-        System.out.println(str.substring(0,2));
-
-        if (str.substring(0,2).equals("ye")){
-            System.out.println("같잔아!");
-        }else {
-            System.out.println("왜 다른데!");
+//import java.util.Arrays;
+//문제 : 약수 구하기
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120897
+class Solution_0026 {
+    public int[] solution(int n) {
+        int[] answer = new int[n+1];
+        if (n==1){
+            return new int[]{1};
         }
 
 
+        for (int i=1; i<=(int)Math.sqrt(n);i++){
+            if(n%i==0){
+                answer[i] = i;
+                answer[n-1-i] = n/i;
+            }
+        }
+
+        int[] hows = Arrays.stream(answer).distinct().toArray();
 
 
+
+        return Arrays.copyOfRange(hows,1,hows.length);
     }
 }
 
 
-
-//-------------------------------------------------------------절취선-----------------------------------------
-
-//문제 : 옹알이(1)
-//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120956
 //import java.util.Arrays;
-class Solution {
-    public int solution(String[] babbling) {
+//import java.util.List;
+//import java.util.ArrayList;
+
+//문제 : 약수 구하기
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120852
+class Solution_0027 {
+    public int[] solution(int n) {
+        List<Integer> answer = new ArrayList<>();
+        int i=2;
+        while (i<=n){
+            if(n%i==0){
+                answer.add(i);
+                n = n/i;
+            } else {
+                i++;
+            }
+        }
+        int[] hows = Arrays.stream(answer.stream().mapToInt(x -> x).toArray()).distinct().toArray();
+        return hows;
+    }
+}
+
+
+//문제 : 합성수 찾기
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120846
+class Solution_0028 {
+    public int solution(int n) {
         int answer = 0;
-        String[] says = {"aya", "ye", "woo", "ma"};
-        String[] all = new String[4+4*3+4*3*2+4*3*2*1];
-        String[] temp;
+        if (n < 4){
+            return 0;
+        }
 
+        for (int i=4;i<n+1;i++){
+            check : if (i%2 == 0){
+                answer +=1;
+            }else {
+                for(int j=3;j<i;j++){
+                    if(i%j==0){
+                        answer +=1;
+                        break check;
+                    }
+                }
 
-
-
-
-
-
+            }
+        }
         return answer;
     }
 }
+
+
+//-------------------------------------------------------------절취선-----------------------------------------
 
 
 
@@ -565,7 +604,7 @@ class Solution_continuedNumbers {
 //문제 : OX퀴즈
 //문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120907
 //import java.util.Arrays;
-class Solution_0025 {
+class Solution_OXquiz{
     public String[] solution(String[] quiz) {
         String[] answer = new String[quiz.length];
         for (int i = 0 ; i< quiz.length; i++){
