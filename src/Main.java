@@ -1,6 +1,8 @@
 //Programmers 코딩 테스트 lv0
 
 
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
+
 import java.util.Arrays;
 
 //문제 : 나머지 구하기
@@ -380,12 +382,214 @@ class Solution_0024 {
 }
 
 
+class test_sec {
+    public static void main(String[] args) {
+        String str = "ayaa";
+        str = str.substring(4);
+        System.out.println(str);
+    }
+}
+
+
+
+class  test_call {
+    public static void main(String[] args) {
+
+        String str = "yee";
+
+        System.out.println(str.substring(0,2));
+
+        if (str.substring(0,2).equals("ye")){
+            System.out.println("같잔아!");
+        }else {
+            System.out.println("왜 다른데!");
+        }
+
+
+
+
+    }
+}
 
 
 
 //-------------------------------------------------------------절취선-----------------------------------------
 
+//문제 : 옹알이(1)
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120956
+//import java.util.Arrays;
+class Solution {
+    public int solution(String[] babbling) {
+        int answer = 0;
+        String[] says = {"aya", "ye", "woo", "ma"};
+        String[] all = new String[4+4*3+4*3*2+4*3*2*1];
+        String[] temp;
 
+
+
+
+
+
+
+        return answer;
+    }
+}
+
+
+
+
+
+//문제 : 옹알이(1)
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120956
+//import java.util.Arrays;
+//중복제거 해줬더니 오답 처리하는 문제 ㅡㅡ;
+class Solution_babbling {
+    public static int solution(String[] babbling) {
+        int answer = 0;
+        String[] how = new String[babbling.length];
+        for (int i = 0; i<babbling.length;i++) {
+            how[i] = check(babbling[i]);
+        }
+
+        String[] hows = Arrays.stream(how).distinct().toArray(String[]::new);
+        System.out.println(Arrays.toString(hows));
+
+        for (int i=0; i<how.length;i++){
+            if (!how[i].equals("") ){
+                answer +=1;
+            }
+        }
+
+        return answer;
+    }
+
+
+    public static String check(String str){
+        String res = "";
+
+        while (true) {
+
+            if (str.length()==0){
+                System.out.println("딱잘려서 탈출");
+                break;
+            } else if (str.length()==1) {
+                System.out.println("하나남기고 탈출");
+                res = "";
+                break;
+            }
+
+            String res_temp = res;
+            System.out.println("와일 체크 시작 "+str+" "+res+" "+res_temp);
+
+            try{
+                if (str.substring(0,3).equals("aya")){
+                    res += "aya";
+                    str = str.substring(3);
+                }}catch (Exception e){}
+
+            try{
+                if (str.substring(0,2).equals("ye")){
+                    res += "ye";
+                    str = str.substring(2);
+                }}catch (Exception e){}
+
+            try{
+                if (str.substring(0,3).equals("woo")){
+                    res += "woo";
+                    str = str.substring(3);
+                }}catch (Exception e){}
+
+            try{
+                if (str.substring(0,2).equals("ma")){
+                    res += "ma";
+                    str = str.substring(2);
+                }}catch (Exception e){}
+
+            System.out.println("와일 체크 끝 "+str+" "+res+" "+res_temp);
+            if ((res_temp.equals(res)) && (str.length()==0)){
+                break;
+            } else if ((res_temp.equals(res)) && (str.length()>0)) {
+                return  "";
+            }
+        }
+        System.out.println("이게 나왔다 "+res);
+        return res;
+    }
+
+    public static void main(String[] args) {
+        String[] strs = {"aya", "yee", "u", "maa", "wyeoo"};
+        System.out.println(solution(strs));
+    }
+}
+
+
+
+
+
+//문제 : 다음에 올 숫자
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120924
+class Solution_nextNumbers {
+    public int solution(int[] common) {
+        if (common[2]-common[1]==common[1]-common[0]){
+           return common[common.length-1]+(common[1]-common[0]);
+        } else {
+           return common[common.length-1]*(common[1]/common[0]);
+        }
+    }
+}
+
+
+
+
+
+//문제 : 연속된 수의 합
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120923
+class Solution_continuedNumbers {
+    public int[] solution(int num, int total) {
+        int[] answer = new int[num];
+
+        if (num%2==1){
+            for(int i=0; i<num;i++){
+                answer[i] = (total/num)-(num/2)+i;
+            }
+        }else {
+            for(int j=0; j<num;j++){
+                answer[j] = (total/num)-(num/2)+1+j;
+            }
+        }
+        return answer;
+    }
+}
+
+
+//문제 : OX퀴즈
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120907
+//import java.util.Arrays;
+class Solution_0025 {
+    public String[] solution(String[] quiz) {
+        String[] answer = new String[quiz.length];
+        for (int i = 0 ; i< quiz.length; i++){
+            answer[i] = check(quiz[i]);
+        }
+        return answer;
+    }
+
+    public String check(String quiz_solo){
+        int first = Integer.parseInt(quiz_solo.split(" ")[0]);
+        String calc = quiz_solo.split(" ")[1];
+        int second = Integer.parseInt(quiz_solo.split(" ")[2]);
+        int result = Integer.parseInt(quiz_solo.split(" ")[4]);
+        char t = calc.charAt(0);
+        //왜 char 로 받아야 할까 string =="-" 는 왜 안먹힐까
+
+        if ((t == 43)&&(first+second==result)){
+            return "O";
+        }else if ((t == 45)&&(first-second==result)){
+            return "O";
+        }
+        return "X";
+    }
+}
 
 
 //문제 : 안전지대
