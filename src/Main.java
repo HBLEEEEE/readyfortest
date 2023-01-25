@@ -471,6 +471,57 @@ class Solution_0028 {
     }
 }
 
+//문제 : 짝수는 싫어요
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120813
+class Solution_0029 {
+    public int[] solution(int n) {
+        int[] answer = new int[n/2+n%2];
+        for (int i=0; i<(n/2+n%2); i++){
+            answer[i] = 2*i+1;
+        }
+        return answer;
+    }
+}
+
+//문제 : 피자 나눠 먹기 (3)
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120816
+class Solution_0030 {
+    public int solution(int slice, int n) {
+        int answer = n/slice+(int)((n%slice)/(float)n+0.9999);
+        return answer;
+    }
+}
+
+//문제 : 옷가게 할인 받기
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120816
+class Solution_0031 {
+    public int solution(int price) {
+        int cnt = 100;
+        cnt = price>=100000? 95:cnt;
+        cnt = price>=300000? 90:cnt;
+        cnt = price>=500000? 80:cnt;
+        return (price*cnt/1000)*10;
+
+//        int answer = price;
+//        if (price>=500000){
+//            answer = (int)(price*0.8f);
+//        } else if (price>=300000) {
+//            answer = (int)(price*0.9f);
+//        } else if (price>=100000) {
+//            answer = (int)(price*0.95f);
+//        }
+
+//        return answer;
+    }
+}
+
+
+
+
+
+
+
+
 
 //-------------------------------------------------------------절취선-----------------------------------------
 
