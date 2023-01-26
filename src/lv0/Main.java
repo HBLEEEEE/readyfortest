@@ -514,6 +514,31 @@ class Solution_0031 {
 }
 
 
+//문제 : 개미 군단
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120837
+class Solution_0032 {
+    public int solution(int hp) {
+        int answer = 0;
+
+        answer += hp/5;
+        if (hp%5>3){
+            answer +=2;
+        }else if(hp%5>2){
+            answer +=1;
+        }else if(hp%5>1){
+            answer +=2;
+        }else if(hp%5>0){
+            answer +=1;
+        }
+
+        return answer;
+    }
+}
+
+
+
+
+
 
 
 
