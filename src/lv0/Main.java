@@ -1,7 +1,5 @@
-//Programmers 코딩 테스트 lv0
+package lv0;//Programmers 코딩 테스트 lv0
 
-
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -514,10 +512,6 @@ class Solution_0031 {
 //        return answer;
     }
 }
-
-
-
-
 
 
 
