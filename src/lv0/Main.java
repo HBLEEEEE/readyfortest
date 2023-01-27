@@ -4,6 +4,8 @@ package lv0;//Programmers 코딩 테스트 lv0
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
+import java.lang.Integer;
 
 //문제 : 나머지 구하기
 //문제 설명 : 정수 num1, num2가 매개변수로 주어질 때, num1를 num2로 나눈 나머지를 return 하도록 solution 함수를 완성해주세요.
@@ -535,7 +537,52 @@ class Solution_0032 {
     }
 }
 
+//문제 : 직각삼각형 출력하기
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120823
+class Solution_0033 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
 
+        for (int i = 0; i < n; i++) {
+            System.out.println("*".repeat(i+1));
+        }
+    }
+}
+
+//문제 : 암호 해독
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120892
+class Solution_0034 {
+    public String solution(String cipher, int code) {
+        String answer = "";
+        int read = code-1;
+        while (read<cipher.length()){
+            answer += String.valueOf(cipher.charAt(read));
+            read += code;
+        }
+        return answer;
+    }
+}
+
+//문제 : 369 게임
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120891
+class Solution_0035 {
+    public int solution(int order) {
+        int answer = 0;
+
+        while (order>0){
+            if (order % 10 == 0) {
+                order /= 10;
+                continue;
+            }
+            if (((order%10)%3)==0){
+                answer +=1;
+            }
+            order /= 10;
+        }
+        return answer;
+    }
+}
 
 
 
