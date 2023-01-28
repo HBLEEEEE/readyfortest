@@ -1,6 +1,8 @@
 package lv1;
+import java.security.KeyStore;
 import java.time.LocalDate;
 import java.util.*;
+
 
 //문제 : 핸드폰 번호 가리기
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12948
@@ -87,11 +89,11 @@ class Solution_0005_0 {
     public String solution(int n) {
         String answer = "";
 
-//        if (n % 2 == 0) {
-//            answer = "수박".repeat(n / 2);
-//        } else {
-//            answer = "수박".repeat(n / 2) + "수";
-//        }
+        if (n % 2 == 0) {
+            answer = "수박".repeat(n / 2);
+        } else {
+            answer = "수박".repeat(n / 2) + "수";
+        }
 
         return answer;
     }
@@ -131,18 +133,14 @@ class Solution_0006_2 {
                 map.put(str,1);
             }
         }
-
         for (String str: completion) {
             map.put(str, map.get(str)-1);
         }
-
         for (String str: participant){
             if (map.get(str)==1){
                 return str;
             }
         }
-
-
         return answer;
     }
 }
@@ -459,6 +457,24 @@ class Solution_0018 {
         answer=Arrays.copyOfRange(answer,1,answer.length);
         return answer;
     }
+
+    public int[] solution_01(int[] numbers) {  //정답을 담을 ArrayList 생성
+
+        HashSet<Integer> set = new HashSet<Integer>();   //중복값을 지워줄 HashSet 생성
+
+        for (int i = 0; i < numbers.length - 1; i++) {
+            for (int j = i + 1; j < numbers.length; j++) {
+                set.add(numbers[i] + numbers[j]);  //HashSet에 두 수의 합을 저장
+            }
+        }
+        Integer[] answerInt = set.toArray(new Integer[0]);      // set -> Integer 배열로 전환하는거
+        int[] answer = Arrays.stream(answerInt).mapToInt(Integer::intValue).toArray();      // Integer -> int배열 전환    //mapToInt올바른 동작을 유지   mapToInt(Integer::intValue)
+        Arrays.sort(answer);
+        //ArrayList<Integer>list=new ArrayList<>(set);  //Set은 순서가 없기때문에 ArrayList로 변환
+        //list.sort(null);  // collrection.sort가 아닌 ArrayList의 sort를 사용
+
+        return answer;
+    }
 }
 
 //문제 : 로또의 최고 순위와 최저 순위
@@ -493,8 +509,303 @@ class Solution_0019 {
         }
         return answer;
     }
+}
+
+//문제 : 모의고사
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42840
+//import java.util.Arrays;
+class Solution_0020 {
+    public int[] solution(int[] answers) {
+        int[] res = new int[3];
+        int[] stu1 = {1,2,3,4,5};
+        int[] stu2 = {2,1,2,3,2,4,2,5};
+        int[] stu3 = {3,3,1,1,2,2,4,4,5,5};
+
+        for (int i = 0; i < answers.length; i++) {
+            if(answers[i] == stu1[i%5]){
+                res[0] += 1;
+            }
+            if(answers[i] == stu2[i%8]){
+                res[1] += 1;
+            }
+            if(answers[i] == stu3[i%10]){
+                res[2] += 1;
+            }
+        }
+        System.out.println(Arrays.toString(res));
+        int max = 0;
+        int cnt = 0;
+        for(int i:res){
+            max = i>max? i:max;
+        }
+        System.out.println(max);
+        int[] total = {0,0,0};
+        for (int i = 0; i < 3; i++) {
+            if (res[i]==max){
+                total[cnt] = i+1;
+                cnt +=1;
+            }
+        }
+        System.out.println(Arrays.toString(total));
+        total=Arrays.copyOfRange(total,0,cnt);
+
+        return total;
+    }
+}
+
+//문제 : 문자열 내 마음대로 정렬하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12915
+//import java.util.Arrays;
+//import java.util.HashMap;
+class Solution_0021 {
+    public static String[] solution(String[] strings, int n) {
+        Arrays.sort(strings);
+
+        for (int i = 0; i < strings.length; i++) {
+            for (int j = 0; j < strings.length-1; j++) {
+                if(ChangeForSort(strings[j],strings[j+1],n)){
+                    String temp = strings[j];
+                    strings[j]=strings[j+1];
+                    strings[j+1] = temp;
+                }
+            }
+        }
+
+        return strings;
+    }
+
+
+
+    public static boolean ChangeForSort(String str1, String str2, int num){
+
+        str1 = str1.substring(num,num+1);
+        str2 = str2.substring(num,num+1);
+        String[] arr = {str1,str2};
+        Arrays.sort(arr);
+        if (arr[0].equals(str1)){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+        String[] quiz = {"xawdasdz", "awdqwbcd", "cdawdasdx","abdasd","aadasd","acdasd"};
+        System.out.println(Arrays.toString(solution(quiz,3)));
+
+
+    }
+
+    public String[] solution__2(String[] strings, int n) {
+        String[] answer = new String[strings.length];
+
+        HashMap<String,Integer> map = new HashMap<>();
+        for (int i = 0; i < strings.length; i++) {
+            map.put(strings[i].substring(n),i);
+        }
+
+        String[] check = new String[strings.length];
+        for (int i = 0; i < check.length; i++) {
+            check[i] = strings[i].substring(n);
+        }
+
+        Arrays.sort(check);
+        for (int i = 0; i < check.length; i++) {
+            answer[i] = strings[map.get(check[i])];
+        }
+
+        return answer;
+    }
+
+
 
 }
+
+//문제 : 문자열 내림차순으로 배치하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12917
+//import java.util.Arrays;
+class Solution_0022 {
+    public String solution(String s) {
+        String answer = "";
+
+        String[] res = s.split("");
+        Arrays.sort(res);
+        System.out.println(Arrays.toString(res));
+        for (int i = res.length-1; i >= 0 ; i--) {
+            answer += res[i];
+        }
+        return answer;
+    }
+}
+
+//문제 : 소수 만들기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12977
+//import java.util.Arrays;
+class Solution_0023 {
+    public int solution(int[] nums) {
+        int answer = -1;
+        int[] sums = new int[nums.length*(nums.length-1)*(nums.length-2)/6+1];
+        int cnt = 1;
+        int input = 0;
+        for (int i = 0; i < nums.length-2; i++) {
+            for (int j = i+1; j < nums.length-1; j++) {
+                lastfor : for (int k = j+1; k < nums.length; k++) {
+                    input = nums[i]+nums[j]+nums[k];
+                    for (int l = 2; l <= Math.sqrt(input) ; l++) {
+                        if(input%l==0){
+                            continue lastfor;
+                        }
+                    }
+                    sums[cnt]=input;
+                    cnt++;
+                }
+            }
+        }
+        sums = Arrays.copyOfRange(sums,1,cnt);
+        answer = sums.length;
+        return answer;
+    }
+}
+
+//문제 : 숫자 문자열과 영단어
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/81301
+//import java.util.Arrays;
+//import java.util.List;
+//import java.util.ArrayList;
+class Solution_0024 {
+    public int solution(String s) {
+        int answer = 0;
+        String[] arr = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+        List<String> numbers = new ArrayList<>(Arrays.asList(arr));
+        String newans = "";
+        String temp = "";
+
+        for (int i = 0; i < s.length(); i++) {
+            if(s.charAt(i)<='9'){
+                newans += String.valueOf(s.charAt(i));
+
+            }else {
+                temp += String.valueOf(s.charAt(i));
+                if (numbers.contains(temp)){
+                    newans += numbers.indexOf(temp);
+                    temp = "";
+                }
+            }
+        }
+        answer = Integer.parseInt(newans);
+
+        return answer;
+    }
+}
+
+//문제 : 시저 암호
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12926
+class Solution_0025 {
+    public static String solution(String s, int n) {
+        String answer = "";
+        for (int i = 0; i < s.length(); i++) {
+            if(s.charAt(i)==32){
+                answer += " ";
+            } else if (64<s.charAt(i)&&s.charAt(i)<91){
+                answer += Character.toString((s.charAt(i)-65+n)%26+65);
+            } else if (96<s.charAt(i)&&s.charAt(i)<123) {
+                answer += Character.toString((s.charAt(i)-97+n)%26+97);
+            }
+        }
+        return answer;
+    }
+}
+
+//문제 : 신규 아이디 추천
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/72410
+class Solution_0026 {
+    public static String solution(String new_id) {
+        String answer = "";
+
+        //1단계
+        new_id = new_id.toLowerCase();
+
+        System.out.println("1단계 통과 후 : "+ new_id);
+
+        //2단계  - _ .
+
+        String check = "~!@#$%^&*()=+[{]}:?,<>/";
+        for (int i = 0; i < new_id.length(); i++) {
+
+            if (!check.contains(Character.toString(new_id.charAt(i)))) {
+                answer+=Character.toString(new_id.charAt(i));
+            }
+        }
+
+        System.out.println("2단계 통과 후 : "+ answer);
+
+        //3단계
+        new_id = "";
+        int cnt = 0;
+        for (int i = 0; i < answer.length(); i++) {
+            if (answer.charAt(i)=='.'){
+                if (cnt<1){
+                    new_id += Character.toString(answer.charAt(i));
+                    cnt +=1;
+                }
+            }else {
+                cnt = 0;
+                new_id += Character.toString(answer.charAt(i));
+            }
+        }
+        System.out.println("3단계 통과 후 : "+ new_id);
+
+        //4단계
+        if (new_id.charAt(0)=='.'){
+            new_id = new_id.substring(1);
+        }
+        try{
+            if (new_id.charAt(new_id.length()-1)=='.'){
+                new_id = new_id.substring(0,new_id.length()-1);
+            }
+        }catch (Exception e){
+
+        }
+
+        System.out.println("4단계 통과 후 : "+ new_id);
+
+        //5단계
+
+        if (new_id.length()==0){
+            new_id += "a";
+        }
+
+        System.out.println("5단계 통과 후 : "+ new_id);
+
+        //6단계
+        if (new_id.length()>15){
+            new_id=new_id.substring(0,15);
+            if (new_id.charAt(new_id.length()-1)=='.'){
+                new_id = new_id.substring(0,new_id.length()-1);
+            }
+        }
+        System.out.println("6단계 통과 후 : "+ new_id);
+
+        //7단계
+        while (new_id.length()<3){
+            new_id += Character.toString(new_id.charAt(new_id.length()-1));
+        }
+
+        System.out.println("7단계 통과 후 : "+ new_id);
+
+        return new_id;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(solution("=.="));
+
+
+    }
+}
+
 
 
 
