@@ -1,8 +1,9 @@
 package lv1;
-import java.security.KeyStore;
 import java.time.LocalDate;
 import java.util.*;
-
+import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 //문제 : 핸드폰 번호 가리기
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12948
@@ -570,12 +571,8 @@ class Solution_0021 {
                 }
             }
         }
-
         return strings;
     }
-
-
-
     public static boolean ChangeForSort(String str1, String str2, int num){
 
         str1 = str1.substring(num,num+1);
@@ -589,38 +586,10 @@ class Solution_0021 {
         }
 
     }
-
-
     public static void main(String[] args) {
         String[] quiz = {"xawdasdz", "awdqwbcd", "cdawdasdx","abdasd","aadasd","acdasd"};
         System.out.println(Arrays.toString(solution(quiz,3)));
-
-
     }
-
-    public String[] solution__2(String[] strings, int n) {
-        String[] answer = new String[strings.length];
-
-        HashMap<String,Integer> map = new HashMap<>();
-        for (int i = 0; i < strings.length; i++) {
-            map.put(strings[i].substring(n),i);
-        }
-
-        String[] check = new String[strings.length];
-        for (int i = 0; i < check.length; i++) {
-            check[i] = strings[i].substring(n);
-        }
-
-        Arrays.sort(check);
-        for (int i = 0; i < check.length; i++) {
-            answer[i] = strings[map.get(check[i])];
-        }
-
-        return answer;
-    }
-
-
-
 }
 
 //문제 : 문자열 내림차순으로 배치하기
@@ -806,27 +775,380 @@ class Solution_0026 {
     }
 }
 
+//문제 : 약수의 개수와 덧셈
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/77884
+class Solution_0027 {
+    public int solution(int left, int right) {
+        int answer = 0;
+
+        for (int i = left; i <= right ; i++) {
+            answer += count_division(i)*i;
+
+        }
+
+        return answer;
+    }
+    public int count_division(int num){
+        int cnt = 0;
+        for (int i = 1; i < Math.sqrt(num); i++) {
+            if(num%i==0){
+                cnt += 2;
+            }
+        }
+        if (Math.sqrt(num)%1==0){
+            cnt += 1;
+        }
+        if (cnt%2==0){
+            return 1;
+        }else {
+            return -1;
+        }
+    }
+}
 
 
+//문제 : 약수의 합
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12928
+class Solution_0028 {
+    public int solution(int n) {
+        int answer = 0;
 
-//------------------------------------------------------------------------------------
+        for (int i = 1; i < Math.sqrt(n); i++) {
+            if(n%i==0){
+                answer += i + n/i;
+            }
+        }
+        if (Math.sqrt(n)%1==0){
+            answer += Math.sqrt(n);
+        }
+
+        return answer;
+    }
+}
+
+
+//문제 : 예산
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12982
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.List;
+//import java.util.Collections;
+//import java.util.stream.Collectors;
+//import java.util.stream.IntStream;
+
+class Solution_0029 {
+    public static int solution(int[] d, int budget) {
+        int answer = 0;
+        List<Integer> list = IntStream.of(d).boxed().collect(Collectors.toList());
+        int possible = 0;
+        while (true){
+            int min = Collections.min(list);
+            list.remove(Integer.valueOf(min));
+            if (possible+min<=budget){
+                answer += 1;
+                possible += min;
+            }
+            if(possible> budget || list.size()==0){
+                break;
+            }
+        }
+        return answer;
+    }
+}
+
+//문제 : 최대공약수와 최소공배수
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12940
+
+
+class Solution_0030 {
+    public int[] solution(int n, int m) {
+
+        int devide = gcd(n,m);
+        int multiple = n*m/devide;
+        int[] answer = {devide, multiple};
+
+        return answer;
+    }
+    public static int gcd(int p, int q)
+    {
+        if (q == 0) return p;
+        return gcd(q, p%q);
+    }
+
+}
+
+//문제 : K번째수
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42748
+//import java.util.Arrays;
+
+class Solution_0031 {
+    public int[] solution(int[] array, int[][] commands) {
+
+        int[] answer = new int[commands.length];
+
+        for (int i = 0; i < commands.length; i++) {
+            int[] temp = Arrays.copyOfRange(array, commands[i][0]-1,commands[i][1]);
+            Arrays.sort(temp);
+            answer[i] = temp[(commands[i][2])-1];
+        }
+        return answer;
+    }
+}
+
+//문제 : 나머지가 1이 되는 수 찾기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/87389
+
+class Solution_0032 {
+    public int solution(int n) {
+
+        for (int i = 1; i < n; i++) {
+            if(n%i==1){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+//문제 : 소수 찾기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12921
+
+class Solution_0033 {
+    public int solution(int n) {
+        int answer = 0;
+
+        answer = prime_check(n);
+
+
+        return answer;
+    }
+
+    public int prime_check(int n){
+        int ans = 0;
+        if (n==2){
+            return 1;
+        }
+        for (int i = 2; i <= n; i++) {
+            cnt : for (int j = 2; j <= Math.sqrt(i); j++) {
+                if (i%j==0){
+                    ans -= 1;
+                    break cnt;
+                }
+            }
+            ans +=1;
+        }
+        return ans;
+
+    }
+}
+
+//문제 : 실패율
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42889
+class Solution_0034 {
+    public int[] solution(int N, int[] stages) {
+        int[] people = new int[N+1];
+        double[] fail = new double[N+1];
+        for (int i = 0; i < stages.length; i++) {
+
+            people[stages[i]-1] += 1;
+        }
+
+        int down = stages.length;
+        for (int i = 0; i < people.length; i++) {
+            fail[i] = people[i]/(double)down;
+            down -= people[i];
+        }
+
+        fail = Arrays.copyOfRange(fail,0,fail.length-1);
+
+        return sortbyvalue_returnindex(fail);
+    }
+
+    public int[] sortbyvalue_returnindex(double[] d){
+        int temp_index = -1;
+        int[] res = new int[d.length];
+        for (int i = 0; i < d.length; i++) {
+            res[i] = i+1;
+        }
+        double temp;
+        for (int i = 0; i < d.length; i++) {
+            for (int j = i; j < d.length; j++) {
+                if(d[i]<d[j]){
+                    temp_index = res[i];
+                    temp = d[i];
+                    res[i] = res[j];
+                    res[j] = temp_index;
+                    d[i] = d[j];
+                    d[j] = temp;
+                } else if (d[i]==d[j] && res[i]>res[j]) {
+                    temp_index = res[i];
+                    res[i] = res[j];
+                    res[j] = temp_index;
+                }
+            }
+        }
+        return res;
+    }
+}
+
+//문제 : 체육복
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42862
+
+class Solution_0035 {
+    public int solution(int n, int[] lost, int[] reserve) {
+        int answer = 0;
+        int[] students = new int[n+2]; //편의상 학생 번호가 1부터 시작함으로 0번째랑 마지막 +1번째는 나중에 버리자
+        //체육복 없으면 -1, 있으면 0, 빌려줄수있으면 1
+
+        //잃어버린 애들 계산
+        for (int no : lost){
+            students[no] -= 1;
+        }
+
+        //여벌있던 애들 계산
+        for (int rent : reserve){
+            students[rent] += 1;
+        }
+
+        for (int i = 1; i < students.length-1; i++) {
+            if (students[i]== -1){
+                if(students[i-1]==1){
+                    students[i]+=1;
+                    students[i-1] -= 1;
+                } else if (students[i+1]==1) {
+                    students[i] += 1;
+                    students[i+1] -= 1;
+                }
+            }
+        }
+        students[0]=-1;
+        students[students.length-1]=-1;
+
+
+        for (int i = 0; i < students.length; i++) {
+            if(students[i]>=0){
+                answer+=1;
+            }
+        }
+
+        return answer;
+    }
+}
+
+//문제 : 폰켓몬
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/1845
+//import java.util.Arrays;
+
+class Solution_0036 {
+    public int solution(int[] nums) {
+        int answer = nums.length/2;
+
+        nums = Arrays.stream(nums).distinct().toArray();
+        if (nums.length<answer){
+            answer = nums.length;
+        }
+
+        return answer;
+    }
+}
+
+//문제 : [1차] 비밀지도
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/17681
+//import java.util.Arrays;
+
+class Solution_0037 {
+    public static String[] solution(int n, int[] arr1, int[] arr2) {
+        String[] map = new String[n];
+        for (int i = 0; i < map.length; i++) {
+            map[i] = TenToN(arr1[i],arr2[i],n);
+            System.out.println(map[i]);
+            map[i] = map[i].replaceAll("[12]","#");
+            map[i] = map[i].replaceAll("[0]"," ");
+        }
+        return map;
+    }
+    public static String TenToN(int c1, int c2, int n){
+
+        String res = "";
+        int div = (int) Math.pow(2,n-1);
+        for (int i = 0; i < n; i++) {
+            res += (c1/div) + (c2/div);
+            c1= c1%div;
+            c2 = c2%div;
+            div = div/2;
+        }
+        return res;
+    }
+}
+
+class Solution_0038 {
+    public String solution(int[] numbers, String hand) {
+        String answer = "";
+
+        // key postion 0>9
+        int[][] key_position = {{1,0},{0,3},{1,3},{2,3},{0,2},{1,2},{2,2},{0,1},{1,1},{2,1}};
+        //[0]은 왼손    [1]은 오른손
+        int[][] now = {{0,0},{2,0}};
+
+        for (int i : numbers) {
+            if (i == 1 || i == 4 || i == 7) {
+                now[0] = key_position[i];
+                answer += "L";
+            } else if (i == 3 || i == 6 || i == 9) {
+                now[1] = key_position[i];
+                answer += "R";
+            } else {
+                if (which_hand_go(now, i, hand)) {
+                    now[0] = key_position[i];
+                    answer += "L";
+                } else {
+                    now[1] = key_position[i];
+                    answer += "R";
+                }
+            }
+            System.out.println(answer);
+        }
+        return answer;
+    }
+
+    public Boolean which_hand_go(int[][] before, int key, String hand){
+        // key postion 0>9
+        int[][] key_position = {{1,0},{0,3},{1,3},{2,3},{0,2},{1,2},{2,2},{0,1},{1,1},{2,1}};
+        System.out.println(Arrays.deepToString(before));
+        System.out.println(Arrays.toString(key_position[key]));
+
+        int left_check = Math.abs(before[0][0]-key_position[key][0])+
+                Math.abs(before[0][1]-key_position[key][1]);
+        int right_check = Math.abs(before[1][0]-key_position[key][0])+
+                Math.abs(before[1][1]-key_position[key][1]);
+        if (hand.equals("right")){
+            if(right_check<=left_check){
+                return false;
+            }else {
+                return true;
+            }
+        } else {
+            if(right_check>=left_check){
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
+}
 
 
 //문제 : [1차] 다트 게임
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/17682
 
-class Solution_DartGame {
-    public static int solution(String dartResult) {
+class Solution_0039 {
+    public int solution(String dartResult) {
         int answer = 0;
         int[] scores = {0,0,0};
         int[] bonus = {1,1,1};
         int cnt = 0;
 
         for (int i=0; i<3;i++) {
-//            System.out.println("들어간다 : "+dartResult);
-//            System.out.println(Arrays.toString(scores));
-//            System.out.println(Arrays.toString(bonus));
-
             if (dartResult.charAt(1) > 47 && dartResult.charAt(1) < 58) {
                 scores[i] = Integer.parseInt(dartResult.substring(0, 2));
                 cnt += 2;
@@ -865,30 +1187,129 @@ class Solution_DartGame {
             }
 
             dartResult = dartResult.substring(cnt);
-//            System.out.println("나온다 : "+dartResult);
-//            System.out.println(Arrays.toString(scores));
-//            System.out.println(Arrays.toString(bonus));
             cnt = 0;
 
         }
-
         for (int i=0; i<3;i++){
             answer += scores[i]*bonus[i];
         }
+        return answer;
+    }
 
+    public int solution_2(String dartResult) {
+        int index = -1;
+        int[] score = new int[3];
+        for (int i = 0; i < dartResult.length(); i++) {
+            char now = dartResult.charAt(i);
+            if(now >='0' && now <= '9'){
+                index++;
+                if (dartResult.charAt(i+1)>='0'&& dartResult.charAt(i+1)<= '9'){
+                    score[index]= Integer.parseInt(dartResult.substring(i,i+2));
+                    i++;
+                }else {
+                    score[index]= Character.getNumericValue(now);
+                }
+
+            } else if (now=='D') {
+                score[index]*= score[index];
+            } else if (now=='T') {
+                score[index]*= score[index]*score[index];
+            } else if (now=='*') {
+                score[index]*=2;
+                if (index>0){
+                    score[index-1]*=2;
+                }
+            } else if (now=='#') {
+                score[index] *= -1;
+            }
+        }
+        return score[0]+score[1]+score[2];
+    }
+}
+
+
+
+//문제 : 최댓값과 최솟값
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12939
+class Solution_0040 {
+    public String solution(String s) {
+        String answer = "";
+        String[] numbers = s.split(" ");
+        int [] values = Arrays.stream(numbers).mapToInt(Integer::parseInt).toArray();
+        int max = values[0];
+        int min = values[0];
+        for (int i : values){
+            max = Math.max(i,max);
+            min = Math.min(i,min);
+        }
+
+        answer += min + " " + max;
+
+        return answer;
+    }
+}
+
+//문제 : 숫자의 표현
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12924
+class Solution_0041 {
+    public int solution(int n) {
+        int answer = 0;
+        for (int i = 1; i <= n/2; i++) {
+            int j = 0;
+            int sum = 0;
+            System.out.println("새로운 시작 점 : "+ i);
+            finder : while (true){
+                sum += i+j;
+                if (sum==n){
+                    answer+=1;
+                    System.out.println(" 성공!");
+                    break finder;
+                }else if (sum>n){
+                    break finder;
+                }
+                j++;
+            }
+        }
+        return answer+1;
+    }
+}
+
+//문제 : 크레인 인형뽑기 게임
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/64061
+class Solution_0042 {
+    public static int solution(int[][] board, int[] moves) {
+        int answer = 0;
+        int[] box = new int[board.length * board.length];
+        int cnt = 1;
+
+        for (int pick : moves){
+            take : for (int i = 0; i < board.length; i++) {
+                if(board[i][pick-1] != 0){
+                    box[cnt] = board[i][pick-1];
+                    board[i][pick-1] = 0;
+                    if (box[cnt]==box[cnt-1]){
+                        box[cnt]=0;
+                        box[cnt-1]=0;
+                        answer+=2;
+                        cnt -= 2;
+                    }
+                    cnt++;
+                    break take;
+                }
+            }
+        }
 
         return answer;
     }
 
     public static void main(String[] args) {
-        String test = "1S*2T*3S";
+        int[][] board = {{0,0,0,0,0},{0, 0, 1, 0, 3}, {0, 2, 5, 0, 1},{4, 2, 4, 4, 2},{3, 5, 1, 3, 1}};
+        int[] move = {1, 5, 3, 5, 1, 2, 1, 4};
 
-        System.out.println(solution(test));
+        System.out.println(solution(board,move));
+
+
+
     }
-
-
 }
-
-
-
 

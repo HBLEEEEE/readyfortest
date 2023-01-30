@@ -584,6 +584,90 @@ class Solution_0035 {
     }
 }
 
+//문제 : 머쓱이보다 키 큰 사람
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120585
+class Solution_0036{
+    public int solution(int[] array, int height) {
+        int answer = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i]>height){
+                answer +=1;
+            }
+        }
+
+        return answer;
+    }
+}
+
+
+//문제 : 문자 반복 출력하기
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120825
+class Solution_0037{
+    public String solution(String my_string, int n) {
+        String answer = "";
+        for (int i = 0; i < my_string.length(); i++) {
+            for (int j = 0; j < n; j++) {
+                answer += Character.toString(my_string.charAt(i));
+            }
+        }
+
+
+        return answer;
+    }
+}
+
+//문제 : 숨어있는 숫자의 덧셈 (1)
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120851
+class Solution_0038{
+    public int solution(String my_string) {
+        int answer = 0;
+        for (int i = 0; i < my_string.length(); i++) {
+            if (my_string.charAt(i)>47&&my_string.charAt(i)<58){
+                answer += my_string.charAt(i)-'0';
+            }
+        }
+        return answer;
+    }
+}
+
+//문제 : 주사위의 개수
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120845
+class Solution_0039{
+    public int solution(int[] box, int n) {
+        int answer = 1;
+        for (int i : box){
+            answer *= i/n;
+        }
+        return answer;
+    }
+}
+
+//문제 : n의 배수 고르기
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120905
+class Solution_0040{
+    public int[] solution(int n, int[] numlist) {
+        int[] answer = new int[numlist.length];
+        int cnt= 0;
+        for(int i:numlist){
+            if(i%n==0){
+                answer[cnt++] = i;
+            }
+        }
+        answer = Arrays.copyOfRange(answer,0,cnt);
+
+        return answer;
+    }
+}
+
+//문제 : 모음 제거
+//문제 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120849
+class Solution_0041{
+    public String solution(String my_string) {
+        return my_string.replaceAll("[aeiou]","");
+    }
+}
+
 
 
 
