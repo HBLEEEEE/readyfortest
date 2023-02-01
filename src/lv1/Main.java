@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.Scanner;
+import java.util.stream.Stream;
 
 //문제 : 핸드폰 번호 가리기
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12948
@@ -428,8 +430,6 @@ class Solution_0017 {
                 count++;
             }
         }
-
-
         return answer;
     }
 }
@@ -837,7 +837,7 @@ class Solution_0028 {
 //import java.util.stream.IntStream;
 
 class Solution_0029 {
-    public static int solution(int[] d, int budget) {
+    public int solution(int[] d, int budget) {
         int answer = 0;
         List<Integer> list = IntStream.of(d).boxed().collect(Collectors.toList());
         int possible = 0;
@@ -854,7 +854,21 @@ class Solution_0029 {
         }
         return answer;
     }
+    public int solution2(int[] d, int budget) {
+        int answer = 0;
+        int sum = 0;
+        Arrays.sort(d);
+        for (int i = 0; i < d.length; i++) {
+            sum += d[i];
+            if(sum>budget){
+                break;
+            }
+            answer += 1;
+        }
+        return answer;
+    }
 }
+
 
 //문제 : 최대공약수와 최소공배수
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12940
@@ -874,6 +888,8 @@ class Solution_0030 {
         if (q == 0) return p;
         return gcd(q, p%q);
     }
+
+
 
 }
 
@@ -916,13 +932,9 @@ class Solution_0032 {
 class Solution_0033 {
     public int solution(int n) {
         int answer = 0;
-
         answer = prime_check(n);
-
-
         return answer;
     }
-
     public int prime_check(int n){
         int ans = 0;
         if (n==2){
@@ -938,7 +950,6 @@ class Solution_0033 {
             ans +=1;
         }
         return ans;
-
     }
 }
 
@@ -1257,12 +1268,10 @@ class Solution_0041 {
         for (int i = 1; i <= n/2; i++) {
             int j = 0;
             int sum = 0;
-            System.out.println("새로운 시작 점 : "+ i);
             finder : while (true){
                 sum += i+j;
                 if (sum==n){
                     answer+=1;
-                    System.out.println(" 성공!");
                     break finder;
                 }else if (sum>n){
                     break finder;
@@ -1272,6 +1281,34 @@ class Solution_0041 {
         }
         return answer+1;
     }
+
+    public static int sol2(int n){
+
+        int ans = 0;
+        int c = 0;
+        for (int i = 0; i <= n/2; i++) {
+            c = i+1;
+            while (true){
+                if((i+c)*(c-i+1)/2==n){
+                    ans += 1;
+                    System.out.println(i+"    "+ c);
+                    break;
+                } else if ((i+c)*(c-i+1)/2>n) {
+                    break;
+                }
+                c++;
+            }
+        }
+        return ans+1;
+    }
+
+    public static void main(String[] args) {
+        sol2(15);
+    }
+
+
+
+
 }
 
 //문제 : 크레인 인형뽑기 게임
@@ -1309,6 +1346,312 @@ class Solution_0042 {
         System.out.println(solution(board,move));
 
 
+
+    }
+}
+
+//문제 : 최빈값 구하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/120812
+class Solution_0046 {
+    public static int solution(int[] array) {
+
+        Arrays.sort(array);
+        int[] cnt = new int[array.length];
+        int index = 0;
+
+        cnt[0] = 1;
+        for (int i = 1; i < array.length; i++) {
+            if(array[i]==array[i-1]){
+                cnt[index] +=1;
+            }else {
+                index = i;
+                cnt[index] +=1;
+            }
+        }
+
+        int max_cnt = 0;
+        int max_index = 0;
+        int max_index_second = -1;
+
+        for (int i = 0; i < cnt.length; i++) {
+            if(cnt[i]>max_cnt){
+                max_cnt = cnt[i];
+                max_index = i;
+            } else if (cnt[i]==max_cnt) {
+                max_index_second = max_index;
+            }
+        }
+        if(max_index==max_index_second){
+            return -1;
+        }
+
+        return array[max_index];
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 1, 2, 2, 3, 4,4,4,5};
+        solution(arr);
+    }
+}
+
+//문제 : 햄버거 만들기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/133502
+//import java.util.Arrays
+//import java.util.ArrayList;
+//import java.util.stream.Stream;
+//import java.util.stream.Collectors;
+class Solution_0047 {
+    public int solution(int[] ingredient) {
+        int answer = 0;
+        String hamburger= "";
+        for (int i : ingredient) {
+            hamburger += i;
+        }
+        int check = ingredient.length;
+        while (true){
+            hamburger = hamburger.replaceFirst("1231","");
+            if (check == hamburger.length()){
+                break;
+            }
+            answer +=1;
+            check = hamburger.length();
+        }
+        return answer;
+    }
+
+    public int solution0_0(int[] ingredient) {
+        int answer = 0;
+        String hamburger= "";
+        for (int i : ingredient) {
+            hamburger += i;
+        }
+        int check = ingredient.length;
+        while (true){
+            hamburger = hamburger.replaceAll("1231","");
+            if (check == hamburger.length()){
+                break;
+            }
+            answer += (check - hamburger.length())/4;
+            check = hamburger.length();
+        }
+        return answer;
+    }
+
+    public int solution1(int[] ingredient) {
+        int answer = 0;
+        if (ingredient.length<4){
+            return 0;
+        }
+
+        String ham = "";
+
+        for (int i = 0; i < ingredient.length; i++) {
+            ham += ingredient[i];
+            try {
+                if (ham.substring(ham.length()-4).equals("1231")){
+                    answer +=1;
+                    ham = ham.substring(0,ham.length()-4);
+                }
+            }catch (Exception e){
+
+            }
+        }
+        return answer;
+    }
+
+    public int solution2(int[] ingredient) {
+        int answer = 0;
+        if (ingredient.length<4){
+            return 0;
+        }
+        ArrayList<Integer> list = new ArrayList<> (Arrays.stream(ingredient).boxed().collect(Collectors.toList()));
+
+        for (int i = 0; i < list.size(); i++) {
+            if (i>2){
+                if (list.get(i)==1){
+                    if(list.get(i-1)==3&&list.get(i-2)==2&&list.get(i-3)==1){
+                        list.remove(i);
+                        list.remove(i-1);
+                        list.remove(i-2);
+                        list.remove(i-3);
+                        answer++;
+                        i -= 3;
+                    }
+                }
+            }
+        }
+
+        return answer;
+    }
+    public int solution_fastestanswer(int[] ingredient) {
+        int[] stack = new int[ingredient.length];
+        int sp = 0;
+        int answer = 0;
+        for (int i : ingredient) {
+            stack[sp++] = i;
+            if (sp >= 4 && stack[sp - 1] == 1
+                    && stack[sp - 2] == 3
+                    && stack[sp - 3] == 2
+                    && stack[sp - 4] == 1) {
+                sp -= 4;
+                answer++;
+            }
+        }
+        return answer;
+    }
+
+}
+
+
+
+//-----------------------------------------------------------------------------------------------------
+//백준 : 정답 입력 양식
+
+//import java.util.Scanner;
+class Solution_input{
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        int a, b;
+        a = sc.nextInt();
+        b = sc.nextInt();
+        System.out.println(a + b);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int a, b;
+        System.out.println("Hello World!");
+    }
+}
+
+
+//import java.util.Scanner;
+class Solution_1043{
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        int old_num= n;
+        int new_num;
+        int cnt = 0;
+
+
+
+        while (true){
+
+
+            new_num = (old_num%10)*10 + (old_num/10+old_num%10)%10;
+
+            cnt++;
+            if (new_num == n){
+                System.out.println(cnt);
+                break;
+            }
+            old_num = new_num;
+        }
+
+    }
+}
+
+//import java.util.Scanner;
+class Solution_1045{
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        int a ;
+        a = sc.nextInt();
+
+        int cnt = 0;
+
+        int div_5 = a/5;
+        cnt += div_5;
+
+        int check = 0;
+        for (int i = 0; i < 3; i++) {
+            if((a%5+5*i)%3==0){
+                if((a-5*i)<0){
+                    break;
+                }
+                cnt -=i;
+                cnt += (a%5+5*i)/3;
+                check = 1;
+                break;
+            }
+        }
+
+        if( check == 0){
+            cnt = -1;
+        }
+
+        System.out.println(cnt);
+    }
+}
+
+
+//
+//문제 : OX퀴즈
+//url : https://www.acmicpc.net/problem/8958
+//import java.util.Scanner;
+class Solution_1046{
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        int n;
+        String str;
+        n = sc.nextInt();
+        String[] arr = new String[n];
+        int[] res = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            str = sc.next();
+            arr[i] = str;
+        }
+
+        for (int i = 0; i < n; i++) {
+            int score = 0;
+            int index = 0;
+            for (int j = 0; j < arr[i].length(); j++) {
+                if(arr[i].charAt(j)=='O'){
+                    index +=1;
+                    score +=index;
+                } else {
+                    index =0;
+                }
+            }
+            res[i] = score;
+        }
+        int i =0;
+        while (i<n){
+            System.out.println(res[i++]);
+        }
+    }
+}
+
+//문제 : 거스름돈
+//url : https://www.acmicpc.net/problem/5585
+//import java.util.Scanner;
+class Solution_1047 {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n;
+        n = sc.nextInt();
+
+        int take = 1000-n;
+        int ans = 0;
+        int k = 500;
+        while (true){
+            ans += take/k;
+            take = take%k;
+            k /= 5;
+            ans += take/k;
+            take = take%k;
+            k /= 2;
+            if (take==0){
+                break;
+            }
+        }
+
+        System.out.println(ans);
 
     }
 }
