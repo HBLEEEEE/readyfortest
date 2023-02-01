@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 //문제 : 핸드폰 번호 가리기
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12948
@@ -1501,6 +1500,58 @@ class Solution_0047 {
     }
 
 }
+
+//문제 : 개인정보 수집 유효기간
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/150370
+class Solution_0048 {
+    public static int[] solution(String today, String[] terms, String[] privacies) {
+        int[] answer = new int[privacies.length];
+
+        HashMap term = new HashMap();
+        for (String tm : terms) {
+            term.put(tm.charAt(0), Integer.parseInt(tm.substring(2)));
+        }
+        System.out.println(term);
+
+        int oneul = Integer.parseInt(today.substring(0,4))*28*12+
+                Integer.parseInt(today.substring(5,7))*28+
+                Integer.parseInt(today.substring(8,10));
+
+        System.out.println(oneul);
+
+
+        int cnt = 0;
+        int[] failday = new int[privacies.length];
+        for (int i = 0; i < privacies.length; i++) {
+            failday[i]= Integer.parseInt(privacies[i].substring(0,4))*28*12+
+                    Integer.parseInt(privacies[i].substring(5,7))*28+
+                    Integer.parseInt(privacies[i].substring(8,10))-1-oneul+
+                    (int)term.get(privacies[i].charAt(11))*28;
+
+            if (failday[i]<0){
+                answer[cnt] = i+1;
+                cnt++;
+                System.out.println("쓰레기는 제거해야해");
+            }
+        }
+        answer = Arrays.copyOfRange(answer,0,cnt);
+
+
+        return answer;
+    }
+    public static void main(String[] args) {
+        String today = "2022.05.19";
+        String[] terms = {"A 6", "B 12", "C 3"};
+        String[] privacies = {"2021.05.02 A", "2021.07.01 B", "2022.02.19 C", "2022.02.20 C"};
+
+
+        System.out.println(Arrays.toString(solution(today,terms,privacies)));
+
+    }
+}
+
+
+
 
 
 
