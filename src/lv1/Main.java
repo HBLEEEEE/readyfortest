@@ -1552,6 +1552,58 @@ class Solution_0048 {
 
 
 
+//문제 : 문자열 나누기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/140108
+class Solution_0049 {
+    public static int solution(String s) {
+        int answer = 0;
+        int cnt = 0;
+        int cnt2 = 0;
+        char now = '0';
+        String res = "";
+
+        for (int i = 0; i < s.length(); i++) {
+            if (cnt == 0 ){
+                now = s.charAt(i);
+                cnt +=1;
+                res += s.charAt(i);
+                System.out.println("초기화!");
+            }else {
+                if (s.charAt(i)== now){
+                    cnt+=1;
+                    System.out.println("같냐");
+
+                }else {
+                    cnt2+=1;
+                    System.out.println("다르냐");
+                }
+                res += s.charAt(i);
+            }
+            if(cnt==cnt2){
+                res += " ";
+                cnt = 0;
+                cnt2 = 0;
+                System.out.println("띄어 쓰기 내보내도 되냐");
+            }
+
+        }
+
+        System.out.println("res : " + res);
+        String[] reses = res.split(" ");
+        answer = reses.length;
+
+
+
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution("abracadabra"));
+    }
+}
+
+
+
 
 
 
