@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.Scanner;
+
 
 //문제 : 핸드폰 번호 가리기
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12948
@@ -1603,7 +1603,56 @@ class Solution_0049 {
 }
 
 
+//문제 : 신고 결과 받기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/92334
+//import java.util.Arrays;
+//import java.util.HashMap;
 
+class Solution_0050 {
+    public int[] solution(String[] id_list, String[] report, int k) {
+
+        HashMap<String,Integer> ids = new HashMap<>();
+        for (int i = 0; i < id_list.length; i++) {
+            ids.put(id_list[i],i);
+        }
+
+        int[][] arr = new int[id_list.length][id_list.length];
+        for (int i = 0; i < arr.length; i++) {
+            Arrays.fill(arr[i], 0);
+        }
+
+        for (int i = 0; i < report.length; i++) {
+            String[] now = report[i].split(" ");
+            arr[ids.get(now[0])][ids.get(now[1])] = 1;
+        }
+
+        int[] res = new int[id_list.length];
+        int cnt = 0;
+
+        boolean[] getout = new boolean[id_list.length];
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                cnt += arr[j][i];
+            }
+            if (cnt >= k){
+                getout[i]= true;
+            }
+            cnt=0;
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                if(arr[i][j]==1 &&getout[j]){
+                    res[i] +=1;
+                }
+            }
+        }
+
+
+        return res;
+    }
+}
 
 
 
