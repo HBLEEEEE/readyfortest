@@ -1654,6 +1654,69 @@ class Solution_0050 {
     }
 }
 
+//문제 : 성격 유형 검사하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/92334
+//import java.util.Arrays;
+//import java.util.List;
+
+class Solution_0051 {
+    public String solution(String[] survey, int[] choices) {
+        String answer = "";
+        String[] personal = {"RT", "CF", "JM", "AN",
+                             "TR", "FC", "MJ", "NA"};
+        List pers = Arrays.asList(personal);
+        int[] cnt = new int[4];
+        List list = Arrays.asList(survey);
+        int now;
+        for (int i = 0; i < choices.length; i++) {
+            now = pers.indexOf(survey[i]);
+            if (now==0){
+                cnt[0] += choices[i]-4;
+            } else if (now==1) {
+                cnt[1] += choices[i]-4;
+            }else if (now==2) {
+                cnt[2] += choices[i]-4;
+            }else if (now==3) {
+                cnt[3] += choices[i]-4;
+            }else if (now==4) {
+                cnt[0] -= choices[i]-4;
+            }else if (now==5) {
+                cnt[1] -= choices[i]-4;
+            }else if (now==6) {
+                cnt[2] -= choices[i]-4;
+            }else{
+                cnt[3] -= choices[i]-4;
+            }
+        }
+        System.out.println(Arrays.toString(cnt));
+
+        if (cnt[0]<1){
+            answer += "R";
+        }else {
+            answer += "T";
+        }
+        if (cnt[1]<1){
+            answer += "C";
+        }else {
+            answer += "F";
+        }
+        if (cnt[2]<1){
+            answer += "J";
+        }else {
+            answer += "M";
+        }
+        if (cnt[3]<1){
+            answer += "A";
+        }else {
+            answer += "N";
+        }
+
+        return answer;
+    }
+}
+
+
+
 
 
 //-----------------------------------------------------------------------------------------------------
