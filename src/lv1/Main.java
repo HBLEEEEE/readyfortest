@@ -1655,7 +1655,7 @@ class Solution_0050 {
 }
 
 //문제 : 성격 유형 검사하기
-//url : https://school.programmers.co.kr/learn/courses/30/lessons/92334
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/118666
 //import java.util.Arrays;
 //import java.util.List;
 
@@ -1666,7 +1666,6 @@ class Solution_0051 {
                              "TR", "FC", "MJ", "NA"};
         List pers = Arrays.asList(personal);
         int[] cnt = new int[4];
-        List list = Arrays.asList(survey);
         int now;
         for (int i = 0; i < choices.length; i++) {
             now = pers.indexOf(survey[i]);
@@ -1716,7 +1715,40 @@ class Solution_0051 {
 }
 
 
+//문제 : 기사단원의 무기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/136798
 
+class Solution_0052 {
+    public int solution(int number, int limit, int power) {
+        int answer = 0;
+        int now = 0;
+        for (int i = 1; i <= number; i++) {
+            now = countdivide(i);
+            if(now>limit){
+                answer += power;
+            }else {
+                answer += now;
+            }
+        }
+
+        return answer;
+    }
+    public int countdivide(int n){
+        if(n==1){
+            return 1;
+        }
+        int ans = 0;
+        for (int i = 1; i < Math.sqrt(n); i++) {
+            if(n%i==0){
+                ans +=2;
+            }
+        }
+        if(Math.sqrt(n)%1==0){
+            ans +=1;
+        }
+        return ans;
+    }
+}
 
 
 //-----------------------------------------------------------------------------------------------------
