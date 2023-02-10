@@ -1,5 +1,10 @@
 package lv2;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
 //문제 : 피보나치 수
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12945
 class Solution_0001 {
@@ -56,3 +61,101 @@ class Solution_0002 {
         return answer;
     }
 }
+
+
+
+//문제 : 올바른 괄호
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12909
+//import java.util.Arrays;
+//        import java.util.Iterator;
+//        import java.util.LinkedList;
+//        import java.util.Queue;
+class Solution_0003 {
+//    boolean solution(String s) {
+//        boolean answer = true;
+//        String[] str = s.split("");
+//        System.out.println(Arrays.toString(str));
+//        Queue que = new LinkedList(Arrays.asList(str));
+//        Iterator iter = que.iterator();
+//
+//        int cnt = 0;
+//        while (iter.hasNext()){
+//            System.out.println(iter.next());
+//            if (iter.next().equals("(")){
+//                cnt +=1;
+//            }else {
+//                cnt -=1;
+//            }
+//        }
+//
+//        if (cnt>0){
+//            answer = false;
+//        }
+//
+//
+//        return answer;
+//    }
+    boolean solution(String s) {
+        int cnt = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if(s.charAt(i)=='('){
+                cnt +=1;
+            }else {
+                cnt -=1;
+            }
+            if (cnt<0){
+                return false;
+            }
+        }
+
+        if (cnt>0){
+            return false;
+        }
+
+        return true;
+    }
+
+}
+
+
+
+
+//문제 : 멀리 뛰기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12914
+
+class Solution_0004 {
+    public long solution(int n) {
+        return count_now(n);
+    }
+
+    public long count_now(long n){
+        if(n==1){
+            return 1;
+        } else if (n==2) {
+            return 2;
+        }
+        return count_now(n-1)+count_now(n-2);
+    }
+}
+
+class Solution_0004_1 {
+    public long solution(int n) {
+        if (n==1){
+            return 1;
+        }
+
+        long[] arr = new long[n];
+        arr[0]=1;
+        arr[1]=2;
+
+        for (int i = 2; i < n; i++) {
+            arr[i]=(arr[i-1]+arr[i-2])%1234567;
+        }
+
+        return arr[n-1];
+    }
+}
+
+
+
+
