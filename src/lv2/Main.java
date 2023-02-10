@@ -139,7 +139,7 @@ class Solution_0004 {
 }
 
 class Solution_0004_1 {
-    public long solution(int n) {
+    public static long solution(int n) {
         if (n==1){
             return 1;
         }
@@ -155,6 +155,89 @@ class Solution_0004_1 {
         return arr[n-1];
     }
 }
+
+//문제 : 괄호 회전하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/76502
+
+class Solution_0005 {
+    public static int solution(String s) {
+        int answer = 0;
+        int len = s.length();
+        String k = s+s;
+        for (int i = 0; i < len; i++) {
+            System.out.println(k.substring(i,i+s.length()));
+            if (CheckPossible(k.substring(i,i+s.length()))){
+                answer +=1;
+            }
+        }
+        return answer;
+    }
+
+    public static boolean CheckPossible(String s){
+        char now;
+        String res = "";
+        for (int i = 0; i < s.length(); i++) {
+            now = s.charAt(i);
+            if(res.length()==0&&(now==']'||now=='}'||now==')')){
+                return false;
+            }
+            switch (now){
+                case '[' : res += '[';
+                    break;
+                case ']' : if (res.charAt(res.length()-1)=='['){
+                    res = res.substring(0,res.length()-1);
+                }else {
+                    return false;
+                }
+                    break;
+                case '{' :res += '{';
+                    break;
+                case '}' : if (res.charAt(res.length()-1)=='{'){
+                    res = res.substring(0,res.length()-1);
+                }else {
+                    return false;
+                }
+                    break;
+                case '(' : res += '(';
+                    break;
+                case ')' : if (res.charAt(res.length()-1)=='('){
+                    res = res.substring(0,res.length()-1);
+                }else {
+                    return false;
+                }
+                    break;
+            }
+        }
+        if (res.length() != 0){
+            return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution("}]()[{"));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
