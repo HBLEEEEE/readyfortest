@@ -1,9 +1,7 @@
 package lv2;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.security.PublicKey;
+import java.util.*;
 
 //문제 : 피보나치 수
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12945
@@ -219,9 +217,44 @@ class Solution_0005 {
     }
 }
 
+//문제 : [1차 캐시]
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/17680
 
+class Solution_0006 {
+    public static int solution(int cacheSize, String[] cities) {
+        if (cacheSize ==0){
+            return 5*cities.length;
+        }
 
+        int answer = 0;
+        List<String> cashlist = new ArrayList<>(cacheSize);
+        String now = "";
+        for (int i = 0; i < cities.length; i++) {
+            now = cities[i].toLowerCase();
+            if(cashlist.contains(now)){
+                answer += 1;
+                cashlist.remove(now);
+                cashlist.add(now);
+            }else {
+                answer += 5;
+                if(cashlist.size()>=cacheSize) {
+                    cashlist.remove(0);
+                }
+                cashlist.add(now);
+            }
+            System.out.println(i + "번째 : "+now );
+            System.out.println("answer : "+answer);
 
+        }
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        String[] strs = {"Jeju", "Pangyo", "Seoul", "NewYork", "LA"};
+        System.out.println(solution(0,strs));
+    }
+
+}
 
 
 
