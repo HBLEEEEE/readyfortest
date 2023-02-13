@@ -219,7 +219,8 @@ class Solution_0005 {
 
 //문제 : [1차 캐시]
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/17680
-
+//import java.util.List;
+//import java.util.ArrayList;
 class Solution_0006 {
     public static int solution(int cacheSize, String[] cities) {
         if (cacheSize ==0){
@@ -256,7 +257,26 @@ class Solution_0006 {
 
 }
 
+//문제 : 행렬의 곱셈
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12949
+//import java.util.List;
+//import java.util.ArrayList;
+class Solution_0007 {
+    public int[][] solution(int[][] arr1, int[][] arr2) {
+        int[][] answer = new int[arr1.length][arr2[0].length];
 
+        for (int i = 0; i < arr1.length; i++) {
+            for (int j = 0; j < arr2[0].length; j++) {
+                for (int k = 0; k < arr2.length; k++) {
+                    answer[i][j] += arr1[i][k] * arr2[k][j];
+                }
+            }
+
+        }
+
+        return answer;
+    }
+}
 
 
 
