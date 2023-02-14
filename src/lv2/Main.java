@@ -279,7 +279,74 @@ class Solution_0007 {
 }
 
 
+//문제 : [1차] 뉴스 클러스터링
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/17677
+//import java.util.List;
+//import java.util.ArrayList;
+class Solution_0008 {
+    public static int solution(String str1, String str2) {
 
+        str1 = str1.toLowerCase();
+        str2 = str2.toLowerCase();
+        List<String> list1 = new ArrayList<>();
+        List<String> list2 = new ArrayList<>();
+        List<String> totallist = new ArrayList<>();
+
+        String temp = "";
+        for (int i = 0; i < str1.length()-1; i++) {
+            temp = str1.substring(i,i+2);
+            if(temp.matches("^[a-z]*$")){
+                list1.add(temp);
+                totallist.add(temp);
+            }
+        }
+
+        for (int i = 0; i < str2.length()-1; i++) {
+            temp = str2.substring(i,i+2);
+            if(temp.matches("^[a-z]*$")){
+                list2.add(temp);
+                totallist.add(temp);
+            }
+        }
+
+        if (list1.size()==0&&list2.size()==0){
+            return 65536;
+        } else if (list1.size()==0&&list2.size()>0) {
+            return 0;
+        } else if (list2.size()==0&&list1.size()>0) {
+            return 0;
+        }
+
+        int A = list1.size();
+        int B = list2.size();
+
+        for (String i : list1){
+            if(list2.contains(i)){
+                list2.remove(i);
+                totallist.remove(i);
+            }
+        }
+
+
+        int ApB = totallist.size();
+        int AmB = A+B-ApB;
+
+        System.out.println("list1 = " + list1);
+        System.out.println("list2 = " + list2);
+        System.out.println("totallist = " + totallist);
+        System.out.println(ApB);
+        System.out.println(AmB);
+
+        return (int)(AmB/(double)ApB*65536);
+    }
+
+    public static void main(String[] args) {
+        String str1 = "AAA AAAA";
+        String str2 = "aaa aaa";
+
+        System.out.println(solution(str1,str2));
+    }
+}
 
 
 
