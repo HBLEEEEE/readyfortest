@@ -348,6 +348,72 @@ class Solution_0008 {
     }
 }
 
+//문제 : 튜플
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/64065
+
+class Solution_0009 {
+    public List<Integer> solution(String s) {
+        List<List<Integer>> arr = new ArrayList<>();
+
+        List<Integer> temparrr = new ArrayList<>();
+        String temp = "";
+        String[] all = s.substring(2,s.length()-2).split("},\\{");
+        List<Integer> sizes = new ArrayList<>();
+
+        for (String now : all){
+//            System.out.println("now : " + now);
+            for (int i = 0; i < now.length()+1; i++) {
+//                System.out.println(i + " : "+temp);
+                if (i==now.length()){
+                    temparrr.add(Integer.parseInt(temp));
+                    temp = "";
+                } else if (now.charAt(i)== ','){
+                    temparrr.add(Integer.parseInt(temp));
+                    temp = "";
+                } else {
+                    temp += now.charAt(i);
+                }
+            }
+            arr.add(temparrr);
+            sizes.add(temparrr.size());
+            temparrr = new ArrayList<>();
+        }
+
+        for (List i : arr){
+            System.out.print(i.size() + " : ");
+            System.out.println(i);
+        }
+        System.out.println(arr.size());
+        System.out.println(sizes);
+
+        List<Integer> res = new ArrayList<>();
+        int cnt = 0;
+        for (int i = 0; i < sizes.size(); i++) {
+            for (int a : arr.get(sizes.indexOf(i + 1))){
+                if (!res.contains(a)){
+                    res.add(a);
+                }
+            }
+        }
+        System.out.println(res);
+
+        return res;
+    }
+    //한수 배워야할 풀이법!
+    public int[] solution_01(String s) {
+        Set<String> set = new HashSet<>();
+        String[] arr = s.replaceAll("[{]", " ").replaceAll("[}]", " ").trim().split(" , ");
+        Arrays.sort(arr, (a, b)->{return a.length() - b.length();});
+        int[] answer = new int[arr.length];
+        int idx = 0;
+        for(String s1 : arr) {
+            for(String s2 : s1.split(",")) {
+                if(set.add(s2)) answer[idx++] = Integer.parseInt(s2);
+            }
+        }
+        return answer;
+    }
+}
 
 
 
