@@ -400,10 +400,13 @@ class Solution_0009 {
         return res;
     }
     //한수 배워야할 풀이법!
-    public int[] solution_01(String s) {
+    public static int[] solution_01(String s) {
         Set<String> set = new HashSet<>();
         String[] arr = s.replaceAll("[{]", " ").replaceAll("[}]", " ").trim().split(" , ");
+        System.out.println(Arrays.toString(arr));
         Arrays.sort(arr, (a, b)->{return a.length() - b.length();});
+
+        System.out.println(Arrays.toString(arr));
         int[] answer = new int[arr.length];
         int idx = 0;
         for(String s1 : arr) {
@@ -411,15 +414,49 @@ class Solution_0009 {
                 if(set.add(s2)) answer[idx++] = Integer.parseInt(s2);
             }
         }
+
         return answer;
     }
 }
 
 
+//문제 : 기능개발
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42586
+//import java.util.List;
+//import java.util.ArrayList;
+//import java.util.Stack;
+class Solution_0010 {
+    public  List<Integer> solution(int[] progresses, int[] speeds) {
 
 
+        Stack<Integer[]> stack = new Stack<>();
+        for (int i = progresses.length-1; i >=0 ; i--) {
+            stack.push(new Integer[]{progresses[i],speeds[i]});
+        }
 
 
+        int cnt = 0;
+        int tempres = 0;
+        List<Integer> res = new ArrayList<>();
+        while (!stack.empty()){
+            if(stack.peek()[0]+cnt*stack.peek()[1]>=100){
+                stack.pop();
+                tempres +=1;
+            }else {
+                cnt ++;
+                if (tempres>0){
+                    res.add(tempres);
+
+                    tempres = 0;
+                }
+            }
+        }
+        res.add(tempres);
+
+
+        return res;
+    }
+}
 
 
 
