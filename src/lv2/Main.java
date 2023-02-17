@@ -456,9 +456,50 @@ class Solution_0010 {
 
         return res;
     }
+
 }
 
+//문제 : 귤 고르기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/138476
+//import java.util.List;
+//import java.util.ArrayList;
+//import java.util.Stack;
+class Solution_0011 {
+    public static int solution(int k, int[] tangerine) {
+        int answer = 0;
+        HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
+        for (int i : tangerine) {
+            if (map.containsKey(i)){
+                map.put(i, map.get(i)+1);
+            }else {
+                map.put(i,1);
+            }
+        }
 
+        System.out.println(map);
+        System.out.println(map.values());
+
+        Collection<Integer> arr = map.values();
+        Integer[] qqq = arr.toArray(new Integer[0]);
+        Arrays.sort(qqq);
+        System.out.println(Arrays.toString(qqq));
+        for (int i = qqq.length-1 ; i>=0; i--){
+            k -= qqq[i];
+            answer +=1;
+            if (k<=0){
+                return answer;
+            }
+        }
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        int k =6;
+        int[] arr= {1, 3, 2, 5, 4, 5, 2, 3};
+        solution(k,arr);
+    }
+
+}
 
 
 
