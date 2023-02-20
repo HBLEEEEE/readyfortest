@@ -503,6 +503,116 @@ class Solution_0011 {
 
 
 
+//문제 : n진수 게임
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/17687
+
+class Solution_0012 {
+    public String solution(int n, int t, int m, int p) {
+        String answer = "";
+
+        int max_number = 0;
+        int cnt = 1;
+        int total_need = 0;
+        int mt = m*t;
+
+        //N진법으로 변화시켜야할 숫자들 중 최대 숫자 = max_number
+        all : while(true){
+            for (int i = 0; i < Math.pow(n,cnt); i++) {
+                max_number += 1;
+                total_need += cnt;
+                if(total_need>=mt){
+                    break all;
+                }
+            }
+            cnt +=1;
+        }
+
+        String fullnums = "";
+        //max_number까지 n진법으로 변화시키고 쭉 이어버리기
+        for (int i = 0; i < max_number+1; i++) {
+            fullnums += ChangeToNstep(n,i);
+        }
+
+        //다 이어붙인 fullnums에서 필요한 위치만 가져다 붙이기
+        for (int i = 0; i < t; i++) {
+            answer += fullnums.charAt(p-1+m*i);
+        }
+
+        return answer;
+    }
+
+    public String ChangeToNstep(int n, int number){
+        String res = "";
+        String[] overten = {"0","1","2","3","4","5","6","7","8","9",
+                "A","B","C","D","E","F"};
+        if (number == 0){
+            return "0";
+        }
+
+
+        while (number>0){
+
+            res += overten[number%n];
+            number /= n;
+        }
+
+        String res2 = new StringBuilder(res).reverse().toString();
+
+        return res2;
+    }
+}
+
+
+//문제 : 전화번호 목록
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42577
+
+class Solution_0013 {
+    public boolean solution(String[] phone_book) {
+        boolean answer = true;
+        TreeSet<String> nums = new TreeSet<>();
+        for (String i : phone_book){
+            i = i.replaceAll(" ", "");
+            nums.add(i);
+        }
+        Iterator<String> iter = nums.iterator();
+
+        String before = iter.next();
+        String now = "";
+        while (iter.hasNext()){
+            now = iter.next();
+            //방법1-------
+//            if (before.length()>=now.length()){
+//                before = now;
+//                continue;
+//            }
+//            if (before.equals(now.substring(0,before.length()))){
+//                return false;
+//            }else {
+//                before = now;
+//            }
+            //방법1-------
+
+            //방법2------들쑥 날 쑥 하지만 2번이 코드도 간결하고 빠를 때가 있다.
+            if (now.startsWith(before)){
+                return false;
+            }else {
+                before = now;
+            }
+            //방법2-------
+        }
+        return answer;
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
