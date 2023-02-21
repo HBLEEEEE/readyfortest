@@ -507,20 +507,20 @@ class Solution_0011 {
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/17687
 
 class Solution_0012 {
-    public String solution(int n, int t, int m, int p) {
+    public static String solution(int n, int t, int m, int p) {
         String answer = "";
 
         int max_number = 0;
         int cnt = 1;
         int total_need = 0;
-        int mt = m*t;
+//        int mt = m*t;
 
         //N진법으로 변화시켜야할 숫자들 중 최대 숫자 = max_number
         all : while(true){
             for (int i = 0; i < Math.pow(n,cnt); i++) {
                 max_number += 1;
                 total_need += cnt;
-                if(total_need>=mt){
+                if(total_need>=m*t){
                     break all;
                 }
             }
@@ -541,7 +541,7 @@ class Solution_0012 {
         return answer;
     }
 
-    public String ChangeToNstep(int n, int number){
+    public static String ChangeToNstep(int n, int number){
         String res = "";
         String[] overten = {"0","1","2","3","4","5","6","7","8","9",
                 "A","B","C","D","E","F"};
@@ -560,8 +560,20 @@ class Solution_0012 {
 
         return res2;
     }
-}
 
+    public static void main(String[] args) {
+        long beforeTime = System.currentTimeMillis();
+        System.out.println(solution(16,988,50,24));
+        long afterTime = System.currentTimeMillis();
+        long msDiffTime = afterTime-beforeTime;
+        System.out.println("msDiffTime = " + msDiffTime);
+    }
+
+
+
+
+
+}
 
 //문제 : 전화번호 목록
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/42577
@@ -604,7 +616,62 @@ class Solution_0013 {
     }
 }
 
+//문제 : [3차] 압축
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/17684
 
+class Solution_0014 {
+    public static int[] solution(String msg) {
+
+
+        HashMap<String, Integer> dictionary = new HashMap<>();
+        for (int i = 0; i < 26; i++) {
+            char alphabet = (char) ('A'+i);
+            dictionary.put(Character.toString(alphabet), i+1);
+        }
+
+        int alphabetNumber = 27;
+        int count = 1;
+        int temp = 0;
+        String tempWord = "";
+        List<Integer> arr = new ArrayList<>();
+
+        while (msg.length()>0){
+            tempWord = msg.substring(0,count);
+            System.out.println(tempWord);
+
+            if (dictionary.containsKey(tempWord)){
+                System.out.println("이게있네");
+                temp = dictionary.get(tempWord);
+                count += 1;
+            }else {
+                System.out.println("이게없네");
+                dictionary.put(tempWord,alphabetNumber++);
+                arr.add(temp);
+                msg = msg.substring(count-1);
+                count = 1;
+            }
+
+            if (count>msg.length()){
+                arr.add(temp);
+                break;
+            }
+        }
+
+
+        int[] answer = arr.stream().mapToInt(i -> i).toArray();
+
+        return answer;
+    }
+
+    public static void main(String[] args) {
+
+
+        System.out.println(Arrays.toString(solution("TOBEORNOTTOBEORTOBEORNOT")));
+
+
+    }
+
+}
 
 
 
