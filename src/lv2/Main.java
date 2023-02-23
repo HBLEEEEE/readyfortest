@@ -1,6 +1,5 @@
 package lv2;
 
-import java.security.PublicKey;
 import java.util.*;
 
 //문제 : 피보나치 수
@@ -671,6 +670,50 @@ class Solution_0014 {
 
     }
 
+}
+
+//문제 : 더 맵게
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42626
+class Solution_0015 {
+    public static int solution(int[] scoville, int K) {
+
+
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
+
+        Iterator iter = priorityQueue.iterator();
+
+        Arrays.sort(scoville);
+
+        for (int i : scoville) {
+            priorityQueue.add(i);
+        }
+        int count = 0;
+        int temp1= 0;
+        int temp2 = 0;
+
+        while (iter.hasNext()){
+            temp1 = priorityQueue.poll();
+            System.out.println(temp1);
+            if (temp1>=K){
+                break;
+            }
+            if (!iter.hasNext()){
+                return -1;
+            }
+            temp2 = priorityQueue.poll();
+            priorityQueue.add(temp1+temp2*2);
+            count ++;
+
+        }
+        return count;
+
+    }
+
+    public static void main(String[] args) {
+
+        int[] sc = {1, 2, 3, 4,5,6,79, 10, 12};
+        System.out.println(solution(sc,7));
+    }
 }
 
 
