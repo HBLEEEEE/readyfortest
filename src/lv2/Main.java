@@ -716,7 +716,69 @@ class Solution_0015 {
     }
 }
 
+//문제 : 더 맵게
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42626
+class Solution_0016 {
+    public static String[] solution(String[] record) {
+        String[] answer = new String[record.length];
 
+        //아이디와 닉네임
+        HashMap<String, String> idnickMap = new HashMap<>();
+
+        String[] temp;
+        String[][] talks = new String[record.length][2];
+        for (int i = 0; i < record.length; i++) {
+            temp = record[i].split(" ");
+            talks[i][0] = temp[0]; // 행동
+            talks[i][1] = temp[1]; // 유저 아이디
+            if (temp.length == 3){
+                idnickMap.put(temp[1],temp[2]); // 유저 닉네임
+            }
+        }
+
+        int cnt = 0;
+        for (int i = 0; i < talks.length; i++) {
+            if (talks[i][0].equals("Enter")){
+                answer[cnt]= idnickMap.get(talks[i][1]) + "님이 들어왔습니다.";
+                cnt++;
+            } else if (talks[i][0].equals("Leave")){
+                answer[cnt]= idnickMap.get(talks[i][1]) + "님이 나갔습니다.";
+                cnt++;
+            }else {}
+        }
+
+        answer = Arrays.copyOfRange(answer,0,cnt);
+
+        for (String i : answer) {
+            System.out.println(i);
+        }
+
+        return answer;
+    }
+
+    public static void main(String[] args) {
+
+        String[] record = {"Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan"};
+        System.out.println(Arrays.toString(solution(record)));
+
+
+//        String str = "enter uid1234 123123132";
+//        String[] temp = new String[3];
+//        temp = str.split(" ");
+//        System.out.println(Arrays.toString(temp));
+//        String str1 = "close tototo";
+//        temp = str1.split(" ");
+//        System.out.println(Arrays.toString(temp));
+//
+//
+//        HashMap<String, String> ap = new HashMap<>();
+//        ap.put("123","123");
+//        ap.put("123","254");
+//        ap.put("123","6789");
+//        System.out.println(ap);
+
+    }
+}
 
 
 
