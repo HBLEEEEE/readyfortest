@@ -890,40 +890,74 @@ class Solution_0019 {
 	}
 }
 
-// while (list.size() > 0) {
-// 	System.out.println("list = " + list);
-// 	System.out.println("list.size() = " + list.size());
-// 	int nowtotal = 0;
-// 	int max = list.get(list.size() - 1);
-//
-// 	list.remove(list.indexOf(max));
-// 	System.out.println("시작전에 날리고 시작하자 : " + max);
-//
-// 	if (limit - max == 0) {
-// 		answer += 1;
-// 	} else {
-// 		if (list.contains(limit - max)) {
-// 			System.out.println("둘이서 딱 맞네 : " + max);
-// 			list.remove(list.indexOf(limit - max));
-// 			System.out.println("둘이서 딱 맞네 : " + (limit - max));
-// 			answer += 1;
-// 		} else {
-// 			nowtotal += max;
-// 			int idx = list.size() - 1;
-// 			while (idx >= 0) {
-// 				System.out.println("nowtotal = " + nowtotal);
-// 				System.out.println("list.get(idx) = " + list.get(idx));
-// 				if (nowtotal + list.get(idx) <= limit) {
-// 					nowtotal -= list.get(idx);
-// 					System.out.println("중간에 이거 지우자 : " + list.get(idx));
-// 					list.remove(idx);
-// 					idx -= 1;
-// 				} else {
-// 					idx -= 1;
-// 				}
-// 			}
-// 			answer += 1;
-// 		}
-// 	}
-// 	System.out.println("answer = " + answer);
-// }
+//문제 : 구명보트
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42885
+class Solution_0020 {
+	public static int[] solution(int[] prices) {
+		int[] answer = new int[prices.length];
+
+		Stack<Integer> stack = new Stack<>();
+		for (int i = prices.length - 1; i >= 0; i--) {
+			stack.push(prices[i]);
+		}
+
+		Stack<Integer> substack = new Stack<>();
+
+		int num;
+		int now = 0;
+		int cnt;
+		int idx = 0;
+
+		while (!stack.isEmpty()) {
+			cnt = 1;
+			num = stack.pop();
+			System.out.println("num = " + num);
+			while (!stack.isEmpty()) {
+				now = stack.pop();
+				substack.push(now);
+				System.out.println("now = " + now);
+				if (num <= now) {
+					cnt++;
+				} else {
+					break;
+				}
+			}
+
+			if (stack.isEmpty() && num <= now) {
+				cnt--;
+			}
+			// System.out.println("substack.size() = " + substack.size());
+			// while (!substack.isEmpty()) {
+			// 	System.out.println("짜잔");
+			// 	stack.push(substack.pop());
+			// }
+
+			System.out.println("substack.size() = " + substack.size());
+			int len = substack.size();
+			for (int i = 0; i < len; i++) {
+				System.out.println("짜잔");
+				stack.push(substack.pop());
+			}
+
+			answer[idx] = cnt;
+			idx++;
+		}
+
+		return answer;
+	}
+
+	public int[] othersol(int[] prices) {
+		int len = prices.length;
+		int[] answer = new int[len];
+		int i, j;
+		for (i = 0; i < len; i++) {
+			for (j = i + 1; j < len; j++) {
+				answer[i]++;
+				if (prices[i] > prices[j])
+					break;
+			}
+		}
+		return answer;
+	}
+
+}
