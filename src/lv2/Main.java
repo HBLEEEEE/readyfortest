@@ -961,3 +961,173 @@ class Solution_0020 {
 	}
 
 }
+
+//문제 : [1차] 프렌즈4블록
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/17679
+
+// import java.util.ArrayList;
+// import java.util.List;
+class Solution_0021 {
+	public static int solution(int m, int n, String[] board) {
+		int answer = 0;
+
+		List<List<String>> game = new ArrayList<>();
+
+		for (int i = 0; i < n; i++) {
+			List<String> temp = new ArrayList<>();
+			for (int j = 0; j < m; j++) {
+				temp.add(String.valueOf(board[m - j - 1].charAt(i)));
+			}
+			game.add(temp);
+		}
+
+		for (int i = 0; i < game.size(); i++) {
+			System.out.println(game.get(i));
+		}
+
+		//Z는 삭제 예정, 공백은 X
+
+		while (true) {
+			System.out.println("시작~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			int cnt = 0;
+
+			List<List<String>> tempgame = new ArrayList<>();
+			for (int i = 0; i < game.size(); i++) {
+				tempgame.add(new ArrayList<>(game.get(i)));
+			}
+
+			for (int i = 0; i < game.size() - 1; i++) {
+				if (game.get(i).size() == 0) {
+					continue;
+				}
+				int len;
+				if (game.get(i).size() > game.get(i + 1).size()) {
+					len = game.get(i + 1).size();
+				} else {
+					len = game.get(i).size();
+				}
+				for (int j = 0; j < len - 1; j++) {
+					if (game.get(i).get(j).equals(game.get(i + 1).get(j)) && game.get(i)
+						.get(j)
+						.equals(game.get(i).get(j + 1))
+						&& game.get(i).get(j).equals(game.get(i + 1).get(j + 1))) {
+						tempgame.get(i).set(j, "a");
+						tempgame.get(i).set(j + 1, "a");
+						tempgame.get(i + 1).set(j, "a");
+						tempgame.get(i + 1).set(j + 1, "a");
+					}
+				}
+			}
+
+			System.out.println("a는 몇개~");
+			for (int i = 0; i < tempgame.size(); i++) {
+				System.out.println(tempgame.get(i));
+			}
+			for (int i = 0; i < game.size(); i++) {
+				System.out.println(game.get(i));
+			}
+
+			for (int i = 0; i < tempgame.size(); i++) {
+				for (int j = tempgame.get(i).size() - 1; j >= 0; j--) {
+					if (tempgame.get(i).get(j).equals("a")) {
+						cnt++;
+						tempgame.get(i).remove(j);
+					}
+				}
+			}
+
+			if (cnt == 0) {
+				break;
+			}
+
+			answer += cnt;
+
+			game = List.copyOf(tempgame);
+
+			System.out.println("중간 점검");
+			for (int i = 0; i < game.size(); i++) {
+				System.out.println(game.get(i));
+			}
+
+		}
+
+		return answer;
+
+	}
+
+	public static void main(String[] args) {
+		String[] board = {"TTTANT", "RRFACC", "RRRFCC", "TRRRAA", "TTMMMF", "TMMTTJ"};
+
+		System.out.println(solution(2, 3, board));
+
+	}
+}
+
+//문제 : 영어 끝말잇기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12981
+
+// import java.util.ArrayList;
+// import java.util.List;
+class Solution_0022 {
+	public static int[] solution(int n, String[] words) {
+
+		List<String> dan = new ArrayList<>();
+		for (String i : words) {
+			dan.add(i);
+		}
+
+		int fastcase = dan.size();
+		int fine = dan.size();
+		int i = 0;
+		String temp = "";
+
+		while (dan.size() > 1) {
+			System.out.println("i = " + i);
+			System.out.println("fastcase = " + fastcase);
+			System.out.println("dan = " + dan);
+			System.out.println("dan.get(0) = " + dan.get(0));
+			System.out.println("dan.get(1) = " + dan.get(1));
+			// System.out.println("dan.get(0)의끝 = " + dan.get(0).charAt(dan.get(0).length() - 1));
+			// System.out.println("dan.get(1)의 시작 = " + dan.get(1).charAt(0));
+			if (dan.get(0).charAt(dan.get(0).length() - 1) != dan.get(1).charAt(0)) {
+				System.out.println("마지막 몰라서 빠져나옴");
+				fastcase = i + 1;
+				break;
+			}
+			temp = dan.get(0);
+			dan.remove(0);
+			if (dan.contains(temp)) {
+				if ((dan.indexOf(temp) + i) < fastcase) {
+					fastcase = dan.indexOf(temp) + i + 1;
+				}
+			}
+			i++;
+			if (i >= fastcase) {
+				System.out.println("같거나 크면 빠져나옴");
+				break;
+			}
+		}
+		if (fastcase == fine) {
+			return new int[] {0, 0};
+		}
+
+		System.out.println("fastcase = " + fastcase);
+
+		int who = (fastcase + 1) % n;
+		int turn = (fastcase + 1) / n + 1;
+		if (who == 0) {
+			who = n;
+			turn -= 1;
+		}
+
+		int[] answer = new int[] {who, turn};
+
+		return answer;
+	}
+
+	public static void main(String[] args) {
+		String[] words = {"tank", "kick", "know", "wheel", "land", "dream", "mother", "robot", "tank"};
+		System.out.println(Arrays.toString(solution(3, words)));
+	}
+
+}
