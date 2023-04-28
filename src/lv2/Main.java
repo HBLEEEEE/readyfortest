@@ -1194,6 +1194,43 @@ class Solution_0023 {
 
 }
 
+//문제 : 예상 대진표
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12985
+//참조 url : https://tmdrl5779.tistory.com/216
+
+// import java.util.ArrayList;
+// import java.util.List;
+class Solution_0024 {
+	public static int solution(int n, int a, int b) {
+		int answer = 0;
+
+		if (n == 2) {
+			answer = 1;
+		}
+
+		int cnt = 2;
+		while (n > cnt) {
+			System.out.println("스텝");
+			if ((a - 1) / (n / cnt) != (b - 1) / (n / cnt)) {
+				answer = (int)(Math.log(n / cnt * 2) / Math.log(2));
+				break;
+			} else {
+				cnt *= 2;
+			}
+
+		}
+		if (answer == 0) {
+			answer = 1;
+		}
+
+		return answer;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(solution(32, 1, 2));
+	}
+}
+
 
 
 
