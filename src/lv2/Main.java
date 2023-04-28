@@ -6,8 +6,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -1131,3 +1133,102 @@ class Solution_0022 {
 	}
 
 }
+
+//문제 : 게임 맵 최단거리
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/1844
+//참조 url : https://tmdrl5779.tistory.com/216
+
+// import java.util.ArrayList;
+// import java.util.List;
+class Solution_0023 {
+	public static int solution(int[][] maps) {
+		int answer = 0;
+
+		int[][] ansmap = new int[maps.length][maps[0].length];
+		bfs(maps, ansmap);
+		System.out.println(Arrays.deepToString(ansmap));
+		answer = ansmap[maps.length - 1][maps[0].length - 1];
+
+		if (answer == 0) {
+			answer = -1;
+		}
+		return answer;
+	}
+
+	public static void bfs(int[][] maps, int[][] ansmap) {
+		int[] dx = {1, 0, -1, 0};
+		int[] dy = {0, 1, 0, -1};
+
+		int x = 0;
+		int y = 0;
+		ansmap[x][y] = 1;
+		Queue<int[]> queue = new LinkedList<>();
+		queue.add(new int[] {x, y});
+
+		while (!queue.isEmpty()) {
+			int[] current = queue.remove();
+			int cX = current[0];
+			int cY = current[1];
+
+			for (int i = 0; i < 4; i++) {
+				int nX = cX + dx[i];
+				int nY = cY + dy[i];
+
+				if (nX < 0 || nX > maps.length - 1 || nY < 0 || nY > maps[0].length - 1) {
+					continue;
+				}
+
+				if (ansmap[nX][nY] == 0 && maps[nX][nY] == 1) {
+					ansmap[nX][nY] = ansmap[cX][cY] + 1;
+					queue.add(new int[] {nX, nY});
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		int[][] maps = new int[][] {{1, 0, 1, 1, 1}, {1, 0, 1, 0, 1}, {1, 0, 1, 1, 1}, {1, 1, 1, 0, 1},
+			{0, 0, 0, 0, 1}};
+		System.out.println(solution(maps));
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
