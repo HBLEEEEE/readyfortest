@@ -1196,13 +1196,9 @@ class Solution_0023 {
 
 //문제 : 예상 대진표
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12985
-//참조 url : https://tmdrl5779.tistory.com/216
-
-// import java.util.ArrayList;
-// import java.util.List;
 class Solution_0024 {
 	public static int solution(int n, int a, int b) {
-		int answer = 0;
+		int answer = 1;
 
 		if (n == 2) {
 			answer = 1;
@@ -1219,9 +1215,6 @@ class Solution_0024 {
 			}
 
 		}
-		if (answer == 0) {
-			answer = 1;
-		}
 
 		return answer;
 	}
@@ -1231,14 +1224,35 @@ class Solution_0024 {
 	}
 }
 
+//문제 : 피로도
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/87946
 
+// import java.util.ArrayList;
+// import java.util.List;
+class Solution_0025 {
+	public int solution(int k, int[][] dungeons) {
+		int answer = -1;
 
+		int len = dungeons.length;
 
+		//n개의 수를 정렬하는 모든 방법
 
+		return answer;
+	}
+}
 
+//test
+class Solution_0026 {
+	public int solution(int k, int[][] dungeons) {
+		int answer = -1;
 
+		int len = dungeons.length;
 
+		//n개의 수를 정렬하는 모든 방법
 
+		return answer;
+	}
+}
 
 
 
