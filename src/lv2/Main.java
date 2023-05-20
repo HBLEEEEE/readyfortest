@@ -1230,31 +1230,42 @@ class Solution_0024 {
 // import java.util.ArrayList;
 // import java.util.List;
 class Solution_0025 {
+	static boolean[] checked;
+	static int cnt = 0;
+
 	public int solution(int k, int[][] dungeons) {
-		int answer = -1;
 
-		int len = dungeons.length;
-
-		//n개의 수를 정렬하는 모든 방법
-
-		return answer;
+		checked = new boolean[dungeons.length];
+		dfs(0, k, dungeons);
+		return cnt;
 	}
-}
 
-//test
-class Solution_0026 {
-	public int solution(int k, int[][] dungeons) {
-		int answer = -1;
+	public void dfs(int depth, int fatigue, int[][] dungeons) {
+		for (int i = 0; i < dungeons.length; i++) {
+			if (checked[i] || dungeons[i][0] > fatigue) {
+				continue;
+			}
+			checked[i] = true;
+			dfs(depth + 1, fatigue - dungeons[i][1], dungeons);
+			checked[i] = false;
+		}
 
-		int len = dungeons.length;
-
-		//n개의 수를 정렬하는 모든 방법
-
-		return answer;
+		cnt = Math.max(cnt, depth);
 	}
+
+	public static void main(String[] args) {
+
+		String text = "ab";
+		for (int i = 0; i < text.length(); i++) {
+			for (int j = i + 1; j < text.length() + 1; j++) {
+				String temp = text.substring(i, j);
+				System.out.println(temp);
+			}
+		}
+
+	}
+
 }
-
-
 
 
 
