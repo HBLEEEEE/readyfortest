@@ -142,3 +142,113 @@ class Solution0005 {
 		System.out.println(longestPalindrome("a"));
 	}
 }
+
+//url : https://leetcode.com/problems/two-sum/
+//title : 1. Two Sum
+class Solution0001 {
+	public int[] twoSum(int[] nums, int target) {
+		int[] ans = new int[2];
+
+		main:
+		for (int i = 0; i < nums.length - 1; i++) {
+			for (int j = i + 1; j < nums.length; j++) {
+				if (nums[i] + nums[j] == target) {
+					ans[0] = i;
+					ans[1] = j;
+					break main;
+				}
+			}
+
+		}
+
+		return ans;
+
+	}
+}
+
+//url : https://leetcode.com/problems/reverse-integer/
+//title : 7. reverse-integer
+class Solution0007 {
+	public int reverse(int x) {
+		long ans = 0;
+		int t = 1;
+		if (x < 0) {
+			x *= -1;
+			t = -1;
+		}
+
+		while (x > 0) {
+			ans *= 10;
+			ans += x % 10;
+			x = x / 10;
+		}
+
+		if (ans >= Math.pow(2, 31)) {
+			return 0;
+		}
+
+		ans *= t;
+
+		return (int)ans;
+	}
+}
+
+//url : https://leetcode.com/problems/string-to-integer-atoi/
+//title : 8. String to Integer (atoi)
+class Solution0008 {
+
+	public static int myAtoi(String s) {
+
+		Boolean check = true;
+
+		char c;
+
+		String answer = "";
+
+		System.out.println("s.length() = " + s.length());
+		for (int i = 0; i < s.length(); i++) {
+			c = s.charAt(i);
+			System.out.println("c = " + c);
+
+			if (c == 32 && check) {
+
+			} else if ((c == 45 || c == 43) && check) {
+				check = false;
+				answer += c;
+
+			} else if ((c >= 48 && c <= 57)) {
+				check = false;
+				answer += c;
+			} else {
+				System.out.println("여기로 나감?");
+				break;
+			}
+		}
+
+		System.out.println("answer = " + answer);
+
+		if (answer.length() == 0) {
+			return 0;
+		} else if (answer.equals("+") || answer.equals("-")) {
+			return 0;
+		}
+
+		try {
+
+			return Integer.parseInt(answer);
+
+		} catch (Exception e) {
+
+			if (answer.charAt(0) == '-') {
+				return Integer.MIN_VALUE;
+			} else {
+				return Integer.MAX_VALUE;
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		System.out.println(myAtoi("400000000000000000000"));
+
+	}
+}
