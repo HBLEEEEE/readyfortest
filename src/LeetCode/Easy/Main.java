@@ -1,5 +1,6 @@
 package LeetCode.Easy;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -252,3 +253,91 @@ class Solution0008 {
 
 	}
 }
+
+//url : https://leetcode.com/problems/median-of-two-sorted-arrays/
+//title : 4. Median of Two Sorted Arrays
+class Solution0004 {
+	public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+
+		int[] merge = new int[nums1.length + nums2.length];
+
+		for (int i = 0; i < nums1.length; i++) {
+			merge[i] = nums1[i];
+		}
+
+		for (int i = 0; i < nums2.length; i++) {
+			merge[nums1.length + i] = nums2[i];
+		}
+
+		Arrays.sort(merge);
+
+		if (merge.length % 2 == 0) {
+			return (merge[merge.length / 2] + merge[merge.length / 2 - 1]) / 2F;
+		} else {
+			return merge[merge.length / 2];
+		}
+	}
+}
+
+//url : https://leetcode.com/problems/container-with-most-water/
+//title : 11. Container With Most Water
+class Solution0011 {
+	public static int maxArea(int[] height) {
+
+		int l = 0;
+		int r = height.length - 1;
+		int ans = (r - l) * Math.min(height[l], height[r]);
+
+		int temp;
+		while (l < r) {
+			if (height[l] < height[r]) {
+				l++;
+			} else if (height[l] > height[r]) {
+				r--;
+			} else {
+				l++;
+				r--;
+			}
+			temp = (r - l) * Math.min(height[l], height[r]);
+			if (temp > ans) {
+				ans = temp;
+			}
+		}
+
+		return ans;
+	}
+
+	public static void main(String[] args) {
+		int[] h = {8, 10, 14, 0, 13, 10, 9, 9, 11, 11};
+		System.out.println(maxArea(h));
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
