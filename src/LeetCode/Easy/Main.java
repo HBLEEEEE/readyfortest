@@ -1,6 +1,8 @@
 package LeetCode.Easy;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -347,8 +349,53 @@ class Solution0014 {
 	}
 }
 
+//url : https://leetcode.com/problems/3sum/
+//title : 15. 3Sum
+class Solution0015 {
+	public static List<List<Integer>> threeSum(int[] nums) {
 
+		Arrays.sort(nums);
 
+		List<List<Integer>> answer = new ArrayList<>();
+
+		for (int i = 0; i < nums.length - 2; i++) {
+			System.out.println(nums[i]);
+			if (i == 0 || (i > 0 && nums[i] != nums[i - 1])) {
+				int low = i + 1;
+				int high = nums.length - 1;
+				int sum = -nums[i];
+
+				while (low < high) {
+					if (nums[low] + nums[high] == sum) {
+						answer.add(Arrays.asList(nums[i], nums[low], nums[high]));
+						while (low < high && nums[low] == nums[low + 1]) {
+							low++;
+						}
+						while (low < high && nums[high] == nums[high - 1]) {
+							high--;
+						}
+						low++;
+						high--;
+
+					} else if (nums[low] + nums[high] > sum) {
+						high--;
+					} else if (nums[low] + nums[high] < sum) {
+						low++;
+					}
+				}
+			}
+		}
+
+		return answer;
+
+	}
+
+	public static void main(String[] args) {
+		int[] nums = new int[] {-1, 0, 1, 2, -1, -4};
+
+		System.out.println(threeSum(nums));
+	}
+}
 
 
 
