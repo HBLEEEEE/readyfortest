@@ -1945,7 +1945,32 @@ class Solution_0055 {
 	}
 }
 
+//문제 : 추억 점수
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/176963?language=java
+//import java.util.Scanner;
+class Solution_0056 {
+	public int[] solution(String[] name, int[] yearning, String[][] photo) {
+		int[] answer = new int[photo.length];
 
+		HashMap<String, Integer> pointMap = new HashMap<>();
+
+		for (int i = 0; i < name.length; i++) {
+			pointMap.put(name[i], yearning[i]);
+		}
+
+		for (int i = 0; i < photo.length; i++) {
+			int photoPoint = 0;
+			for (int j = 0; j < photo[i].length; j++) {
+				if (pointMap.containsKey(photo[i][j])) {
+					photoPoint += pointMap.get(photo[i][j]);
+				}
+			}
+			answer[i] = photoPoint;
+		}
+
+		return answer;
+	}
+}
 
 
 

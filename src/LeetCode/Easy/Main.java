@@ -352,7 +352,7 @@ class Solution0014 {
 //url : https://leetcode.com/problems/3sum/
 //title : 15. 3Sum
 class Solution0015 {
-	public static List<List<Integer>> threeSum(int[] nums) {
+	public List<List<Integer>> threeSum(int[] nums) {
 
 		Arrays.sort(nums);
 
@@ -388,12 +388,6 @@ class Solution0015 {
 
 		return answer;
 
-	}
-
-	public static void main(String[] args) {
-		int[] nums = new int[] {-1, 0, 1, 2, -1, -4};
-
-		System.out.println(threeSum(nums));
 	}
 }
 
