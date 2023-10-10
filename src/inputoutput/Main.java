@@ -2,7 +2,14 @@ package inputoutput;
 
 //백준 : 정답 입력 양식
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 //문제 : A+B
 //url : https://softeer.ai/practice/info.do?idx=1&eid=362
@@ -25,7 +32,7 @@ class Solution_001 {
 
 //문제 : 지우는 소수를 좋아해
 //url : https://softeer.ai/practice/info.do?idx=1&eid=582
-class Solution_input {
+class Solution_002 {
 	public static void main(String args[]) {
 		Scanner sc = new Scanner(System.in);
 		String GnR = sc.nextLine();
@@ -89,3 +96,147 @@ class Solution_input {
 
 	}
 }
+
+//문제 : 출퇴근길
+//url : https://softeer.ai/practice/info.do?idx=1&eid=1529
+class Solution_003 {
+
+	static boolean[] checked;
+	static int[][] direction;
+	static int home;
+	static int company;
+	static Set<Integer> goC = new TreeSet<>();
+	static Set<Integer> goH = new TreeSet<>();
+
+	static boolean[] visited;
+
+	public static void main(String args[]) {
+		Scanner sc = new Scanner(System.in);
+		String pointAndway = sc.nextLine();
+
+		int points = Integer.parseInt(pointAndway.split(" ")[0]);
+		int ways = Integer.parseInt(pointAndway.split(" ")[1]);
+
+		direction = new int[ways][2];
+		for (int i = 0; i < ways; i++) {
+			String temp = sc.nextLine();
+			direction[i][0] = Integer.parseInt(temp.split(" ")[0]);
+			direction[i][1] = Integer.parseInt(temp.split(" ")[1]);
+		}
+
+		String HandC = sc.nextLine();
+		home = Integer.parseInt(HandC.split(" ")[0]);
+		company = Integer.parseInt(HandC.split(" ")[1]);
+
+		checked = new boolean[ways];
+		visited = new boolean[points];
+		for (int i = 0; i < ways; i++) {
+			if (direction[i][0] == home) {
+				checked[i] = true;
+				bfs(goC, company, direction[i][1]);
+				checked[i] = false;
+			}
+		}
+
+		for (int i = 0; i < ways; i++) {
+			if (direction[i][0] == company) {
+				checked[i] = true;
+				bfs(goH, home, direction[i][1]);
+				checked[i] = false;
+			}
+		}
+
+		int ans = 0;
+		for (int i = 1; i < points + 1; i++) {
+			if (i == home || i == company) {
+				continue;
+			}
+			if (goC.contains(i) && goH.contains(i)) {
+				ans++;
+			}
+		}
+
+		System.out.println(ans);
+
+	}
+
+	public static void bfs(Set<Integer> set, int endpoint, int nowpoint) {
+		for (int i = 0; i < checked.length; i++) {
+			if (checked[i]) {
+				continue;
+			}
+			if (direction[i][0] == nowpoint) {
+				if (direction[i][1] == endpoint) {
+					break;
+				}
+			} else {
+				checked[i] = true;
+				visited[direction[i][1]] = true;
+				bfs(set, endpoint, direction[i][1]);
+				visited[direction[i][1]] = false;
+				checked[i] = false;
+			}
+		}
+	}
+}
+
+//문제 : 염기서열 커버
+//url : https://softeer.ai/practice/formCodeEditor.do
+class Solution_004 {
+	public static void main(String args[]) {
+		int ans = 1;
+
+		Scanner sc = new Scanner(System.in);
+		String GnL = sc.nextLine();
+		Map<String, List<Integer>> map = new HashMap<>();
+
+		int genes = Integer.parseInt(GnL.split(" ")[0]);
+		int len = Integer.parseInt(GnL.split(" ")[1]);
+
+		if (genes == 1) {
+			System.out.println(ans);
+			return;
+		}
+
+		String[] bio = new String[genes];
+
+		for (int i = 0; i < genes; i++) {
+			String gen = sc.nextLine();
+			bio[i] = gen;
+		}
+
+		for (int i = 0; i < genes; i++) {
+			for (int j = 0; j < len; j++) {
+				if (bio[i].charAt(j) != '.') {
+					String key = i + Character.toString(bio[i].charAt(j));
+					if (map.containsKey(key)) {
+						map.get(key).add(i);
+					} else {
+						List<Integer> store = new ArrayList<>();
+						store.add(i);
+						map.put(key, store);
+					}
+				}
+			}
+		}
+
+		Set<String> keys = map.keySet();
+
+		Iterator<String> iterator = keys.iterator();
+		while (iterator.hasNext()) {
+			String temp = iterator.next();
+			if (map.get(temp).size() != 1) {
+				
+			}
+		}
+
+		System.out.println(ans);
+	}
+}
+
+
+
+
+
+
+

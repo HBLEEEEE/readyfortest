@@ -1267,12 +1267,115 @@ class Solution_0025 {
 
 }
 
+//문제 : JadenCase 문자열 만들기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12951
 
+class Solution_0026 {
+	public String solution(String s) {
+		String answer = "";
+		answer += Character.toString(s.charAt(0)).toUpperCase();
+		for (int i = 1; i < s.length(); i++) {
+			if (s.charAt(i - 1) == ' ') {
+				answer += Character.toString(s.charAt(i)).toUpperCase();
+			} else {
+				answer += Character.toString(s.charAt(i)).toLowerCase();
+			}
+		}
+		return answer;
+	}
+}
 
+//문제 : 이진 변환 반복하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/70129
 
+class Solution_0027 {
+	public int[] solution(String s) {
+		int[] answer = new int[2];
+		while (true) {
+			int ones = 0;
+			int zeros = 0;
+			for (int i = 0; i < s.length(); i++) {
+				if (s.charAt(i) == '1') {
+					ones++;
+				} else {
+					zeros++;
+				}
+			}
+			answer[1] += zeros;
+			answer[0]++;
+			s = toBinary(ones);
 
+			if (s.length() == 1) {
+				break;
+			}
+		}
+		return answer;
+	}
 
+	public String toBinary(int n) {
+		String ans = "";
+		while (true) {
+			if (n > 0) {
+				ans = n % 2 + ans;
+				n = n / 2;
+			} else {
+				break;
+			}
+		}
+		return ans;
+	}
+}
 
+//문제 : 다음 큰 숫자
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12911
+
+class Solution_0028 {
+	public static int solution(int n) {
+		int maxN = 1;
+		while (true) {
+			if (n / maxN > 0) {
+				maxN *= 2;
+			} else {
+				break;
+			}
+		}
+
+		int countOne = 0;
+		int cnt = maxN;
+		int copyN = n;
+		while (cnt > 0) {
+			if (copyN / cnt == 1) {
+				countOne++;
+				copyN = copyN - cnt;
+			}
+			cnt /= 2;
+		}
+
+		n++;
+		while (true) {
+			int now = n;
+			if (now >= maxN * 2) {
+				maxN *= 2;
+			}
+
+			int newCountOne = 0;
+			cnt = maxN;
+			while (cnt > 0) {
+				if (now / cnt == 1) {
+					newCountOne++;
+					now = now - cnt;
+				}
+				cnt /= 2;
+			}
+
+			if (newCountOne == countOne) {
+				return n;
+			} else {
+				n++;
+			}
+		}
+	}
+}
 
 
 
