@@ -1377,7 +1377,35 @@ class Solution_0028 {
 	}
 }
 
+//문제 : 짝지어 제거하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12973
 
+class Solution_0029 {
+	public static int solution(String s) {
+
+		Stack<Character> stack = new Stack<>();
+
+		for (int i = 0; i < s.length(); i++) {
+			char ch = s.charAt(i);
+
+			if (!stack.isEmpty() && stack.peek() == ch) {
+				stack.pop();
+			} else {
+				stack.push(ch);
+			}
+		}
+
+		if (stack.isEmpty()) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	public static void main(String[] args) {
+		System.out.println(solution("baabaa"));
+	}
+}
 
 
 
