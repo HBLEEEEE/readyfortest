@@ -1407,12 +1407,110 @@ class Solution_0029 {
 	}
 }
 
+//문제 : 점프와 순간 이동
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12980
 
+class Solution_0030 {
+	public int solution(int n) {
+		int ans = 0;
 
+		while (n != 1) {
+			if (n % 2 == 1) {
+				ans++;
+				n -= 1;
+			} else {
+				n /= 2;
+			}
+		}
 
+		return ans + 1;
+	}
+}
 
+//문제 : N개의 최소공배수
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12953
 
+class Solution_0031 {
+	public int solution(int[] arr) {
+		if (arr.length == 1) {
+			return arr[0];
+		} else if (arr.length == 2) {
+			return arr[0] * arr[1] / getGCD(arr[0], arr[1]);
+		}
 
+		int lcm = arr[0] * arr[1] / getGCD(arr[0], arr[1]);
+
+		for (int i = 2; i < arr.length; i++) {
+			lcm = lcm * arr[i] / getGCD(arr[i], lcm);
+		}
+
+		return lcm;
+	}
+
+	public int getGCD(int n, int m) {
+		int n1, n2, temp;
+		if (n >= m) {
+			n1 = n;
+			n2 = m;
+		} else {
+			n1 = m;
+			n2 = n;
+		}
+
+		while (true) {
+			if (n1 % n2 == 0) {
+				return n2;
+			} else {
+				n1 = n1 % n2;
+				temp = n1;
+				n1 = n2;
+				n2 = temp;
+			}
+		}
+	}
+}
+
+//문제 : 연속 부분 수열 합의 개수
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/131701
+
+class Solution_0032 {
+	public int solution(int[] elements) {
+
+		int[] arr = new int[elements.length * 2];
+		System.arraycopy(elements, 0, arr, 0, elements.length);
+		System.arraycopy(elements, 0, arr, elements.length, elements.length);
+
+		Set<Integer> totals = new HashSet<>();
+
+		int cnt = 0;
+
+		for (int i = 1; i < elements.length + 1; i++) {
+			for (int j = 0; j < elements.length; j++) {
+				cnt = 0;
+				for (int k = j; k < j + i; k++) {
+					cnt += arr[k];
+				}
+				totals.add(cnt);
+			}
+
+		}
+
+		return totals.size();
+	}
+
+	public int solution2(int[] elements) {
+		Set<Integer> set = new HashSet<>();
+		int[] num = new int[elements.length];
+		for (int len = 1; len < elements.length + 1; len++) {
+			for (int i = 0; i < elements.length; i++) {
+				num[i] += elements[(len + i - 1) % elements.length];
+				set.add(num[i]);
+			}
+		}
+
+		return set.size();
+	}
+}
 
 
 
