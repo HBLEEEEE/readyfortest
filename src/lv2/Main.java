@@ -1512,10 +1512,75 @@ class Solution_0032 {
 	}
 }
 
+//문제 : 할인 행사
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/131127
 
+class Solution_0033 {
+	public int solution(String[] want, int[] number, String[] discount) {
+		int answer = 0;
+		int temp;
+		List<String> wants = Arrays.asList(want);
 
+		for (int i = 0; i < 10; i++) {
+			if (wants.contains(discount[i])) {
+				number[wants.indexOf(discount[i])]--;
+			}
+		}
 
+		if (allZero(number)) {
+			answer++;
+		}
 
+		for (int i = 10; i < discount.length; i++) {
+			if (wants.contains(discount[i - 10])) {
+				number[wants.indexOf(discount[i - 10])]++;
+			}
+			if (wants.contains(discount[i])) {
+				number[wants.indexOf(discount[i])]--;
+			}
+
+			if (allZero(number)) {
+				answer++;
+			}
+		}
+
+		return answer;
+	}
+
+	public boolean allZero(int[] arr) {
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i] != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+}
+
+//문제 : n^2 배열 자르기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/87390
+
+class Solution_0034 {
+	public int[] solution(int n, long left, long right) {
+
+		int[] answer = new int[(int)(right - left + 1)];
+		int cnt = 0;
+		for (long i = left; i <= right; i++) {
+			answer[cnt] = (int)change(i, n);
+			cnt++;
+		}
+
+		return answer;
+	}
+
+	public long change(long x, int n) {
+		if (x / n >= x % n) {
+			return (x) / n + 1;
+		} else {
+			return x % n + 1;
+		}
+	}
+}
 
 
 
