@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
@@ -1581,6 +1582,62 @@ class Solution_0034 {
 		}
 	}
 }
+
+//문제 : H-Index
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42747
+
+class Solution_0035 {
+	public int solution(int[] citations) {
+		int answer = 0;
+
+		Arrays.sort(citations);
+
+		for (int i = citations.length - 1; i >= 0; i--) {
+			if (citations[i] > answer) {
+				answer++;
+			} else {
+				break;
+			}
+		}
+		return answer;
+	}
+}
+
+//문제 : 의상
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42578
+
+class Solution_0036 {
+	public int solution(String[][] clothes) {
+
+		Map<String, Integer> map = new HashMap<>();
+
+		for (int i = 0; i < clothes.length; i++) {
+			if (map.containsKey(clothes[i][1])) {
+				map.put(clothes[i][1], map.get(clothes[i][1]) + 1);
+			} else {
+				map.put(clothes[i][1], 1);
+			}
+		}
+
+		int answer = 1;
+
+		for (String i : map.keySet()) {
+			answer *= (map.get(i) + 1);
+		}
+
+		return answer - 1;
+	}
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
