@@ -1629,15 +1629,156 @@ class Solution_0036 {
 	}
 }
 
+//문제 : 프로세스
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42587
 
+class Solution_0037 {
+	public int solution(int[] priorities, int location) {
+		int answer = 0;
 
+		Queue<Integer> queue = new LinkedList<>();
+		for (int i = 0; i < priorities.length; i++) {
+			queue.add(i);
+		}
 
+		while (true) {
+			int max = -1;
+			int maxIdx = -1;
+			for (int i = 0; i < priorities.length; i++) {
+				if (priorities[i] > max) {
+					max = priorities[i];
+					maxIdx = i;
+				}
+			}
 
+			while (true) {
+				int t = queue.poll();
+				if (max == priorities[t]) {
+					answer += 1;
+					if (t == location) {
+						return answer;
+					}
+					priorities[t] = -1;
+					break;
+				} else {
+					queue.add(t);
+				}
+			}
+		}
+	}
+}
 
+//문제 : 타겟 넘버
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/43165
 
+class Solution_0038 {
 
+	int[] nums;
+	int mainTarget;
+	int answer = 0;
 
+	public int solution(int[] numbers, int target) {
+		nums = numbers;
+		mainTarget = target;
 
+		int total = 0;
+		cal(total, 0);
+
+		return answer;
+	}
+
+	public void cal(int total, int idx) {
+		if (idx > nums.length - 1) {
+			if (total == mainTarget) {
+				answer += 1;
+			}
+			return;
+		}
+
+		for (int i = -1; i < 2; i += 2) {
+			cal(total + nums[idx] * i, idx + 1);
+		}
+
+	}
+
+}
+
+//문제 : k진수에서 소수 개수 구하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/92335
+
+class Solution_0039 {
+	public int solution(int n, int k) {
+		String kNumber = Long.toString(n, k);
+
+		String[] pArr = kNumber.split("0");
+
+		int pCount = 0;
+
+		for (String p : pArr) {
+			if (p.isEmpty() || p.isBlank())
+				continue;
+
+			if (isPrime(Long.parseLong(p)))
+				pCount++;
+		}
+		return pCount;
+	}
+
+	public boolean isPrime(long n) {
+		if (n == 1)
+			return false;
+		if (n == 2)
+			return true;
+
+		int count = 0;
+
+		for (long i = 2; i <= Math.sqrt(n); i++) {
+			if (n % i == 0)
+				return false;
+		}
+
+		return true;
+	}
+}
+
+//문제 : 모음사전
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/84512
+
+class Solution_0040 {
+	public int solution(String word) {
+		int answer = 0;
+		//AEIOU
+
+		int c = 781;
+		int idx = 0;
+		int m = 625;
+		while (idx < word.length()) {
+			answer += calNum(word.charAt(idx)) * c;
+			answer += 1;
+			idx++;
+			c -= m;
+			m /= 5;
+
+		}
+		answer += 1;
+
+		return answer;
+	}
+
+	public int calNum(char a) {
+		if (a == 'A') {
+			return 0;
+		} else if (a == 'E') {
+			return 1;
+		} else if (a == 'I') {
+			return 2;
+		} else if (a == 'O') {
+			return 3;
+		} else {
+			return 4;
+		}
+	}
+}
 
 
 
