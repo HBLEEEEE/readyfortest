@@ -1780,6 +1780,1033 @@ class Solution_0040 {
 	}
 }
 
+//문제 : 주차 요금 계산
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/92341
+
+class Solution_0041 {
+	public int[] solution(int[] fees, String[] records) {
+
+		List<String> carNums = new ArrayList<>();
+		Map<String, Boolean> carInOut = new HashMap<>(); // 출차 확인
+		Map<String, Integer> carParking = new HashMap<>(); //총 주차 시간 계산
+		Map<String, Integer> carInTime = new HashMap<>(); // 최근 입차 시간 h*60 + m 값으로 환산
+
+		for (int i = 0; i < records.length; i++) {
+			String[] str = records[i].split(" ");
+			//차량 기록이 있는지 확인
+			if (carInOut.containsKey(str[1])) {
+				//입차인지 출차인지
+				if (carInOut.get(str[1])) {
+					//입차 기록이 있고 이번이 출차 기록일 때
+					carInOut.put(str[1], false); // 출차로 바꾸기
+					//총 주차 시간 = 이전 주차 시간 + 출차 시간 - 입차 시간
+					carParking.put(str[1], carParking.get(str[1]) + calTime(str[0]) - carInTime.get(str[1]));
+
+				} else {
+					//출차 기록이 있고 이번이 입차 일때
+					carInOut.put(str[1], true);
+					carInTime.put(str[1], calTime(str[0]));
+				}
+
+			} else {
+				//차량 기록이 없다면 입차 등록
+				carNums.add(str[1]);
+				carInOut.put(str[1], true);
+				carParking.put(str[1], 0);
+				carInTime.put(str[1], calTime(str[0]));
+			}
+		}
+
+		//입차 상태인 것들 23:59에 출차시켜야함
+		String[] cars = carInOut.keySet().toArray(new String[0]);
+		for (String i : cars) {
+			if (carInOut.get(i)) {
+				carParking.put(i, carParking.get(i) + calTime("23:59") - carInTime.get(i));
+			}
+		}
+
+		int[] answer = new int[carNums.size()];
+
+		String[] sortCars = carNums.toArray(new String[carNums.size()]);
+		Arrays.sort(sortCars);
+
+		for (int i = 0; i < sortCars.length; i++) {
+			// 총시간
+			int totalTime = carParking.get(sortCars[i]);
+
+			if (totalTime < fees[0]) {
+				answer[i] = fees[1];
+			} else {
+				answer[i] = (int)(fees[1] + Math.ceil((totalTime - fees[0]) / (float)fees[2]) * fees[3]);
+			}
+
+		}
+
+		return answer;
+	}
+
+	public int calTime(String time) {
+		//time의 형태는 00:00
+		String[] HaM = time.split(":");
+		int hour = Integer.parseInt(HaM[0]);
+		int min = Integer.parseInt(HaM[1]);
+
+		return hour * 60 + min;
+	}
+}
+
+//문제 : 땅따먹기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12913
+
+class Solution_0042 {
+	int solution(int[][] land) {
+
+		for (int i = 1; i < land.length; i++) {
+			land[i][0] += findMax(land[i - 1][1], land[i - 1][2], land[i - 1][3]);
+			land[i][1] += findMax(land[i - 1][0], land[i - 1][2], land[i - 1][3]);
+			land[i][2] += findMax(land[i - 1][0], land[i - 1][1], land[i - 1][3]);
+			land[i][3] += findMax(land[i - 1][0], land[i - 1][1], land[i - 1][2]);
+		}
+
+		return Math.max(Math.max(land[land.length - 1][0], land[land.length - 1][1]),
+			Math.max(land[land.length - 1][2], land[land.length - 1][3]));
+	}
+
+	int findMax(int a, int b, int c) {
+		return Math.max(Math.max(a, b), c);
+	}
+}
+
+//문제 : 방문 길이
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/49994
+
+class Solution_0043 {
+	public int solution(String dirs) {
+		Set<String> cord = new HashSet<>();
+
+		int[] before = new int[] {0, 0};
+		int[] after = new int[2];
+
+		char c;
+
+		float x;
+		float y;
+		for (int i = 0; i < dirs.length(); i++) {
+			c = dirs.charAt(i);
+			if (c == 'U') {
+				after[0] = before[0];
+				after[1] = before[1] + 1;
+				if (after[1] == 6) {
+					after[1] = 5;
+					continue;
+				}
+			} else if (c == 'D') {
+				after[0] = before[0];
+				after[1] = before[1] - 1;
+				if (after[1] == -6) {
+					after[1] = -5;
+					continue;
+				}
+			} else if (c == 'R') {
+				after[0] = before[0] + 1;
+				after[1] = before[1];
+				if (after[0] == 6) {
+					after[0] = 5;
+					continue;
+				}
+			} else {
+				//L
+				after[0] = before[0] - 1;
+				after[1] = before[1];
+				if (after[0] == -6) {
+					after[0] = -5;
+					continue;
+				}
+			}
+
+			x = (after[0] + before[0]) / 2f;
+			y = (after[1] + before[1]) / 2f;
+			cord.add(x + " " + y);
+			before[0] = after[0];
+			before[1] = after[1];
+		}
+		return cord.size();
+	}
+}
+
+//문제 : 뒤에 있는 큰 수 찾기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/154539
+
+class Solution_0044 {
+	public int[] solution(int[] numbers) {
+		int[] answer = new int[numbers.length];
+
+		int max = 0;
+		int maxIdx = numbers.length;
+
+		for (int i = numbers.length - 1; i >= 0; i--) {
+			if (numbers[i] > max) {
+				max = numbers[i];
+				maxIdx = i;
+				answer[i] = -1;
+			} else if (numbers[i] == max) {
+				maxIdx = i;
+				answer[i] = -1;
+			} else {
+				if (numbers[i] == numbers[i + 1]) {
+					answer[i] = answer[i + 1];
+				} else if (numbers[i] < numbers[i + 1]) {
+					answer[i] = numbers[i + 1];
+				} else {
+					for (int j = i + 1; j <= maxIdx; j++) {
+						if (numbers[i] == numbers[j]) {
+							answer[i] = answer[j];
+							break;
+						} else if (numbers[i] < numbers[j]) {
+							answer[i] = numbers[j];
+							break;
+						}
+
+					}
+				}
+			}
+		}
+
+		return answer;
+	}
+}
+
+//문제 : LCS(Longest Common Substring)
+
+class Solution_0045 {
+	public static int solution(String a, String b) {
+
+		int[][] cal = new int[a.length() + 1][b.length() + 1];
+
+		int ans = 0;
+
+		for (int i = 0; i < a.length() + 1; i++) {
+			for (int j = 0; j < b.length() + 1; j++) {
+				if (i == 0 || j == 0) {
+					cal[i][j] = 0;
+				} else if (a.charAt(i - 1) == b.charAt(j - 1)) {
+					cal[i][j] = cal[i - 1][j - 1] + 1;
+				} else {
+					cal[i][j] = 0;
+				}
+				ans = Math.max(ans, cal[i][j]);
+			}
+		}
+
+		System.out.println(Arrays.deepToString(cal));
+
+		return ans;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(solution("ABCDEF", "GBCDFE"));
+	}
+}
+
+//문제 : LCS(Longest Common Subsequence)
+
+class Solution_0046 {
+	public static int solution(String a, String b) {
+
+		int[][] cal = new int[a.length() + 1][b.length() + 1];
+
+		int ans = 0;
+
+		for (int i = 0; i < a.length() + 1; i++) {
+			for (int j = 0; j < b.length() + 1; j++) {
+				if (i == 0 || j == 0) {
+					cal[i][j] = 0;
+				} else if (a.charAt(i - 1) == b.charAt(j - 1)) {
+					cal[i][j] = cal[i - 1][j - 1] + 1;
+				} else {
+					cal[i][j] = Math.max(cal[i - 1][j], cal[i][j - 1]);
+				}
+				ans = Math.max(ans, cal[i][j]);
+			}
+		}
+
+		for (int i = 0; i < cal.length; i++) {
+			System.out.println(Arrays.toString(cal[i]));
+		}
+
+		return ans;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(solution("ABCDEF", "AFKD"));
+	}
+}
+
+//문제 : LCS(Longest Common Subsequence) 응용문제
+
+class Solution_0047 {
+	public static int solution(String a, String b) {
+
+		int[][] cal = new int[a.length() + 1][b.length() + 1];
+
+		int ans = 0;
+
+		for (int i = 0; i < a.length() + 1; i++) {
+			for (int j = 0; j < b.length() + 1; j++) {
+				if (i == 0 || j == 0) {
+					cal[i][j] = 0;
+				} else if (a.charAt(i - 1) == b.charAt(j - 1)) {
+					cal[i][j] = cal[i - 1][j - 1] + 1;
+				} else {
+					cal[i][j] = Math.max(cal[i - 1][j], cal[i][j - 1]);
+				}
+				ans = Math.max(ans, cal[i][j]);
+			}
+		}
+
+		for (int i = 0; i < cal.length; i++) {
+			System.out.println(Arrays.toString(cal[i]));
+		}
+
+		if (ans == Math.min(a.length(), b.length())) {
+			return ans;
+		} else {
+			int x = a.length();
+			int y = b.length();
+			all:
+			for (int i = 0; i < a.length() + 1; i++) {
+				for (int j = 0; j < b.length() + 1; j++) {
+					if (cal[i][j] == ans) {
+						x = i;
+						y = j;
+						break all;
+					}
+				}
+			}
+
+			if (x == a.length() && y == b.length()) {
+				return ans + 1;
+			} else {
+				if (y == b.length()) {
+					for (int i = x; i < a.length(); i++) {
+						if (a.charAt(i) == a.charAt(x - 1)) {
+							return ans + 1;
+						}
+					}
+					return ans;
+				} else if (x == a.length()) {
+					for (int i = y; i < b.length(); i++) {
+						if (b.charAt(i) == b.charAt(y - 1)) {
+							return ans + 1;
+						}
+					}
+					return ans;
+				} else {
+					return ans + 1;
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		System.out.println(solution("ABCDEF", "ABFZ"));
+	}
+}
+
+//문제 : 스킬트리
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/49993
+
+class Solution_0048 {
+	public int solution(String skill, String[] skill_trees) {
+
+		int answer = 0;
+
+		List<Character> treeChar = new ArrayList<>();
+		List<Boolean> treeBool = new ArrayList<>();
+
+		treeChar.add('a');
+		treeBool.add(true);
+
+		for (int i = 0; i < skill.length(); i++) {
+			treeChar.add(skill.charAt(i));
+			treeBool.add(false);
+		}
+
+		all:
+		for (int i = 0; i < skill_trees.length; i++) {
+
+			for (int j = 1; j < treeBool.size(); j++) {
+				treeBool.set(j, false);
+			}
+
+			for (int j = 0; j < skill_trees[i].length(); j++) {
+				char now = skill_trees[i].charAt(j);
+				if (treeChar.contains(now)) {
+					if (treeBool.get(treeChar.indexOf(now) - 1)) {
+						treeBool.set(treeChar.indexOf(now), true);
+					} else {
+						continue all;
+					}
+				}
+			}
+			answer++;
+		}
+
+		return answer;
+	}
+}
+
+//문제 : [3차] 파일명 정렬
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/17686
+
+class Solution_0049 {
+	public String[] solution(String[] files) {
+
+		int check = 0;
+
+		while (true) {
+			check = 0;
+			for (int i = 0; i < files.length - 1; i++) {
+				if (compareStr(files[i], files[i + 1])) {
+					String temp = files[i];
+					files[i] = files[i + 1];
+					files[i + 1] = temp;
+					check++;
+				}
+			}
+			if (check == 0) {
+				break;
+			}
+		}
+
+		return files;
+	}
+
+	public static boolean compareStr(String a, String b) {
+		//false면 비교환
+		//true면 교환
+
+		String[] partA = a.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+		String[] partB = b.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+
+		int compare = partA[0].toLowerCase().compareTo(partB[0].toLowerCase());
+
+		int numA = Integer.parseInt(partA[1]);
+		int numB = Integer.parseInt(partB[1]);
+		if (compare == 0) {
+			if (numA <= numB) {
+				return false;
+			} else {
+				return true;
+			}
+		} else if (compare < 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public static void main(String[] args) {
+		String a = "abcd001.zip";
+		String b = "bff002.txt";
+		// String a = "abcd";
+		// String b = "bff";
+
+		System.out.println(b.compareTo(a));
+		System.out.println(compareStr(a, b));
+
+	}
+}
+
+//문제 : 롤케이크 자르기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/132265
+
+class Solution_0050 {
+	public int solution(int[] topping) {
+		int[] cal = new int[topping.length];
+		int[] calR = new int[topping.length];
+		Set<Integer> set = new HashSet<>();
+		Set<Integer> setR = new HashSet<>();
+		int tl = topping.length - 1;
+
+		for (int i = 0; i < topping.length; i++) {
+			set.add(topping[i]);
+			setR.add(topping[tl - i]);
+			cal[i] = set.size();
+			calR[tl - i] = setR.size();
+		}
+
+		int answer = 0;
+		for (int i = 0; i < topping.length - 1; i++) {
+			if (cal[i] == calR[i + 1]) {
+				answer++;
+			} else if (cal[i] > calR[i + 1]) {
+				break;
+			}
+		}
+
+		return answer;
+	}
+}
+
+//문제 : 숫자 변환하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/154538
+
+class Solution_0051 {
+
+	public int solution(int x, int y, int n) {
+
+		Queue<Integer> queue = new LinkedList<>();
+
+		int ans = 1;
+		queue.add(x);
+
+		if (x == y) {
+			return 0;
+		}
+
+		while (true) {
+			int s = queue.size();
+			System.out.println(ans);
+			for (int i = 0; i < s; i++) {
+				int t = queue.poll();
+				System.out.println("t = " + t);
+				if (t * 2 == y || t * 3 == y || t + n == y) {
+					return ans;
+				}
+
+				if (t * 3 < y) {
+					queue.add(t * 3);
+					queue.add(t * 2);
+				} else if (t * 2 < y) {
+					queue.add(t * 2);
+				}
+				if (t + n < y) {
+					queue.add(t + n);
+				}
+			}
+			System.out.println(queue);
+
+			ans++;
+			if (queue.size() == 0) {
+				return -1;
+			}
+		}
+	}
+
+	public int solution2(int x, int y, int n) {
+
+		if (x == y) {
+			return 0;
+		}
+
+		int[] dp = new int[y + 1];
+
+		dp[x] = -1;
+		Queue<Integer> queue = new LinkedList<>();
+		queue.add(y);
+
+		all:
+		while (!queue.isEmpty()) {
+			int s = queue.size();
+
+			for (int i = 0; i < s; i++) {
+				int t = queue.poll();
+				if (t == x) {
+					break all;
+				}
+				if (t % 2 == 0 && dp[t / 2] <= 0) {
+					queue.add(t / 2);
+					dp[t / 2] = dp[t] + 1;
+				}
+				if (t % 3 == 0 && dp[t / 3] <= 0) {
+					queue.add(t / 3);
+					dp[t / 3] = dp[t] + 1;
+				}
+				if (t - n > 0 && dp[t - n] <= 0) {
+					queue.add(t - n);
+					dp[t - n] = dp[t] + 1;
+				}
+			}
+		}
+
+		return dp[x];
+	}
+}
+
+//문제 : 2 x n 타일링
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12900
+
+class Solution_0052 {
+	public long solution(int n) {
+
+		if (n == 1) {
+			return 1;
+		}
+		if (n == 2) {
+			return 2;
+		}
+
+		int[] pibo = new int[n];
+		pibo[0] = 1;
+		pibo[1] = 2;
+		for (int i = 2; i < n; i++) {
+			pibo[i] = (pibo[i - 1] + pibo[i - 2]) % 1000000007;
+		}
+
+		return pibo[n - 1];
+	}
+}
+
+//문제 : 택배상자
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/131704
+
+class Solution_0053 {
+	public static int solution(int[] order) {
+
+		Stack<Integer> main = new Stack<>();
+		Stack<Integer> sub = new Stack<>();
+
+		for (int i = order.length; i >= 1; i--) {
+			main.add(i);
+		}
+
+		int idx = 0;
+
+		while (true) {
+			if (!main.isEmpty() && (main.peek() == order[idx])) {
+				idx++;
+				main.pop();
+			} else if (!sub.isEmpty() && (sub.peek() == order[idx])) {
+				sub.pop();
+				idx++;
+			} else if (!main.isEmpty()) {
+				sub.add(main.pop());
+			} else {
+				break;
+			}
+		}
+
+		return idx;
+	}
+}
+
+//문제 : 2개 이하로 다른 비트
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/77885
+
+class Solution_0054 {
+	public static long[] solution(long[] numbers) {
+		long[] answer = new long[numbers.length];
+
+		for (int i = 0; i < numbers.length; i++) {
+			String bin = Long.toBinaryString(numbers[i]);
+			int idx = -1;
+			for (int j = bin.length() - 1; j >= 0; j--) {
+				if (bin.charAt(j) == '0') {
+					idx = j;
+					break;
+				}
+			}
+			if (idx == bin.length() - 1) {
+				answer[i] = Long.parseLong(bin.substring(0, bin.length() - 1) + "1", 2);
+			} else if (idx == -1) {
+				answer[i] = Long.parseLong("10" + bin.substring(1), 2);
+			} else {
+				answer[i] = Long.parseLong(bin.substring(0, idx) + "10" + bin.substring(idx + 2), 2);
+			}
+
+		}
+
+		return answer;
+	}
+
+	public static void main(String[] args) {
+
+		long[] numbers = new long[] {11, 7};
+
+		System.out.println(Arrays.toString(solution(numbers)));
+	}
+}
+
+//문제 : 쿼드압축 후 개수 세기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/68936
+
+class Solution_0055 {
+
+	int one = 0;
+	int zero = 0;
+
+	public int[] solution(int[][] arr) {
+		int[] answer = new int[2];
+		cal(arr);
+
+		answer[0] = zero;
+		answer[1] = one;
+
+		return answer;
+	}
+
+	public void cal(int[][] arr) {
+		if (arr.length == 1) {
+			if (arr[0][0] == 1) {
+				one++;
+			} else {
+				zero++;
+			}
+			return;
+		}
+
+		int t = arr[0][0];
+		int n = arr.length / 2;
+		boolean c = true;
+		all:
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = 0; j < arr[0].length; j++) {
+				if (arr[i][j] != t) {
+					c = false;
+					break all;
+				}
+			}
+		}
+
+		if (c) {
+			if (t == 1) {
+				one++;
+			} else {
+				zero++;
+			}
+		} else {
+			int[][] arr1 = new int[n][n];
+			int[][] arr2 = new int[n][n];
+			int[][] arr3 = new int[n][n];
+			int[][] arr4 = new int[n][n];
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					arr1[i][j] = arr[i][j];
+					arr2[i][j] = arr[i + n][j];
+					arr3[i][j] = arr[i][j + n];
+					arr4[i][j] = arr[i + n][j + n];
+				}
+			}
+			cal(arr1);
+			cal(arr2);
+			cal(arr3);
+			cal(arr4);
+		}
+	}
+}
+
+//문제 : 가장 큰 수
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42746
+
+class Solution_0056 {
+	public static String solution(int[] numbers) {
+		String answer = "";
+
+		String[] strs = new String[numbers.length];
+
+		for (int i = 0; i < numbers.length; i++) {
+			strs[i] = Integer.toString(numbers[i]);
+		}
+
+		Arrays.sort(strs, (a, b) -> {
+			return (b + a).compareTo(a + b);
+		});
+
+		if (strs[0].equals("0")) {
+			return "0";
+		}
+
+		for (int i = 0; i < strs.length; i++) {
+			answer += strs[i];
+		}
+
+		return answer;
+	}
+
+	public static void main(String[] args) {
+
+		int[] arr = new int[] {0, 0, 0};
+
+		System.out.println(solution(arr));
+
+	}
+}
+
+//문제 : 가장 큰 수
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42583
+
+class Solution_0057 {
+	public int solution(int bridge_length, int weight, int[] truck_weights) {
+		Queue<Integer> process = new LinkedList<>();
+
+		for (int i = 0; i < bridge_length; i++) {
+			process.add(0);
+		}
+
+		int now = 0;
+		int idx = 0;
+		int time = 1;
+
+		while (true) {
+			now += process.poll();
+			if (now == -1) {
+				break;
+			}
+			if (idx == truck_weights.length) {
+				process.add(-1);
+			} else {
+				if (now + truck_weights[idx] <= weight) {
+					now += truck_weights[idx];
+					process.add(-truck_weights[idx]);
+					idx++;
+				} else {
+					process.add(0);
+				}
+			}
+			time++;
+		}
+
+		return time - 1;
+	}
+}
+
+//문제 : 소수 찾기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42839
+
+class Solution_0058 {
+
+	static String number;
+	static boolean[] check;
+	static Set<Integer> set = new HashSet<>();
+
+	public static int solution(String numbers) {
+		int answer = 0;
+
+		number = numbers;
+		check = new boolean[numbers.length()];
+
+		backTrack("");
+
+		Iterator<Integer> it = set.iterator();
+
+		while (it.hasNext()) {
+			if (checkPrime(it.next())) {
+				answer++;
+			}
+		}
+
+		System.out.println(set);
+
+		return answer;
+
+	}
+
+	public static void backTrack(String now) {
+		for (int i = 0; i < number.length(); i++) {
+			if (!check[i]) {
+				check[i] = true;
+				set.add(Integer.parseInt(now + number.charAt(i)));
+				backTrack(now + number.charAt(i));
+				check[i] = false;
+			}
+		}
+	}
+
+	public static boolean checkPrime(int n) {
+		if (n <= 1) {
+			return false;
+		} else if (n == 2 || n == 3) {
+			return true;
+		}
+
+		System.out.println(Math.sqrt(n));
+
+		for (int i = 2; i <= (int)Math.sqrt(n); i++) {
+			System.out.println("i = " + i);
+			if (n % i == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(solution("17"));
+		System.out.println("----------------------------");
+		System.out.println(checkPrime(17));
+	}
+}
+
+//문제 : 삼각 달팽이
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/68645
+
+class Solution_0059 {
+
+	public static int[] solution(int n) {
+
+		int l = (n + 1) * n / 2;
+
+		List<int[]> list = new ArrayList<>();
+		for (int i = 1; i <= n; i++) {
+			list.add(new int[i]);
+		}
+
+		int row = 0;
+		int col = 0;
+
+		int cnt = 1;
+		int downRightUp = 0;
+		int len = n;
+		while (cnt <= l) {
+			if (downRightUp == 0) {
+				for (int i = 0; i < len - 1; i++) {
+					list.get(row++)[col] = cnt++;
+				}
+				list.get(row)[col++] = cnt++;
+
+			} else if (downRightUp == 1) {
+				for (int i = 0; i < len - 1; i++) {
+					list.get(row)[col++] = cnt++;
+				}
+				list.get(row--)[col--] = cnt++;
+
+			} else {
+				for (int i = 0; i < len - 1; i++) {
+					list.get(row--)[col--] = cnt++;
+				}
+				list.get(row++)[col] = cnt++;
+			}
+
+			len--;
+			downRightUp = (downRightUp + 1) % 3;
+
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(Arrays.toString(list.get(i)));
+		}
+
+		int[] answer = new int[l];
+		int idx = 0;
+		for (int i = 0; i < list.size(); i++) {
+			int[] temp = list.get(i);
+			for (int j = 0; j < temp.length; j++) {
+				answer[idx++] = temp[j];
+			}
+		}
+
+		return answer;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(Arrays.toString(solution(4)));
+	}
+}
+
+//문제 : 큰 수 만들기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42883
+
+class Solution_0060 {
+	public static String solution(String number, int k) {
+		String answer = "";
+
+		int[] nums = new int[number.length()];
+		for (int i = 0; i < number.length(); i++) {
+			nums[i] = number.charAt(i) - 48;
+		}
+
+		int cnt = 0;
+		int beforeIdx = -1;
+		int max;
+		while (cnt < number.length() - k) {
+			max = -1;
+			for (int i = beforeIdx + 1; i < k + cnt + 1; i++) {
+				if (nums[i] == 9) {
+					max = nums[i];
+					beforeIdx = i;
+					break;
+				}
+				if (nums[i] > max) {
+					max = nums[i];
+					beforeIdx = i;
+				}
+			}
+			answer += (int)max;
+			cnt++;
+		}
+
+		return answer;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(solution("4177252841", 4));
+	}
+}
+
+//문제 : 두 큐 합 같게 만들기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/118667
+
+class Solution_0061 {
+	public int solution(int[] queue1, int[] queue2) {
+
+		long sum1 = 0;
+		long sum2 = 0;
+		Queue<Integer> q1 = new LinkedList<>();
+		Queue<Integer> q2 = new LinkedList<>();
+
+		for (int i = 0; i < queue1.length; i++) {
+			q1.add(queue1[i]);
+			sum1 += queue1[i];
+		}
+
+		for (int i = 0; i < queue2.length; i++) {
+			q2.add(queue2[i]);
+			sum2 += queue2[i];
+		}
+
+		if ((sum1 + sum2) % 2 != 0) {
+			return -1;
+		}
+
+		int cnt = 0;
+		int l = Math.max(queue1.length, queue2.length) * 3;
+		int temp;
+		while (true) {
+
+			if (sum1 > sum2) {
+				temp = q1.poll();
+				q2.add(temp);
+				sum1 -= temp;
+				sum2 += temp;
+				cnt++;
+			} else if (sum1 < sum2) {
+				temp = q2.poll();
+				q1.add(temp);
+				sum1 += temp;
+				sum2 -= temp;
+				cnt++;
+			} else {
+				break;
+			}
+			if (cnt > l) {
+				return -1;
+			}
+
+		}
+
+		return cnt;
+	}
+}
+
+
+
+
+
+
+
+
+
 
 
 

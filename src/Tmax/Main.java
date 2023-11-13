@@ -1,6 +1,8 @@
 package Tmax;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 class Solution001 {
 	public static int[] solution(int[][] score) {
@@ -181,10 +183,67 @@ class Solution03 {
 		}
 
 	}
+}
+
+class Solution04 {
 
 	public static void main(String[] args) {
-		int[][] arr = new int[][] {{100, 1, 100}, {100, 1, 100}, {100, 1, 100}, {100, 1, 100}, {100, 1, 100},
-			{100, 1, 100}, {100, 1, 100}, {100, 1, 100}};
-		System.out.println(solution(arr));
+		Set<String> set = new HashSet<>();
+
+		int i = 1;
+		int j = 0;
+		set.add("" + j + i + j + i);
+		System.out.println(set);
+
+		String str = "(010)12345678";
+		System.out.println(str.substring(5));
+
+		String a = "" + str.charAt(7) + str.charAt(8);
+
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

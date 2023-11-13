@@ -2,13 +2,19 @@ package inputoutput;
 
 //백준 : 정답 입력 양식
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 //문제 : A+B
@@ -226,13 +232,314 @@ class Solution_004 {
 		while (iterator.hasNext()) {
 			String temp = iterator.next();
 			if (map.get(temp).size() != 1) {
-				
+
 			}
 		}
 
 		System.out.println(ans);
 	}
 }
+
+//문제 : 금고털이
+//url : https://softeer.ai/app/assessment/index.html?xid=40350&xsrfToken=5HluQuHCwmSQbuWZFT0EDtBdDgs3xaYc&testType=practice
+class Solution_005 {
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+		String str = sc.nextLine();
+		int W = Integer.parseInt(str.split(" ")[0]);
+		int N = Integer.parseInt(str.split(" ")[1]);
+
+		List<int[]> list = new ArrayList<>();
+		for (int i = 0; i < N; i++) {
+			String jp = sc.nextLine();
+			list.add(new int[] {Integer.parseInt(jp.split(" ")[0]), Integer.parseInt(jp.split(" ")[1])});
+		}
+
+		Collections.sort(list, (o1, o2) -> o2[1] - o1[1]);
+
+		int ans = 0;
+		for (int[] i : list) {
+			if (W > i[0]) {
+				ans += i[0] * i[1];
+				W -= i[0];
+			} else {
+				ans += W * i[1];
+				break;
+			}
+		}
+
+		System.out.println(ans);
+	}
+}
+
+//문제 : 징검다리
+//url : https://softeer.ai/app/assessment/index.html?xid=40521&xsrfToken=UDV8ATtlN2np1ohmCNcR7UGtEdQ8eV5f&testType=practice
+class Solution_006 {
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+
+		int N = Integer.parseInt(sc.nextLine());
+		int[] stones = new int[N];
+		String ss = sc.nextLine();
+		String[] sts = ss.split(" ");
+		for (int i = 0; i < N; i++) {
+			stones[i] = Integer.parseInt(sts[i]);
+		}
+
+		System.out.println(Arrays.toString(stones));
+
+		int[] dp = new int[N];
+		for (int i = 0; i < N; i++) {
+			dp[i] = 1;
+		}
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j <= i; j++) {
+				if (stones[i] > stones[j]) {
+					dp[i] = Math.max(dp[i], dp[j] + 1);
+				}
+			}
+		}
+
+		int answer = 0;
+		for (int i = 0; i < N; i++) {
+			answer = Math.max(answer, dp[i]);
+		}
+		System.out.println(answer);
+	}
+}
+
+//문제 : 수퍼바이러스
+//url : https://softeer.ai/app/assessment/index.html?xid=41873&xsrfToken=KIp30fstMqxZJhLEY2aCwoABtujykkQ4&testType=practice
+class Solution_007 {
+	public static void main(String[] args) throws IOException {
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		long k = Long.parseLong(st.nextToken());
+		long p = Long.parseLong(st.nextToken());
+		long n = Long.parseLong(st.nextToken());
+
+		n *= 10;
+
+		long res = recursion(p, n);
+
+		System.out.println(k * res % 1000000007);
+	}
+
+	public static long recursion(long p, long n) {
+		if (n == 1) {
+			return p;
+		}
+
+		long cur = recursion(p, n / 2);
+		if (n % 2 == 1) {
+			return (cur * cur % 1000000007) * p % 1000000007;
+		} else {
+			return cur * cur % 1000000007;
+		}
+	}
+}
+
+//문제 : 강의실 배정
+//url : https://softeer.ai/app/assessment/index.html?xid=41994&xsrfToken=iT39FnTf68ToHTsCZ50XS2L7TDyrJomD&testType=practice
+class Solution_008 {
+
+	public static void main(String[] args) throws IOException {
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		int N = Integer.parseInt(st.nextToken());
+		int[][] lessons = new int[N][2];
+
+		for (int i = 0; i < N; i++) {
+			StringTokenizer s = new StringTokenizer(br.readLine());
+			lessons[i][0] = Integer.parseInt(s.nextToken());
+			lessons[i][1] = Integer.parseInt(s.nextToken());
+		}
+
+		Arrays.sort(lessons, (a, b) -> a[1] - b[1]);
+
+		int ans = 0;
+		int s = 0;
+
+		for (int[] i : lessons) {
+			if (i[0] >= s) {
+				s = i[1];
+				ans++;
+			}
+		}
+
+		System.out.println(ans);
+
+	}
+}
+
+//문제 : 우물 안 개구리
+//url : https://softeer.ai/app/assessment/index.html?xid=42180&xsrfToken=aYXOve5Nj6tsITwIVYfFB0fr7ITRylif&testType=practice
+class Solution_009 {
+
+	public static void main(String[] args) throws IOException {
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+
+		int[] Wn = new int[N];
+		StringTokenizer ws = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			Wn[i] = Integer.parseInt(ws.nextToken());
+		}
+
+		String as = "name";
+
+		int[][] Mn = new int[M][2];
+
+		for (int i = 0; i < M; i++) {
+			StringTokenizer ms = new StringTokenizer(br.readLine());
+			Mn[i][0] = Integer.parseInt(ms.nextToken());
+			Mn[i][1] = Integer.parseInt(ms.nextToken());
+		}
+
+		boolean[] frog = new boolean[N];
+		Arrays.fill(frog, true);
+
+		for (int i = 0; i < M; i++) {
+			if (Wn[Mn[i][0] - 1] > Wn[Mn[i][1] - 1]) {
+				frog[Mn[i][1] - 1] = false;
+			} else if (Wn[Mn[i][0] - 1] < Wn[Mn[i][1] - 1]) {
+				frog[Mn[i][0] - 1] = false;
+			} else {
+				frog[Mn[i][0] - 1] = false;
+				frog[Mn[i][1] - 1] = false;
+			}
+		}
+
+		int ans = 0;
+		for (int i = 0; i < N; i++) {
+			if (frog[i]) {
+				ans++;
+			}
+		}
+
+		System.out.println(ans);
+	}
+}
+
+//문제 : 징검다리 2
+//url : https://softeer.ai/app/assessment/index.html?xid=44699&xsrfToken=a5U0pG3hx0csJ26mNyxSaDTZ900rDLKe&testType=practice
+class Solution_010 {
+
+	public static void main(String[] args) throws IOException {
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int[] stones = new int[N];
+
+		StringTokenizer ss = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			stones[i] = Integer.parseInt(ss.nextToken());
+		}
+
+		System.out.println("N = " + N);
+		System.out.println("stones = " + Arrays.toString(stones));
+
+		int ans = 0;
+
+		for (int i = 0; i < N; i++) {
+			int total;
+			int lowMax = 0;
+			int highMax = 0;
+
+			int[] lowS = new int[i + 1];
+			Arrays.fill(lowS, 1);
+			for (int j = 0; j <= i; j++) {
+				for (int k = 0; k <= j; k++) {
+					if (stones[j] > stones[k]) {
+						lowS[j] = Math.max(lowS[j], lowS[k] + 1);
+					}
+				}
+			}
+
+			int[] highS = new int[N - i];
+			Arrays.fill(highS, 1);
+			for (int j = i; j < N; j++) {
+				for (int k = i; k <= j; k++) {
+					if (stones[j] < stones[k]) {
+						highS[j - i] = Math.max(highS[j - i], highS[k - i] + 1);
+					}
+				}
+			}
+
+			for (int j = 0; j < lowS.length; j++) {
+				lowMax = Math.max(lowMax, lowS[j]);
+			}
+			for (int j = 0; j < highS.length; j++) {
+				highMax = Math.max(highMax, highS[j]);
+			}
+
+			total = lowMax + highMax - 1;
+			System.out.println("lowMax = " + lowMax);
+			System.out.println("highMax = " + highMax);
+			System.out.println("total = " + total);
+			ans = Math.max(ans, total);
+
+		}
+
+		System.out.println(ans);
+	}
+}
+
+//문제 : 스마트 물류
+//url : https://softeer.ai/app/assessment/index.html?xid=45049&xsrfToken=iTWANBZxSqaPwZuVMHRtwWk1XQL8eyTO&testType=practice
+class Solution_011 {
+
+	public static void main(String[] args) throws IOException {
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int K = Integer.parseInt(st.nextToken());
+
+		StringTokenizer hp = new StringTokenizer(br.readLine());
+		String d = hp.nextToken();
+		int[] parts = new int[N];
+		for (int i = 0; i < d.length(); i++) {
+			if (d.charAt(i) == 'P') {
+				parts[i] = 1;
+			}
+		}
+
+		int ans = 0;
+		for (int i = 0; i < parts.length; i++) {
+			if (parts[i] == 0) {
+				for (int j = -K; j <= K; j++) {
+					if ((j == 0) || (i + j < 0) || (i + j >= N)) {
+						continue;
+					}
+					if (parts[i + j] == 1) {
+						parts[i + j] = 3;
+						ans++;
+						break;
+					}
+				}
+			}
+		}
+
+		System.out.println(ans);
+
+	}
+}
+
+
+
+
 
 
 
