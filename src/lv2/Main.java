@@ -4091,39 +4091,6 @@ class Solution_0070 {
             ans += "(" + sliceAndSort(v) + ")" + cutAndReverse(u);
         }
 
-//
-//        if (CheckCorrect(u)) {
-//            ans += u;
-//        } else {
-//            String fixA = u.substring(1, u.length() - 1);
-//            String repA = "(";
-//            for (int i = 0; i < fixA.length(); i++) {
-//                if (fixA.charAt(i) == '(') {
-//                    repA += ")";
-//                } else {
-//                    repA += "(";
-//                }
-//            }
-//            repA += ")";
-//            ans += sliceAndSort(repA);
-//        }
-//
-//        if (CheckCorrect(v)) {
-//            ans += v;
-//        } else {
-//            String fixB = v.substring(1, v.length() - 1);
-//            String repB = "(";
-//            for (int i = 0; i < fixB.length(); i++) {
-//                if (fixB.charAt(i) == '(') {
-//                    repB += ")";
-//                } else {
-//                    repB += "(";
-//                }
-//            }
-//            repB += ")";
-//            ans += sliceAndSort(repB);
-//        }
-
         return ans;
 
     }
@@ -4175,6 +4142,490 @@ class Solution_0070 {
     }
 
 }
+
+
+//문제 : 수식 최대화
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/67257
+class Solution_0071 {
+    public static long solution(String expression) {
+        List<String> cals = new ArrayList<>();
+        List<Long> nums = new ArrayList<>();
+
+        String temp = "";
+        for (int i = 0; i < expression.length(); i++) {
+            char now = expression.charAt(i);
+
+            if (now >= '0' && now <= '9') {
+                temp += now;
+            } else {
+                nums.add(Long.parseLong(temp));
+                temp = "";
+                cals.add(String.valueOf(now));
+            }
+        }
+        nums.add(Long.parseLong(temp));
+
+        System.out.println("cals = " + cals);
+        System.out.println("nums = " + nums);
+
+        long answer = 0;
+
+        String[] orders = new String[]{"+", "-", "*"};
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    if (i != j && j != k && k != i) {
+                        System.out.println(orders[i]);
+                        System.out.println(orders[j]);
+                        System.out.println(orders[k]);
+
+
+                        List<Long> numsCopy = new ArrayList<>(List.copyOf(nums));
+                        List<String> calsCopy = new ArrayList<>(List.copyOf(cals));
+
+                        System.out.println("numsCopy = " + numsCopy);
+                        System.out.println("calsCopy = " + calsCopy);
+
+
+                        for (int l = 0; l < calsCopy.size(); l++) {
+                            if (calsCopy.get(l).equals(orders[i])) {
+                                numsCopy.set(l, calByOper(numsCopy.get(l), numsCopy.get(l + 1), orders[i]));
+                                numsCopy.remove(l + 1);
+                                calsCopy.remove(l);
+                                l--;
+                            }
+                        }
+
+                        System.out.println("numsCopy = " + numsCopy);
+                        System.out.println("calsCopy = " + calsCopy);
+                        for (int l = 0; l < calsCopy.size(); l++) {
+                            if (calsCopy.get(l).equals(orders[j])) {
+                                numsCopy.set(l, calByOper(numsCopy.get(l), numsCopy.get(l + 1), orders[j]));
+                                numsCopy.remove(l + 1);
+                                calsCopy.remove(l);
+                                l--;
+                            }
+                        }
+
+                        System.out.println("numsCopy = " + numsCopy);
+                        System.out.println("calsCopy = " + calsCopy);
+
+                        for (int l = 0; l < calsCopy.size(); l++) {
+                            System.out.println("l = " + l);
+                            if (calsCopy.get(l).equals(orders[k])) {
+                                numsCopy.set(l, calByOper(numsCopy.get(l), numsCopy.get(l + 1), orders[k]));
+                                numsCopy.remove(l + 1);
+                                calsCopy.remove(l);
+                                l--;
+                            }
+                        }
+
+                        System.out.println("numsCopy = " + numsCopy);
+                        System.out.println("calsCopy = " + calsCopy);
+
+                        System.out.println("finals = " + numsCopy.get(0));
+
+                        if (answer < Math.abs(numsCopy.get(0))) {
+                            answer = Math.abs(numsCopy.get(0));
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return answer;
+    }
+
+    public static Long calByOper(long a, long b, String c) {
+        if (c.equals("+")) {
+            return a + b;
+        } else if (c.equals("-")) {
+            return a - b;
+        } else {
+            return a * b;
+        }
+    }
+
+    public static void main(String[] args) {
+        String exp = "100-200*300-500+20";
+        System.out.println(solution(exp));
+
+    }
+}
+
+
+//문제 : 시소 짝꿍
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/152996
+class Solution_0072 {
+    public static long solution(int[] weights) {
+        long answer = 0;
+
+        Map<Float, Integer> map = new HashMap<>();
+        Float[] cals = new Float[7];
+        cals[0] = 0.5f;
+        cals[1] = 2 / 3f;
+        cals[2] = 3 / 4f;
+        cals[3] = 4 / 3f;
+        cals[4] = 3 / 2f;
+        cals[5] = 2f;
+        cals[6] = 1f;
+
+
+        for (int i = 0; i < weights.length - 1; i++) {
+
+            int now = weights[i];
+            float after = (float) weights[i + 1];
+
+            for (int j = 0; j < cals.length; j++) {
+                if (map.containsKey(now * cals[j])) {
+                    map.put(now * cals[j], map.get(now * cals[j]) + 1);
+                } else {
+                    map.put(now * cals[j], 1);
+                }
+            }
+
+            if (map.containsKey(after)) {
+                answer += map.get(after);
+            }
+        }
+
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        int[] weigths = new int[]{100, 180, 360, 100, 270};
+
+        System.out.println(solution(weigths));
+    }
+}
+
+//문제 : 행렬 테두리 회전하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/77485
+class Solution_0073 {
+
+    static int[][] matrix;
+
+    public static int[] solution(int rows, int columns, int[][] queries) {
+        int[] answer = new int[queries.length];
+        matrix = new int[rows][columns];
+
+        int c = 1;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = c++;
+            }
+        }
+
+        System.out.println("기본이다요");
+        for (int i = 0; i < matrix.length; i++) {
+            System.out.println(Arrays.toString(matrix[i]));
+        }
+
+        for (int i = 0; i < queries.length; i++) {
+            answer[i] = RotateAndLeast(queries[i][0] - 1, queries[i][1] - 1, queries[i][2] - 1, queries[i][3] - 1);
+            System.out.println("변신!");
+            for (int j = 0; j < matrix.length; j++) {
+                System.out.println(Arrays.toString(matrix[j]));
+            }
+        }
+
+
+        return answer;
+    }
+
+    public static int RotateAndLeast(int r1, int c1, int r2, int c2) {
+        int least = 10100;
+
+        int temp = matrix[r1][c1];
+
+        for (int i = r1; i < r2; i++) {
+            if (least > matrix[i + 1][c1]) {
+                least = matrix[i + 1][c1];
+            }
+            matrix[i][c1] = matrix[i + 1][c1];
+        }
+
+        for (int i = c1; i < c2; i++) {
+            if (least > matrix[r2][i + 1]) {
+                least = matrix[r2][i + 1];
+            }
+            matrix[r2][i] = matrix[r2][i + 1];
+        }
+
+        for (int i = r2; i > r1; i--) {
+            if (least > matrix[i - 1][c2]) {
+                least = matrix[i - 1][c2];
+            }
+            matrix[i][c2] = matrix[i - 1][c2];
+        }
+
+        for (int i = c2; i > c1 + 1; i--) {
+            if (least > matrix[r1][i - 1]) {
+                least = matrix[r1][i - 1];
+            }
+            matrix[r1][i] = matrix[r1][i - 1];
+        }
+
+        matrix[r1][c1 + 1] = temp;
+        if (least > temp) {
+            least = temp;
+        }
+
+        return least;
+
+    }
+
+    public static void main(String[] args) {
+        int[][] arr = new int[][]{{2, 2, 5, 4}, {3, 3, 6, 6}, {5, 1, 6, 3}};
+
+        System.out.println(Arrays.toString(solution(6, 6, arr)));
+    }
+}
+
+
+//문제 : 배달
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12978
+class Solution_0074 {
+
+    int[][] globalRoad;
+    boolean[] check;
+    int[] time;
+    int globalK;
+
+    public int solution(int N, int[][] road, int K) {
+        int answer = 0;
+
+        globalK = K;
+        globalRoad = road;
+        check = new boolean[road.length];
+        time = new int[N];
+        Arrays.fill(time, 500001);
+
+        for (int i = 0; i < globalRoad.length; i++) {
+            if (globalRoad[i][0] == 1) {
+                check[i] = true;
+                searchTime(globalRoad[i][1], globalRoad[i][2]);
+            } else if (globalRoad[i][1] == 1) {
+                check[i] = true;
+                searchTime(globalRoad[i][0], globalRoad[i][2]);
+            }
+        }
+
+        time[0] = 0;
+
+        for (int i = 0; i < time.length; i++) {
+            if (time[i] <= K) {
+                answer++;
+            }
+        }
+
+        return answer;
+    }
+
+    public void searchTime(int next, int total_time) {
+        if (total_time > globalK || next == 1) {
+            return;
+        }
+
+        if (total_time < time[next - 1]) {
+            time[next - 1] = total_time;
+        }
+
+        for (int i = 0; i < globalRoad.length; i++) {
+            if (globalRoad[i][2] > globalK) {
+                check[i] = true;
+                continue;
+            }
+
+            if (!check[i]) {
+                if (globalRoad[i][0] == next) {
+                    check[i] = true;
+                    searchTime(globalRoad[i][1], total_time + globalRoad[i][2]);
+                    check[i] = false;
+                } else if (globalRoad[i][1] == next) {
+                    check[i] = true;
+                    searchTime(globalRoad[i][0], total_time + globalRoad[i][2]);
+                    check[i] = false;
+                }
+            }
+        }
+    }
+}
+
+//다익스트라 알고리즘
+class Solution_0074_1 {
+    public int solution(int N, int[][] road, int K) {
+        int answer = 0;
+
+        //갈 수 있는 길들을 2차원 배열에 정리
+        int[][] roads = new int[N + 1][N + 1];
+        for (int i = 0; i < road.length; i++) {
+            if ((roads[road[i][0]][road[i][1]] > road[i][2]) || (roads[road[i][0]][road[i][1]] == 0)) {
+                roads[road[i][0]][road[i][1]] = road[i][2];
+                roads[road[i][1]][road[i][0]] = road[i][2];
+            }
+        }
+
+        //여기서 부터 idx 기준으로 번호를 작성한다.
+        //0이면 1번 노드 이다. roads는 제외한다.
+
+        //특정 노드까지 도달할 시간을 저장할 배열
+        //문제 상 최대 값보다 높은 숫자로 초기화
+        //시작 노드는 0으로 초기화한다.
+        int[] elapsedTime = new int[N];
+        Arrays.fill(elapsedTime, 500001);
+        elapsedTime[0] = 0;
+
+        //방문했는지 저장하는 노드, 방문하면 true로 바꾼다.
+        boolean[] visited = new boolean[N];
+
+        //마을의 개수만큼 루프를 돈다.
+        for (int k = 0; k < N; k++) {
+
+            //최소 시간과 그 시간을 가지는 기준 노드를 position에 저장한다.
+            int leastTime = 50001;
+            int position = 0;
+            //leastTime보다 적은 비용으로 갈 수 있는 노드만 파악한다. 없다면 시작노드가 기준이 된다.
+            for (int i = 1; i < visited.length; i++) {
+                if (visited[i] == false && elapsedTime[i] < leastTime) {
+                    leastTime = elapsedTime[i];
+                    position = i;
+                }
+            }
+
+            //기준 노드까지 걸리는 시간을 저장한다.
+            int baseTime = elapsedTime[position];
+
+            //기준노드 에서 갈 수 있는 길들(0이상의 비용을 가진 roads의 원소) 중에서
+            //길들을 통해 갈 수 있는 노드의 비용이 현재 비용보다 적은 경우에는 바꿔주고 아니면 냅둔다.
+            for (int i = 1; i < N; i++) {
+                if (roads[position + 1][i + 1] > 0 && roads[position + 1][i + 1] + baseTime < elapsedTime[i]) {
+                    elapsedTime[i] = roads[position + 1][i + 1] + baseTime;
+                }
+            }
+            //방문한거를 체크한다.
+            visited[position] = true;
+
+        }
+
+        // 경과시간을 파악하여 정답 개수를 뽑아낸다.
+        for (int i = 0; i < elapsedTime.length; i++) {
+            if (elapsedTime[i] <= K) {
+                answer++;
+            }
+        }
+
+        return answer;
+    }
+}
+
+//플로이드 워셜
+class Solution_0074_2 {
+    public int solution(int N, int[][] road, int K) {
+        int answer = 0;
+
+        //거리 비용을 2차원 배열에 정리
+        int[][] costs = new int[N][N];
+        for (int i = 0; i < costs.length; i++) {
+            Arrays.fill(costs[i], 500001);
+            costs[i][i] = 0;
+        }
+
+        //노드 간 거리를 입력해준다.
+        for (int i = 0; i < road.length; i++) {
+            if (costs[road[i][0] - 1][road[i][1] - 1] > road[i][2]) {
+                costs[road[i][0] - 1][road[i][1] - 1] = road[i][2];
+                costs[road[i][1] - 1][road[i][0] - 1] = road[i][2];
+            }
+        }
+
+        //플로이드 와샬
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < N; k++) {
+                    // jk를 바로 가는 것과 i를 거쳐서 가는 것 중 비교한다.
+                    costs[j][k] = Math.min(costs[j][k], costs[j][i] + costs[i][k]);
+                }
+            }
+        }
+
+        //기준 노드에서 다른 노드들까지 가는데 K 이하의 비용으로 가는 경우 계산
+        for (int i = 0; i < N; i++) {
+            if (costs[0][i] <= K) {
+                answer++;
+            }
+        }
+
+        return answer;
+    }
+}
+
+
+//문제 : 줄 서는 방법
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12936
+class Solution_0075 {
+    public int[] solution(int n, long k) {
+        int[] answer = new int[n];
+
+        if (n == 1) {
+            return new int[]{1};
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for (int i = 1; i < n + 1; i++) {
+            list.add(i);
+        }
+
+        long a = factorial(n - 1);
+        long b = k / a;
+
+        answer[0] = list.get((int) b);
+        list.remove((int) b);
+        k--;
+        k = k % a;
+
+        for (int i = 1; i < n; i++) {
+            a = factorial(n - i - 1);
+            b = k / a;
+
+            answer[i] = list.get((int) b);
+            list.remove((int) b);
+            if (i == 0) {
+                k--;
+            }
+
+            k = k % a;
+        }
+        return answer;
+    }
+
+    public long factorial(int n) {
+        long ans = 1;
+        for (int i = 1; i < n + 1; i++) {
+            ans *= i;
+        }
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
