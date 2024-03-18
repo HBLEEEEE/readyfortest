@@ -4610,14 +4610,183 @@ class Solution_0075 {
     }
 }
 
+//문제 : 숫자 카드 나누기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/135807
+class Solution_0076 {
+    public int solution(int[] arrayA, int[] arrayB) {
+        int answer = 0;
+
+        List<Integer> listA = new ArrayList<>();
+        List<Integer> listB = new ArrayList<>();
+
+        Arrays.sort(arrayA);
+        Arrays.sort(arrayB);
+
+        if (arrayA[0] == 1) {
+
+        } else {
+            A:
+            for (int i = 2; i <= arrayA[0]; i++) {
+                for (int j = 0; j < arrayA.length; j++) {
+                    if (arrayA[j] % i != 0) {
+                        continue A;
+                    }
+                }
+                listA.add(i);
+            }
+        }
+
+        if (arrayB[0] == 1) {
+
+        } else {
+            B:
+            for (int i = 2; i <= arrayB[0]; i++) {
+                for (int j = 0; j < arrayB.length; j++) {
+                    if (arrayB[j] % i != 0) {
+                        continue B;
+                    }
+                }
+                listB.add(i);
+            }
+        }
+
+        AA:
+        for (int i = listA.size() - 1; i >= 0; i--) {
+            int n = listA.get(i);
+            for (int j = 0; j < arrayB.length; j++) {
+                if (arrayB[j] % n == 0) {
+                    continue AA;
+                }
+            }
+
+            if (answer < n) {
+                answer = n;
+            }
+            break;
+        }
+
+        BB:
+        for (int i = listB.size() - 1; i >= 0; i--) {
+            int n = listB.get(i);
+            for (int j = 0; j < arrayA.length; j++) {
+                if (arrayA[j] % n == 0) {
+                    continue BB;
+                }
+            }
+
+            if (answer < n) {
+                answer = n;
+            }
+            break;
+        }
+
+        System.out.println("listA = " + listA);
+        System.out.println("listB = " + listB);
+
+        return answer;
+    }
+}
 
 
+//문제 : 벌집 피자
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/135807
+class Solution_0077 {
+    static public int[] solution(int n) {
 
+        int N = 1;
 
+        for (int i = 1; i < n; i++) {
+            N += 6 * i;
+        }
+        int answer[] = new int[N];
 
+        int[][] temp = new int[2 * n - 1][n * 4 - 3];
 
+        int w = n - 1;
+        int c = 0;
+        boolean wRight = true;
+        boolean cDown = true;
 
+        for (int i = 1; i <= N; i++) {
 
+            System.out.println("w = " + w);
+            System.out.println("c = " + c);
+            if (w >= 2 * n - 1) {
+                temp[2 * n - 2][c] = i;
+            } else if (w < 0) {
+                temp[0][c] = i;
+            } else {
+                temp[w][c] = i;
+            }
+
+            if (wRight) {
+                w++;
+                if (w == 2 * n) {
+                    wRight = false;
+                }
+            } else {
+                w--;
+                if (w == -n + 1) {
+                    wRight = true;
+                }
+            }
+
+            if (!cDown && c == 0) {
+                cDown = true;
+            } else if (c == n * 4 - 3 - 1 && cDown) {
+                cDown = false;
+            }
+
+            if (cDown) {
+                c++;
+            } else {
+                c--;
+            }
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            System.out.println(Arrays.toString(temp[i]));
+        }
+
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution(3));
+    }
+}
+
+//문제 : 테이블 해시 함수
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/147354
+class Solution_0078 {
+    public int solution(int[][] data, int col, int row_begin, int row_end) {
+
+//        Arrays.sort(data, Comparator.comparingInt(row -> row[col]).thenComparingInt(row -> row[0]));
+        Arrays.sort(data, Comparator.comparingInt((int[] row) -> row[col])
+                .thenComparingInt((int[] row) -> row[0]).reversed());
+
+        List<Integer> ans = new ArrayList<>();
+
+        System.out.println(Arrays.deepToString(data));
+
+        for (int i = row_begin - 1; i < row_end; i++) {
+            int t = 0;
+            for (int j = 0; j < data[i].length; j++) {
+                t += data[i][j] % (i + 1);
+            }
+            ans.add(t);
+        }
+
+        System.out.println(ans);
+
+        int answer = ans.get(0);
+        for (int i = 1; i < ans.size(); i++) {
+            answer = answer ^ ans.get(i);
+        }
+
+        return answer;
+    }
+}
 
 
 
