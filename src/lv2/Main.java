@@ -4762,8 +4762,8 @@ class Solution_0078 {
     public int solution(int[][] data, int col, int row_begin, int row_end) {
 
 //        Arrays.sort(data, Comparator.comparingInt(row -> row[col]).thenComparingInt(row -> row[0]));
-        Arrays.sort(data, Comparator.comparingInt((int[] row) -> row[col])
-                .thenComparingInt((int[] row) -> row[0]).reversed());
+        Arrays.sort(data, Comparator.comparingInt((int[] row) -> row[col - 1])
+                .thenComparing(Comparator.comparingInt((int[] row) -> row[0]).reversed()));
 
         List<Integer> ans = new ArrayList<>();
 
