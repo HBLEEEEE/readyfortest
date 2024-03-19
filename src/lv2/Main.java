@@ -4788,8 +4788,154 @@ class Solution_0078 {
     }
 }
 
+//문제 : 미로 탈출
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/159993
+class Solution_0079 {
+    public static int solution(String[] maps) {
+        int answer = 0;
+
+        Queue<Integer> steps = new LinkedList<>();
+        Queue<Integer> queue = new LinkedList<>();
+
+        Boolean[][] path = new Boolean[maps.length][maps[0].length()];
+
+        for (int i = 0; i < path.length; i++) {
+            Arrays.fill(path[i], false);
+        }
 
 
+        int startX = -1;
+        int startY = -1;
+        int leverX = -1;
+        int leverY = -1;
+        int endX = -1;
+        int endY = -1;
+
+        for (int i = 0; i < maps.length; i++) {
+            for (int j = 0; j < maps[i].length(); j++) {
+                if (maps[i].charAt(j) == 'S') {
+                    startX = i;
+                    startY = j;
+                    path[i][j] = true;
+                } else if (maps[i].charAt(j) == 'L') {
+                    leverX = i;
+                    leverY = j;
+                    path[i][j] = true;
+                } else if (maps[i].charAt(j) == 'O') {
+                    path[i][j] = true;
+                } else if (maps[i].charAt(j) == 'E') {
+                    endX = i;
+                    endY = j;
+                    path[i][j] = true;
+                }
+            }
+        }
+        queue.add(startX);
+        queue.add(startY);
+
+        all:
+        while (!queue.isEmpty()) {
+            int size = queue.size() / 2;
+            for (int i = 0; i < size; i++) {
+                int x = queue.poll();
+                int y = queue.poll();
+                if (x == leverX && y == leverY) {
+                    queue.clear();
+                    break all;
+                }
+
+                if (x - 1 >= 0 && path[x - 1][y]) {
+                    queue.add(x - 1);
+                    queue.add(y);
+                    steps.add(x - 1);
+                    steps.add(y);
+                    path[x - 1][y] = false;
+                }
+                if (x + 1 < maps.length && path[x + 1][y]) {
+                    queue.add(x + 1);
+                    queue.add(y);
+                    steps.add(x + 1);
+                    steps.add(y);
+                    path[x + 1][y] = false;
+                }
+                if (y - 1 >= 0 && path[x][y - 1]) {
+                    queue.add(x);
+                    queue.add(y - 1);
+                    steps.add(x);
+                    steps.add(y - 1);
+                    path[x][y - 1] = false;
+                }
+                if (y + 1 < maps[0].length() && path[x][y + 1]) {
+                    queue.add(x);
+                    queue.add(y + 1);
+                    steps.add(x);
+                    steps.add(y + 1);
+                    path[x][y + 1] = false;
+                }
+            }
+
+            if (queue.isEmpty()) {
+                return -1;
+            }
+            answer++;
+        }
+
+        int qSize = steps.size() / 2;
+        for (int i = 0; i < qSize; i++) {
+            int x = steps.poll();
+            int y = steps.poll();
+            path[x][y] = true;
+        }
+
+        queue.add(leverX);
+        queue.add(leverY);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size() / 2;
+            for (int i = 0; i < size; i++) {
+                int x = queue.poll();
+                int y = queue.poll();
+                if (x == endX && y == endY) {
+                    return answer;
+                }
+
+                if (x - 1 >= 0 && path[x - 1][y]) {
+                    queue.add(x - 1);
+                    queue.add(y);
+                    path[x - 1][y] = false;
+                }
+                if (x + 1 < maps.length && path[x + 1][y]) {
+                    queue.add(x + 1);
+                    queue.add(y);
+                    path[x + 1][y] = false;
+                }
+                if (y - 1 >= 0 && path[x][y - 1]) {
+                    queue.add(x);
+                    queue.add(y - 1);
+                    path[x][y - 1] = false;
+                }
+                if (y + 1 < maps[0].length() && path[x][y + 1]) {
+                    queue.add(x);
+                    queue.add(y + 1);
+                    path[x][y + 1] = false;
+                }
+            }
+
+            if (queue.isEmpty()) {
+                return -1;
+            }
+            answer++;
+        }
+
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        String[] maps = {"SOOOL", "XXXXO", "OOOOO", "OXXXX", "OOOOE"};
+        System.out.println(solution(maps));
+
+    }
+}
 
 
 
