@@ -4937,12 +4937,124 @@ class Solution_0079 {
     }
 }
 
+//문제 : 거리두기 확인하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/81302
+class Solution_0080 {
+    public int[] solution(String[][] places) {
+        int[] answer = new int[places.length];
 
+        for (int i = 0; i < places.length; i++) {
+            answer[i] = search(places[i]);
+        }
+        return answer;
+    }
 
+    public int search(String[] positions) {
+        int r = positions.length;
+        int c = positions[0].length();
+        for (int i = 0; i < positions.length; i++) {
+            for (int j = 0; j < positions[i].length(); j++) {
+                if (positions[i].charAt(j) == 'P') {
+                    if (j + 1 < c && positions[i].charAt(j + 1) == 'P') {
+                        return 0;
+                    }
+                    if (j - 1 >= 0 && positions[i].charAt(j - 1) == 'P') {
+                        return 0;
+                    }
+                    if (i + 1 < r && positions[i + 1].charAt(j) == 'P') {
+                        return 0;
+                    }
+                    if (i - 1 >= 0 && positions[i - 1].charAt(j) == 'P') {
+                        return 0;
+                    }
 
+                    if (j + 2 < c && positions[i].charAt(j + 2) == 'P' && positions[i].charAt(j + 1) == 'O') {
+                        return 0;
+                    }
+                    if (j - 2 >= 0 && positions[i].charAt(j - 2) == 'P' && positions[i].charAt(j - 1) == 'O') {
+                        return 0;
+                    }
+                    if (i + 2 < r && positions[i + 2].charAt(j) == 'P' && positions[i + 1].charAt(j) == 'O') {
+                        return 0;
+                    }
+                    if (i - 2 >= 0 && positions[i - 2].charAt(j) == 'P' && positions[i - 1].charAt(j) == 'O') {
+                        return 0;
+                    }
 
+                    if ((j + 1 < c && i + 1 < r) && positions[i + 1].charAt(j + 1) == 'P' &&
+                            (positions[i + 1].charAt(j) == 'O' || positions[i].charAt(j + 1) == 'O')) {
+                        return 0;
+                    }
+                    if ((j - 1 >= 0 && i + 1 < r) && positions[i + 1].charAt(j - 1) == 'P' &&
+                            (positions[i + 1].charAt(j) == 'O' || positions[i].charAt(j - 1) == 'O')) {
+                        return 0;
+                    }
+                    if ((j - 1 >= 0 && i - 1 >= 0) && positions[i - 1].charAt(j - 1) == 'P' &&
+                            (positions[i - 1].charAt(j) == 'O' || positions[i].charAt(j - 1) == 'O')) {
+                        return 0;
+                    }
+                    if ((j + 1 < c && i - 1 >= 0) && positions[i - 1].charAt(j + 1) == 'P' &&
+                            (positions[i - 1].charAt(j) == 'O' || positions[i].charAt(j + 1) == 'O')) {
+                        return 0;
+                    }
+                }
+            }
+        }
 
+        return 1;
+    }
+}
 
+//거리두기 다른 답안
+//내꺼보다 느리나 정석적인 모습임
+class Solution_0080_1 {
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static boolean[][] visit;
+
+    static int[] answer;
+
+    public void dfs(int num, int x, int y, int count, String[] places) {
+        if (count > 2) return;
+        if (count > 0 && count <= 2 && places[x].charAt(y) == 'P') {
+            //2칸 범위내에 다른 응시자가 있을 경우 거리두기 미준수로 0처리
+            answer[num] = 0;
+            return;
+        }
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            //배열 범위 밖으로 초과하는지 여부 검사, 파티션으로 분리되어 있는 경우 상관 없음.
+            if (nx >= 0 && nx < 5 && ny >= 0 && ny < 5 && places[nx].charAt(ny) != 'X') {
+                if (visit[nx][ny]) continue; //이미 방문한 곳일 경우 생략
+                visit[nx][ny] = true;
+                dfs(num, nx, ny, count + 1, places);
+                visit[nx][ny] = false;
+            }
+        }
+    }
+
+    public int[] solution(String[][] places) {
+        answer = new int[places.length];
+        for (int i = 0; i < places.length; i++) {
+            answer[i] = 1;
+        }
+
+        for (int i = 0; i < places.length; i++) {
+            visit = new boolean[5][5];
+            for (int j = 0; j < 5; j++) {
+                for (int k = 0; k < 5; k++) {
+                    if (places[i][j].charAt(k) == 'P') {
+                        visit[j][k] = true;
+                        dfs(i, j, k, 0, places[i]);
+                        visit[j][k] = false;
+                    }
+                }
+            }
+        }
+        return answer;
+    }
+}
 
 
 
