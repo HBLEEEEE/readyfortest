@@ -5081,9 +5081,131 @@ class Solution_0081 {
 }
 
 
+//문제 : 리코쳇 로봇
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/169199
+class Solution_0082 {
 
+    boolean[][] maps;
 
+    public int solution(String[] board) {
 
+        maps = new boolean[board.length][board[0].length()];
+        boolean[][] check = new boolean[board.length][board[0].length()];
+        int startX = -1;
+        int startY = -1;
+        int endX = -1;
+        int endY = -1;
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length(); j++) {
+                if (board[i].charAt(j) == '.') {
+                    maps[i][j] = true;
+                    check[i][j] = true;
+                } else if (board[i].charAt(j) == 'D') {
+                    maps[i][j] = false;
+                    check[i][j] = false;
+                } else if (board[i].charAt(j) == 'R') {
+                    startX = i;
+                    startY = j;
+                    maps[i][j] = true;
+                    check[i][j] = true;
+                } else {
+                    endX = i;
+                    endY = j;
+                    maps[i][j] = true;
+                    check[i][j] = true;
+                }
+            }
+        }
+
+        for (int i = 0; i < check.length; i++) {
+            System.out.println(Arrays.toString(check[i]));
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(startX);
+        queue.add(startY);
+        check[startX][startY] = false;
+
+        int cnt = 0;
+        roof:
+        while (!queue.isEmpty()) {
+            int size = queue.size() / 2;
+            cnt++;
+            for (int i = 0; i < size; i++) {
+                int x = queue.poll();
+                int y = queue.poll();
+                for (int j = 0; j < 4; j++) {
+                    int[] temp = move(x, y, j);
+                    if (temp[0] == endX && temp[1] == endY) {
+                        return cnt;
+                    }
+                    if (check[temp[0]][temp[1]]) {
+                        queue.add(temp[0]);
+                        queue.add(temp[1]);
+                        check[temp[0]][temp[1]] = false;
+
+                    }
+                }
+
+            }
+        }
+
+        return -1;
+    }
+
+    public int[] move(int x, int y, int dir) {
+        //0,1,2,3 상하우좌
+
+        int[] point = new int[2];
+        point[0] = x;
+        point[1] = y;
+
+        if (dir == 0) {
+            for (int i = x; i >= 0; i--) {
+                if (!maps[i][y]) {
+                    point[0] = i + 1;
+                    break;
+                } else {
+                    point[0] = 0;
+                }
+            }
+
+        } else if (dir == 1) {
+            for (int i = x; i < maps.length; i++) {
+                if (!maps[i][y]) {
+                    point[0] = i - 1;
+                    break;
+                } else {
+                    point[0] = maps.length - 1;
+                }
+            }
+
+        } else if (dir == 2) {
+            for (int i = y; i < maps[0].length; i++) {
+                if (!maps[x][i]) {
+                    point[1] = i - 1;
+                    break;
+                } else {
+                    point[1] = maps[0].length - 1;
+                }
+            }
+
+        } else {
+            for (int i = y; i >= 0; i--) {
+                if (!maps[x][i]) {
+                    point[1] = i + 1;
+                    break;
+                } else {
+                    point[1] = 0;
+                }
+            }
+
+        }
+
+        return point;
+    }
+}
 
 
 
