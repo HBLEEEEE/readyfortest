@@ -5208,6 +5208,82 @@ class Solution_0082 {
 }
 
 
+//문제 : 하노이의 탑
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12946
+class Solution_0083 {
+
+
+    List<int[]> arr = new ArrayList<>();
+
+    public int[][] solution(int n) {
+        move(n, 1, 2, 3);
+        int[][] ans = arr.stream().toArray(int[][]::new);
+
+        return ans;
+    }
+
+    public void move(int cnt, int start, int mid, int end) {
+        if (cnt == 0) {
+            return;
+        }
+        move(cnt - 1, start, end, mid);
+        arr.add(new int[]{start, end});
+        move(cnt - 1, mid, start, end);
+
+    }
+}
+
+
+//문제 : 멀쩡한 사각형
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/62048
+class Solution_0084 {
+    public static long solution(int w, int h) {
+
+        double per = Math.ceil(h / (float) w);
+
+        System.out.println("per = " + per);
+        long answer = w * h - w * (long) per;
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution(8, 12));
+    }
+}
+
+//문제 : 디펜스 게임
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/142085#
+class Solution_0085 {
+
+    public int solution(int n, int k, int[] enemy) {
+        int answer = enemy.length;
+        Queue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+        int my = n;
+        int card = k;
+        for (int i = 0; i < enemy.length; i++) {
+            my -= enemy[i];
+            pq.add(enemy[i]);
+
+            System.out.println(pq);
+
+            if (my < 0) {
+                if (card > 0 && !pq.isEmpty()) {
+                    my += pq.poll();
+                    card--;
+                } else {
+                    answer = i;
+                    break;
+                }
+            }
+        }
+
+
+        return answer;
+    }
+}
+
+
 
 
 
