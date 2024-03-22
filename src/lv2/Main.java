@@ -5283,6 +5283,194 @@ class Solution_0085 {
     }
 }
 
+//문제 : 문자열 압축
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/60057
+class Solution_0086 {
+    public int solution(String s) {
+        int answer = s.length();
+        int cnt = 1;
+        for (int i = 1; i <= s.length() / 2; i++) {
+            StringBuilder res = new StringBuilder();
+            String base = s.substring(0, i);
+            for (int j = i; j <= s.length(); j += i) {
+                int end = Math.min(j + i, s.length());
+                String compare = s.substring(j, end);
+                if (base.equals(compare)) {
+                    cnt++;
+                } else {
+                    if (cnt >= 2) {
+                        res.append(cnt);
+                    }
+                    res.append(base);
+                    base = compare;
+                    cnt = 1;
+                }
+
+            }
+            res.append(base);
+            answer = Math.min(answer, res.length());
+        }
+        return answer;
+    }
+}
+
+//문제 : 점 찍기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/140107
+class Solution_0087 {
+    public long solution(long k, long d) {
+        long answer = 0;
+        long max = d / k;
+
+        for (long i = 0; i <= d; i++) {
+            if (i % k != 0) {
+                continue;
+            }
+            while (true) {
+                if ((max * k) * (max * k) + i * i > d * d) {
+                    max -= 1;
+                } else {
+                    break;
+                }
+            }
+            answer += max + 1;
+
+        }
+
+        return answer;
+    }
+}
+
+//문제 : 광물 캐기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/172927
+class Solution_0088 {
+    int answer = 25 * 50;
+    String[] global;
+
+    public int solution(int[] picks, String[] minerals) {
+        global = minerals;
+        int cnt = 0;
+
+        minning(0, 0, picks[0], picks[1], picks[2]);
+
+        return answer;
+    }
+
+    public void minning(int fatigue, int pos, int dp, int ip, int sp) {
+        if (fatigue > answer) {
+            return;
+        }
+        if (pos == global.length || (dp == 0 && ip == 0 && sp == 0)) {
+            answer = Math.min(answer, fatigue);
+            return;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (i == 0 && dp > 0) {
+                if (pos + 5 < global.length) {
+                    int fa = fatigue;
+                    for (int j = pos; j < pos + 5; j++) {
+                        fa += 1;
+                    }
+                    minning(fa, pos + 5, dp - 1, ip, sp);
+                } else {
+                    int fa = fatigue;
+                    for (int j = pos; j < global.length; j++) {
+                        fa += 1;
+                    }
+                    minning(fa, global.length, dp - 1, ip, sp);
+                }
+            } else if (i == 1 && ip > 0) {
+                if (pos + 5 < global.length) {
+                    int fa = fatigue;
+                    for (int j = pos; j < pos + 5; j++) {
+                        fa += spend(1, j);
+                    }
+                    minning(fa, pos + 5, dp, ip - 1, sp);
+                } else {
+                    int fa = fatigue;
+                    for (int j = pos; j < global.length; j++) {
+                        fa += spend(1, j);
+                    }
+                    minning(fa, global.length, dp, ip - 1, sp);
+                }
+            } else if (i == 2 && sp > 0) {
+                if (pos + 5 < global.length) {
+                    int fa = fatigue;
+                    for (int j = pos; j < pos + 5; j++) {
+                        fa += spend(2, j);
+                    }
+                    minning(fa, pos + 5, dp, ip, sp - 1);
+                } else {
+                    int fa = fatigue;
+                    for (int j = pos; j < global.length; j++) {
+                        fa += spend(2, j);
+                    }
+                    minning(fa, global.length, dp, ip, sp - 1);
+                }
+            }
+        }
+
+    }
+
+    public int spend(int pick, int idx) {
+        if (pick == 1) {
+            if (global[idx].equals("diamond")) {
+                return 5;
+            } else {
+                return 1;
+            }
+        } else if (pick == 2) {
+            if (global[idx].equals("diamond")) {
+                return 25;
+            } else if (global[idx].equals("iron")) {
+                return 5;
+            } else {
+                return 1;
+            }
+        }
+        return 1;
+    }
+}
+
+//문제 : 우박수열 정적분
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/134239
+class Solution_0089 {
+    public double[] solution(int k, int[][] ranges) {
+        double[] answer = new double[ranges.length];
+
+        List<Double> list = new ArrayList<>();
+
+        int temp = k;
+        while (k != 1) {
+            temp = k;
+            if (k % 2 != 0) {
+                k = k * 3 + 1;
+            } else {
+                k /= 2;
+            }
+            list.add((temp + k) / (double) 2);
+        }
+
+        for (int i = 0; i < ranges.length; i++) {
+            double total = 0;
+            int start = ranges[i][0];
+            int end = list.size() + ranges[i][1];
+            if (start <= end) {
+                for (int j = start; j < end; j++) {
+                    total += list.get(j);
+                }
+            } else {
+                total = -1;
+
+            }
+            answer[i] = total;
+        }
+        return answer;
+    }
+}
+
+
+
 
 
 
