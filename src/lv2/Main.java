@@ -5469,9 +5469,143 @@ class Solution_0089 {
     }
 }
 
+//문제 : 후보키
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42890
+class Solution_0090 {
+
+    public String[][] globalRelation;
+    public Set<String> set;
+
+    public int solution(String[][] relation) {
+        globalRelation = relation;
+        set = new HashSet<>();
+
+        for (int i = 1; i <= relation[0].length; i++) {
+            boolean[] selected = new boolean[relation[0].length];
+            dfs(0, 0, i, selected);
+        }
+
+        return set.size();
+    }
+
+    public void dfs(int idx, int cnt, int max, boolean[] selected) {
+        System.out.println(Arrays.toString(selected));
+
+        if (cnt == max) {
+
+            String cols = "";
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    cols += i;
+                }
+            }
+
+            if (findIsPossible(cols, selected)) {
+                set.add(cols);
+            }
+            return;
+
+        }
+
+        if (idx >= selected.length) return;
+
+        selected[idx] = true;
+        dfs(idx + 1, cnt + 1, max, selected);
+
+        selected[idx] = false;
+        dfs(idx + 1, cnt, max, selected);
+    }
+
+    public boolean findIsPossible(String cols, boolean[] selected) {
+
+        for (String s : set) {
+            boolean flag = true;
+            for (int i = 0; i < s.length(); i++) {
+                if (!cols.contains(s.charAt(i) + "")) {
+                    flag = false;
+                }
+            }
+
+            if (flag) {
+                return false;
+            }
+        }
+
+        Set<String> values = new HashSet<>();
+        int[] colName = new int[cols.length()];
+        int idx = 0;
+        for (int i = 0; i < selected.length; i++) {
+            if (selected[i]) {
+                colName[idx++] = i;
+            }
+        }
+
+        String value = "";
+        for (int i = 0; i < globalRelation.length; i++) {
+            value = "";
+            for (int j = 0; j < colName.length; j++) {
+                value += globalRelation[i][colName[j]];
+            }
+            if (values.contains(value)) {
+                return false;
+            } else {
+                values.add(value);
+            }
+        }
+
+        return true;
+    }
+}
 
 
+//문제 : 혼자 놀기의 달인
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/131130
+class Solution_0091 {
+    public int solution(int[] cards) {
+        Map<Integer, Integer> posAndNum = new HashMap<>();
+        for (int i = 0; i < cards.length; i++) {
+            posAndNum.put(i + 1, cards[i]);
+        }
 
+        int answer = 0;
+
+        for (int i = 0; i < cards.length - 1; i++) {
+            boolean[] check = new boolean[cards.length];
+            Arrays.fill(check, true);
+            int x = 0;
+            int xPos = i + 1;
+            while (true) {
+                check[xPos - 1] = false;
+                if (i + 1 == posAndNum.get(xPos)) {
+                    break;
+                } else {
+                    xPos = posAndNum.get(xPos);
+                    x++;
+                }
+            }
+
+            for (int j = i + 1; j < cards.length; j++) {
+                if (!check[j]) {
+                    continue;
+                }
+                int y = 0;
+                int yPos = j + 1;
+                while (true) {
+                    if (j + 1 == posAndNum.get(yPos)) {
+                        break;
+                    } else {
+                        yPos = posAndNum.get(yPos);
+                        y++;
+                    }
+                }
+                answer = Math.max(answer, x * y);
+                System.out.println("i = " + i);
+            }
+        }
+
+        return answer;
+    }
+}
 
 
 
