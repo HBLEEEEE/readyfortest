@@ -5608,4 +5608,107 @@ class Solution_0091 {
 }
 
 
+//문제 : 과제 진행하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/176962
+class Solution_0092 {
+    public String[] solution(String[][] plans) {
+        int[][] arr = new int[plans.length][2];
+        int[] left = new int[plans.length];
+        Queue<Integer> ans = new LinkedList<>();
+
+        for (int i = 0; i < plans.length; i++) {
+            arr[i][0] = i;
+            String[] hm = plans[i][1].split(":");
+            arr[i][1] = Integer.parseInt(hm[0]) * 60 + Integer.parseInt(hm[1]);
+            left[i] = Integer.parseInt(plans[i][2]);
+        }
+
+        Arrays.sort(arr, Comparator.comparingInt((int[] row) -> row[1]));
+
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(Arrays.toString(arr[i]));
+            System.out.println(left[arr[i][0]]);
+        }
+
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (left[arr[i][0]] > arr[i + 1][1] - arr[i][1]) {
+                left[arr[i][0]] -= arr[i + 1][1] - arr[i][1];
+                stack.add(arr[i][0]);
+            } else if (left[arr[i][0]] == arr[i + 1][1] - arr[i][1]) {
+                left[arr[i][0]] = 0;
+                ans.add(arr[i][0]);
+            } else {
+                ans.add(arr[i][0]);
+                int time = arr[i + 1][1] - arr[i][1] - left[arr[i][0]];
+                System.out.println("time = " + time);
+                left[arr[i][0]] = 0;
+                while (!stack.isEmpty() && time != 0) {
+                    int idx = stack.pop();
+                    if (left[idx] > time) {
+                        left[idx] -= time;
+                        stack.add(idx);
+                        time = 0;
+                    } else if (left[idx] == time) {
+                        left[idx] = 0;
+                        ans.add(idx);
+                        time = 0;
+                    } else {
+                        time -= left[idx];
+                        left[idx] = 0;
+                        ans.add(idx);
+                    }
+                }
+            }
+        }
+
+        System.out.println(ans);
+
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(Arrays.toString(arr[i]));
+            System.out.println(left[arr[i][0]]);
+        }
+
+        ans.add(arr[arr.length - 1][0]);
+
+        while (ans.size() < plans.length) {
+            ans.add(stack.pop());
+        }
+
+        String[] answer = new String[plans.length];
+        for (int i = 0; i < plans.length; i++) {
+            answer[i] = plans[ans.poll()][0];
+        }
+
+        return answer;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
