@@ -5685,12 +5685,94 @@ class Solution_0092 {
 }
 
 
+//문제 : 두 원 사이의 정수 쌍
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/181187
+class Solution_0093 {
+    public long solution(int r1, int r2) {
+        long answer = 0;
+
+        for (long i = 0; i < r2; i++) {
+            System.out.println("i = " + i);
+            double max = Math.sqrt(r2 * r2 - i * i);
+            max = Math.floor(max);
+            double min = 0;
+            if (i <= r1) {
+                min = Math.sqrt(r1 * r1 - i * i);
+                min = Math.ceil(min);
+            }
+
+            if (min == 0) {
+                answer += (long) (max - min);
+            } else {
+                answer += (long) (max - min + 1);
+            }
+            System.out.println("answer = " + answer);
+        }
+
+        return answer * 4;
+    }
+}
 
 
+//문제 : N-Queen
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12952
+class Solution_0094 {
+
+    int answer = 0;
+
+    public int solution(int n) {
+        boolean[][] arr = new boolean[n][n];
+        for (int i = 0; i < arr.length; i++) {
+            Arrays.fill(arr[i], true);
+        }
+
+        dfs(0, n, arr);
 
 
+        return answer;
+    }
 
+    public void dfs(int row, int n, boolean[][] arr) {
+        if (row == n) {
+            answer++;
+            return;
+        }
 
+        for (int i = 0; i < n; i++) {
+            if (arr[row][i]) {
+                System.out.println("row = " + row);
+                System.out.println("col = " + i);
+                System.out.println(Arrays.deepToString(arr));
+                boolean[][] arr2 = new boolean[n][n];
+                for (int j = 0; j < n; j++) {
+                    arr2[j] = arr[j].clone();
+                }
+                queen(row, i, n, arr2);
+                dfs(row + 1, n, arr2);
+            }
+        }
+    }
+
+    public void queen(int row, int col, int n, boolean[][] arr) {
+        int r = row;
+        int c = col;
+        while (r < n && c >= 0) {
+            arr[r++][c--] = false;
+        }
+
+        r = row;
+        c = col;
+        while (r < n) {
+            arr[r++][c] = false;
+        }
+
+        r = row;
+        c = col;
+        while (r < n && c < n) {
+            arr[r++][c++] = false;
+        }
+    }
+}
 
 
 
