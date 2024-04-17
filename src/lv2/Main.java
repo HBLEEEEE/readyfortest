@@ -5717,7 +5717,6 @@ class Solution_0093 {
 //문제 : N-Queen
 //url : https://school.programmers.co.kr/learn/courses/30/lessons/12952
 class Solution_0094 {
-
     int answer = 0;
 
     public int solution(int n) {
@@ -5774,10 +5773,69 @@ class Solution_0094 {
     }
 }
 
+//문제 : 이모티콘 할인행사
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/150368
+class Solution_0095 {
 
+    int[] answer = new int[]{0, 0};
+    int[][] gUsers;
+    int[] gEmo;
 
+    public int[] solution(int[][] users, int[] emoticons) {
+        gUsers = users;
+        gEmo = emoticons;
+        int[] dis = new int[emoticons.length];
 
+        setDis(dis, 0);
 
+        return answer;
+    }
+
+    public void setDis(int[] dis, int c) {
+        if (c == dis.length) {
+            cal(dis);
+            return;
+        }
+        dis[c] = 10;
+        setDis(dis.clone(), c + 1);
+        dis[c] = 20;
+        setDis(dis.clone(), c + 1);
+        dis[c] = 30;
+        setDis(dis.clone(), c + 1);
+        dis[c] = 40;
+        setDis(dis.clone(), c + 1);
+    }
+
+    public void cal(int[] dis) {
+        int join = 0;
+        int total = 0;
+
+        for (int i = 0; i < gUsers.length; i++) {
+            int sum = 0;
+            int limit = gUsers[i][0];
+            for (int j = 0; j < dis.length; j++) {
+                if (dis[j] >= limit) {
+                    sum += gEmo[j] * (100 - dis[j]) / 100;
+                }
+
+            }
+            if (sum < gUsers[i][1]) {
+                total += sum;
+            } else {
+                join++;
+            }
+        }
+
+        if (join > answer[0]) {
+            answer[0] = join;
+            answer[1] = total;
+        }
+
+        if (join == answer[0]) {
+            answer[1] = Math.max(answer[1], total);
+        }
+    }
+}
 
 
 
