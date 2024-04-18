@@ -5838,6 +5838,85 @@ class Solution_0095 {
 }
 
 
+//문제 : 혼자서 하는 틱택토
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/160585
+class Solution_0096 {
+    public int solution(String[] board) {
+
+        int O = 0;
+        int X = 0;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length(); j++) {
+                if (board[i].charAt(j) == 'O') {
+                    O++;
+                } else if (board[i].charAt(j) == 'X') {
+                    X++;
+                }
+            }
+        }
+        //X와 O 개수가 2개 이상 차이나는 경우
+        if (!(O - X == 1 || O - X == 0)) {
+            return 0;
+        }
+
+        //X가 O 보다 많은 경우
+        if (X > O) {
+            return 0;
+        }
+
+        boolean checkO = check(board, 'O');
+        //O 빙고가 나왔는데 O랑 X가 같은 수만큼 있는 경우
+        if (checkO && O != X + 1) {
+            return 0;
+        }
+
+        boolean checkX = check(board, 'X');
+        //X 빙고가 나왔는데 O가 더 많은경우
+        if (checkX && O != X) {
+            return 0;
+        }
+
+        if (checkO && checkX) {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    public boolean check(String[] board, char t) {
+        //가로 세줄
+        if (board[0].charAt(0) == t && board[0].charAt(1) == t && board[0].charAt(2) == t) {
+            return true;
+        }
+        if (board[1].charAt(0) == t && board[1].charAt(1) == t && board[1].charAt(2) == t) {
+            return true;
+        }
+        if (board[2].charAt(0) == t && board[2].charAt(1) == t && board[2].charAt(2) == t) {
+            return true;
+        }
+
+        //세로 세줄
+        if (board[0].charAt(0) == t && board[1].charAt(0) == t && board[2].charAt(0) == t) {
+            return true;
+        }
+        if (board[0].charAt(1) == t && board[1].charAt(1) == t && board[2].charAt(1) == t) {
+            return true;
+        }
+        if (board[0].charAt(2) == t && board[1].charAt(2) == t && board[2].charAt(2) == t) {
+            return true;
+        }
+
+        //대각선 두 줄
+        if (board[0].charAt(0) == t && board[1].charAt(1) == t && board[2].charAt(2) == t) {
+            return true;
+        }
+        if (board[0].charAt(2) == t && board[1].charAt(1) == t && board[2].charAt(0) == t) {
+            return true;
+        }
+
+        return false;
+    }
+}
 
 
 
