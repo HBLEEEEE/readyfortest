@@ -5918,8 +5918,42 @@ class Solution_0096 {
     }
 }
 
+//문제 : 숫자 블록
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12923
+class Solution_0097 {
+    public long[] solution(long begin, long end) {
+        long[] answer = new long[(int) (end - begin + 1)];
 
+        int cnt = 0;
+        for (long i = begin; i <= end; i++) {
+            answer[cnt++] = search(i);
+        }
 
+        return answer;
+    }
+
+    public long search(long num) {
+        if (num == 1) {
+            return 0;
+        }
+
+        long ans = 1;
+        long div = (long) Math.sqrt(num);
+
+        for (long i = 2; i <= div; i++) {
+            if (num % i == 0) {
+                if (num / i > 10000000) {
+                    ans = i;
+                } else if (num / i <= 10000000) {
+                    ans = num / i;
+                    break;
+                }
+            }
+        }
+
+        return ans;
+    }
+}
 
 
 
