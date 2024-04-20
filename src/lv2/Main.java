@@ -5956,6 +5956,138 @@ class Solution_0097 {
 }
 
 
+//문제 : 조이스틱
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/42860
+class Solution_0098 {
+    public int solution(String name) {
+        int answer = Integer.MAX_VALUE;
+        Map<Character, Integer> alphabet = new HashMap<>();
+        int t = 0;
+        for (int i = 0; i < 26; i++) {
+            char a = (char) ('A' + i);
+            alphabet.put(a, t);
+            if (i > 12) {
+                t--;
+            } else {
+                t++;
+            }
+        }
+
+        int cnt = 0;
+        for (int i = 0; i < name.length(); i++) {
+            if (name.charAt(i) != 'A') {
+                cnt++;
+            }
+        }
+
+        if (cnt == 0) {
+            return 0;
+        }
+
+        int left = cnt;
+        int total = 0;
+        for (int i = 0; i < name.length(); i++) {
+            if (left == 0) {
+                break;
+            }
+
+            char now = name.charAt(i);
+            if (now != 'A') {
+                total += alphabet.get(now);
+                left--;
+            }
+
+            int temp = left;
+            int ans = total;
+            int idx = i;
+            for (int j = 1; j < name.length(); j++) {
+                if (temp == 0) {
+                    break;
+                }
+
+                idx--;
+                ans++;
+                if (idx < 0) {
+                    idx = name.length() - 1;
+                }
+                char now2 = name.charAt(idx);
+                if (idx > i && now2 != 'A') {
+                    ans += alphabet.get(now2);
+                    temp--;
+                }
+            }
+            answer = Math.min(answer, ans);
+
+            total++;
+
+
+        }
+        answer = Math.min(answer, total);
+
+        //역주
+        left = cnt;
+        total = alphabet.get(name.charAt(0));
+        if (name.charAt(0) != 'A') {
+            left--;
+        }
+        for (int i = name.length() - 1; i > 0; i--) {
+            if (left == 0) {
+                break;
+            }
+            total++;
+            char now = name.charAt(i);
+            if (now != 'A') {
+                total += alphabet.get(now);
+                left--;
+            }
+
+            int temp = left;
+            int ans = total;
+            int idx = i;
+            for (int j = 1; j < name.length(); j++) {
+                if (temp == 0) {
+                    break;
+                }
+
+                idx++;
+                ans++;
+
+                if (idx > name.length() - 1) {
+                    idx = 0;
+                }
+                char now2 = name.charAt(idx);
+                if (idx < i && 0 < idx && now2 != 'A') {
+                    ans += alphabet.get(now2);
+                    temp--;
+                }
+            }
+            answer = Math.min(answer, ans);
+        }
+        answer = Math.min(answer, total);
+
+        return answer;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
