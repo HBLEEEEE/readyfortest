@@ -6070,9 +6070,113 @@ class Solution_0098 {
 }
 
 
+//&#xBB38;&#xC81C; : &#xC694;&#xACA9; &#xC2DC;&#xC2A4;&#xD15C;
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/181188
+class Solution_0099 {
+    public int solution(int[][] targets) {
+        int answer = 0;
+        int end = 0;
+
+        Arrays.sort(targets, (o1, o2) -> o1[1] - o2[1]);
+
+        for (int i = 0; i < targets.length; i++) {
+            int s = targets[i][0];
+            int e = targets[i][1];
+
+            if (s < end) {
+                continue;
+            }
+
+            end = e;
+            answer++;
 
 
+        }
 
+        return answer;
+    }
+}
+
+//문제 : 양궁대회
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/92342
+class Solution_0100 {
+
+    int answer = 0;
+    int[] ans = {-1};
+
+    int[] gInfo;
+
+    public int[] solution(int n, int[] info) {
+        gInfo = info;
+        int[] shoot = new int[11];
+
+        int appeach = 0;
+        for (int i = 0; i < info.length; i++) {
+            if (info[i] > 0) {
+                appeach += 10 - i;
+            }
+        }
+
+        search(n, 0, shoot, 0, appeach);
+
+        return ans;
+    }
+
+
+    public void search(int arrow, int idx, int[] shoot, int ryan, int appeach) {
+        if (idx >= 11) {
+            shoot[10] = shoot[10] + arrow;
+            arrow = 0;
+        }
+        if (arrow == 0) {
+            if (ryan > appeach && answer <= (ryan - appeach)) {
+                boolean change = false;
+                if (answer == ryan - appeach) {
+                    for (int i = 10; i >= 0; i--) {
+                        if (ans[i] < shoot[i]) {
+                            change = true;
+                            break;
+                        } else if (ans[i] > shoot[i]) {
+                            break;
+                        }
+                    }
+
+                    if (change) {
+                        ans = shoot;
+                    }
+                } else {
+                    answer = ryan - appeach;
+                    ans = shoot;
+                }
+            }
+            return;
+        }
+
+        //어피치가 점수를 안딴경우
+        if (gInfo[idx] == 0) {
+            //라이언이 점수를 딴 경우
+            int[] shootClone1 = shoot.clone();
+            shootClone1[idx] = 1;
+            search(arrow - 1, idx + 1, shootClone1, ryan + (10 - idx), appeach);
+
+            //라이언이 점수를 안 딴 경우
+            int[] shootClone2 = shoot.clone();
+            search(arrow, idx + 1, shootClone2, ryan, appeach);
+        } else {
+            //어피치가 점수를 획득한경우
+            //라이언이 점수를 뺏을 수 있을 경우
+            if (arrow > gInfo[idx]) {
+                int[] shootClone3 = shoot.clone();
+                shootClone3[idx] = gInfo[idx] + 1;
+                search(arrow - gInfo[idx] - 1, idx + 1, shootClone3, ryan + (10 - idx), appeach - (10 - idx));
+            }
+            // 점수를 안딴 경우
+            int[] shootClone4 = shoot.clone();
+            shootClone4[idx] = 0;
+            search(arrow, idx + 1, shootClone4, ryan, appeach);
+        }
+    }
+}
 
 
 
