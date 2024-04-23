@@ -6179,7 +6179,72 @@ class Solution_0100 {
 }
 
 
+//문제 : 순위 검색
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/72412
+class Solution_0101 {
+    Map<String, List<Integer>> map = new HashMap<>();
 
+    public int[] solution(String[] info, String[] query) {
+        int[] answer = new int[query.length];
+
+        for (int i = 0; i < info.length; i++) {
+            //java backend junior pizza 150
+            String[] strs = info[i].split(" ");
+            putData(strs, "", 0, Integer.parseInt(strs[4]));
+        }
+
+        for (String key : map.keySet()) {
+            Collections.sort(map.get(key));
+        }
+
+        for (int i = 0; i < query.length; i++) {
+            //java and backend and junior and pizza 100
+            String[] que = query[i].split(" ");
+            String ans = que[0] + que[2] + que[4] + que[6];
+            int p = Integer.parseInt(que[7]);
+            if (!map.containsKey(ans)) {
+                continue;
+            }
+
+            answer[i] = binartSearch(ans, p);
+        }
+
+        return answer;
+    }
+
+    public void putData(String[] strs, String now, int idx, int point) {
+        if (idx > 3) {
+            if (map.containsKey(now)) {
+                map.get(now).add(point);
+            } else {
+                map.put(now, new ArrayList<>());
+                map.get(now).add(point);
+            }
+            return;
+        }
+        String str1 = now + "-";
+        putData(strs, str1, idx + 1, point);
+        String str2 = now + strs[idx];
+        putData(strs, str2, idx + 1, point);
+    }
+
+    public int binartSearch(String key, int score) {
+        List<Integer> list = map.get(key);
+        int s = 0;
+        int e = list.size() - 1;
+
+        while (s <= e) {
+            int mid = (s + e) / 2;
+            if (list.get(mid) < score) {
+                s = mid + 1;
+            } else {
+                e = mid - 1;
+            }
+        }
+
+        return list.size() - s;
+    }
+}
 
 
 
