@@ -6247,8 +6247,86 @@ class Solution_0101 {
 }
 
 
+//문제 : 석유 시추
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/250136
+class Solution_0102 {
 
+    int[][] gLand;
+    Queue<Integer> queueI = new LinkedList<>();
+    Queue<Integer> queueJ = new LinkedList<>();
+    boolean[][] check;
+    int[][] table;
+    int cnt = 0;
 
+    public int solution(int[][] land) {
+        int answer = 0;
+        gLand = land;
+        Map<Integer, Integer> map = new HashMap<>();
+
+        check = new boolean[land.length][land[0].length];
+        table = new int[land.length][land[0].length];
+
+        int idx = 1;
+
+        for (int i = 0; i < check.length; i++) {
+            for (int j = 0; j < check[i].length; j++) {
+                if (gLand[i][j] == 0 || check[i][j]) {
+                    continue;
+                }
+
+                queueI.clear();
+                queueJ.clear();
+
+                check[i][j] = true;
+                search(i, j, idx);
+
+                map.put(idx, cnt);
+                idx++;
+                cnt = 0;
+            }
+        }
+
+        for (int i = 0; i < table[0].length; i++) {
+            Set<Integer> set = new HashSet<>();
+            int total = 0;
+            for (int j = 0; j < table.length; j++) {
+                set.add(table[j][i]);
+            }
+
+            set.remove(0);
+
+            for (int k : set) {
+                total += map.get(k);
+            }
+            answer = Math.max(answer, total);
+        }
+
+        return answer;
+    }
+
+    public void search(int i, int j, int idx) {
+        table[i][j] = idx;
+        cnt++;
+
+        //상하좌우
+        if (j < check[0].length - 1 && gLand[i][j + 1] == 1 && !check[i][j + 1]) {
+            check[i][j + 1] = true;
+            search(i, j + 1, idx);
+        }
+        if (j > 0 && gLand[i][j - 1] == 1 && !check[i][j - 1]) {
+            check[i][j - 1] = true;
+            search(i, j - 1, idx);
+        }
+        if (i < check.length - 1 && gLand[i + 1][j] == 1 && !check[i + 1][j]) {
+            check[i + 1][j] = true;
+            search(i + 1, j, idx);
+        }
+        if (i > 0 && gLand[i - 1][j] == 1 && !check[i - 1][j]) {
+            check[i - 1][j] = true;
+            search(i - 1, j, idx);
+        }
+    }
+}
 
 
 
