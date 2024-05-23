@@ -6328,12 +6328,162 @@ class Solution_0102 {
     }
 }
 
+//문제 : 택배 배달과 수거하기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/150369?language=java
+class Solution_0103 {
+    public long solution(int cap, int n, int[] deliveries, int[] pickups) {
+        long answer = 0;
 
 
+        long last = -1;
+
+        for (int i = n - 1; i >= 0; i--) {
+            if (deliveries[i] != 0 || pickups[i] != 0) {
+                last = i;
+                break;
+            }
+        }
+
+        while (last >= 0) {
+
+            if (last == 0 && (deliveries[0] == 0 && pickups[0] == 0)) {
+                break;
+            }
+
+            System.out.println("last = " + last);
+            answer += (last + 1) * 2;
+
+            int store = 0;
+            int delLast = -1;
+            int pickLast = -1;
+
+            for (int i = (int) last; i >= 0; i--) {
+                if (store + deliveries[i] > cap) {
+                    deliveries[i] -= cap - store;
+                    delLast = i;
+                    break;
+                } else {
+                    store += deliveries[i];
+                    deliveries[i] = 0;
+                }
+            }
+
+            store = 0;
+            for (int i = (int) last; i >= 0; i--) {
+                if (store + pickups[i] > cap) {
+                    pickups[i] -= cap - store;
+                    pickLast = i;
+                    break;
+                } else {
+                    store += pickups[i];
+                    pickups[i] = 0;
+                }
+            }
 
 
+            last = Math.max(delLast, pickLast);
+        }
+
+        return answer;
+    }
+
+    public long solutionperfact(int cap, int n, int[] deliveries, int[] pickups) {
+        long answer = -1;
+        int deliver = 0, pickup = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            deliver += deliveries[i];
+            pickup += pickups[i];
+            while (deliver > 0 || pickup > 0) {
+                deliver -= cap;
+                pickup -= cap;
+                answer += ((i + 1) * 2);
+            }
+
+        }
+        return answer + 1;
+    }
+}
+
+//문제 : 교점에 별 만들기
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/87377
+class Solution_0104 {
+
+    Queue<Integer> X = new LinkedList<>();
+    Queue<Integer> Y = new LinkedList<>();
+
+    int[][] globalLine;
+
+    int minX = Integer.MAX_VALUE;
+    int maxX = Integer.MIN_VALUE;
+    int minY = Integer.MAX_VALUE;
+    int maxY = Integer.MIN_VALUE;
 
 
+    public String[] solution(int[][] line) {
+        globalLine = line;
+
+        for (int i = 0; i < line.length - 1; i++) {
+            for (int j = i + 1; j < line.length; j++) {
+                cross(i, j);
+            }
+        }
+
+        int w = maxX - minX + 1;
+        int h = maxY - minY + 1;
+
+        boolean[][] check = new boolean[h][w];
+
+
+        while (!X.isEmpty()) {
+            int x = X.poll() - minX;
+            int y = Y.poll() - minY;
+
+            check[y][x] = true;
+        }
+
+        String[] answer = new String[(int) h];
+        for (int i = 0; i < h; i++) {
+            String temp = "";
+            for (int j = 0; j < check[h - 1 - i].length; j++) {
+                if (check[h - 1 - i][j]) {
+                    temp += "*";
+                } else {
+                    temp += ".";
+                }
+            }
+            answer[i] = temp;
+        }
+
+        return answer;
+    }
+
+    public void cross(int i, int j) {
+        long a = globalLine[i][0];
+        long b = globalLine[i][1];
+        long c = globalLine[i][2];
+        long d = globalLine[j][0];
+        long e = globalLine[j][1];
+        long f = globalLine[j][2];
+
+
+        if ((a * e - b * d) == 0 || (b * d - a * e) == 0) {
+            return;
+        }
+
+        if (((b * f - c * e) % (a * e - b * d) == 0) && (a * f - c * d) % (b * d - a * e) == 0) {
+            int x = (int) ((b * f - c * e) / (a * e - b * d));
+            int y = (int) ((a * f - c * d) / (b * d - a * e));
+
+            X.add(x);
+            Y.add(y);
+
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+        }
+    }
+}
 
 
 
