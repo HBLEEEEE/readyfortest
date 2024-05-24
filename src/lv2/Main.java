@@ -6486,10 +6486,92 @@ class Solution_0104 {
 }
 
 
+//문제 : 3 x n 타일링
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/12902
+class Solution_0105 {
+    public static long solution(int n) {
+        long[] arr = new long[5001];
+
+        arr[0] = 1;
+        arr[2] = 3;
+        arr[4] = 11;
+        int mod = 1000000007;
+
+        for (int i = 6; i <= n; i += 2) {
+
+            arr[i] = ((arr[i - 2] * 4 % mod) - arr[i - 4] % mod + mod) % mod;
+        }
 
 
+        return arr[n];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution(8));
+    }
+}
+
+//문제 : 카카오프렌즈 컬러링북
+//url : https://school.programmers.co.kr/learn/courses/30/lessons/1829
+class Solution_0106 {
+
+    int[][] globalP;
+    boolean[][] check;
+
+    int max = 0;
+    int count = 0;
+
+    int gM;
+    int gN;
+
+    Queue<Integer> X = new LinkedList<>();
+    Queue<Integer> Y = new LinkedList<>();
+
+    public int[] solution(int m, int n, int[][] picture) {
+        gM = m;
+        gN = n;
+        globalP = picture;
+        check = new boolean[picture.length][picture[0].length];
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!check[i][j] && picture[i][j] != 0) {
+                    count++;
+                    X.clear();
+                    Y.clear();
+                    search(i, j, picture[i][j]);
+                    max = Math.max(X.size(), max);
+                }
+            }
+        }
 
 
+        int[] answer = new int[2];
+        answer[0] = count;
+        answer[1] = max;
+        return answer;
+    }
+
+    public void search(int i, int j, int color) {
+        X.add(i);
+        Y.add(j);
+        check[i][j] = true;
+
+        if (i > 0 && !check[i - 1][j] && globalP[i - 1][j] == color) {
+            search(i - 1, j, color);
+        }
+        if (i < gM - 1 && !check[i + 1][j] && globalP[i + 1][j] == color) {
+            search(i + 1, j, color);
+        }
+
+        if (j > 0 && !check[i][j - 1] && globalP[i][j - 1] == color) {
+            search(i, j - 1, color);
+        }
+        if (j < gN - 1 && !check[i][j + 1] && globalP[i][j + 1] == color) {
+            search(i, j + 1, color);
+        }
+    }
+}
 
 
 
